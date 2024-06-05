@@ -26,9 +26,6 @@
         "post-install-cmd": [
             "blackpostgres\\run::scripts_command"
         ],
-        "post-update-cmd": [
-            "blackpostgres\\run::scripts_command"
-        ],
         "bd:generate": "blackpostgres\\run::generate",
         "scr": "blackpostgres\\run::scripts_command"
     },

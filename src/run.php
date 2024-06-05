@@ -3,6 +3,7 @@
 
 namespace blackpostgres;
 
+use useconfig\UseConfig;
 
 class run
 {
@@ -24,8 +25,13 @@ class run
         file_put_contents($composerFile, json_encode($json, JSON_PRETTY_PRINT));
     }
 
-    static function generate()
+    static function generate($event)
     {
-        echo "\n-+- GENERATE -+-\n";
+        $root = $event->getComposer()->getConfig()->get('vendor-dir') . '/../';
+        $configs = UseConfig::find($root, $root);
+
+        foreach ($configs as $config) {
+            
+        }
     }
 }
