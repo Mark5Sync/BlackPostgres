@@ -3,18 +3,15 @@
 namespace ___namespace___;
 
 use blackpostgres\Model;
-use ___markerClass___;
 
 
 
 abstract class ___class___ extends Model
 {
-    use __connectionMarker__;
-
     protected ?array $relationship = __rel__;
 
     protected string $table = '__table__';
-    protected string $connectionProp = '__connectionProp__';
+    protected string $connectionConfig = '__connection_config__';
 
 
     protected function getEloquentModel(): ___class___Eloquent

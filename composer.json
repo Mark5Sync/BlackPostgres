@@ -18,16 +18,20 @@
         "vlucas\/phpdotenv": "^5.6",
         "composer\/class-map-generator": "^1.1",
         "illuminate\/database": "^11.7",
-        "marksync/useconfig": "^0.0.1"
+        "marksync\/useconfig": "^0.0.1",
+        "twcli\/twcli": "^1.0",
+        "mouf/classname-mapper": "^1.0"
     },
     "scripts": {
         "mark": "php vendor\/bin\/mark",
         "orm": "php .\/bin\/mark-orm-build-scheme",
         "post-install-cmd": [
-            "blackpostgres\\run::scripts_command"
+            "blackpostgres\\run::welcome"
         ],
-        "bd:generate": "blackpostgres\\run::generate",
-        "scr": "blackpostgres\\run::scripts_command"
+        "db:generate": "blackpostgres\\run::generate",
+        "colors": "blackpostgres\\run::colors",
+        "welcome": "blackpostgres\\run::welcome",
+        "bd:generate": "blackpostgres\\run::generate"
     },
     "bin": [
         "bin\/mark-orm-build-scheme"

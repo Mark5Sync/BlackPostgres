@@ -1,6 +1,6 @@
 <?php
 
-namespace blackpostgres\_system;
+namespace blackpostgres\pgsystem;
 
 
 class ModelConfig {

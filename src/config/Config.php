@@ -5,8 +5,20 @@ namespace blackpostgres\config;
 abstract class Config
 {
 
-    protected string $host;
-    protected string $database;
-    protected string $user;
-    protected string $password;
+    public string $modelsPath;
+    public string $namespace;
+    
+
+    public string $host;
+    public string $port;
+
+    public string $database;
+    public string $user;
+    public string $password;
+
+
+
+    function getNamespace(){
+        return __NAMESPACE__;
+    }
 }

@@ -2,17 +2,19 @@
 
 namespace blackpostgres\model;
 
+use blackpostgres\_markers\pgsystem;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use blackpostgres\_system\ConnectionSource;
 use marksync\provider\NotMark;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 #[NotMark]
 abstract class Connection
 {
+    use pgsystem;
 
-    protected string $connectionProp;
+    protected string $connectionConfig;
     private ?Builder $activeModel = null;
 
 
@@ -21,9 +23,12 @@ abstract class Connection
         if ($this->activeModel)
             return $this->activeModel;
 
-        /** @var ConnectionSource $connection */
-        $connection = $this->{$this->connectionProp};
-        $connection = $connection->createGlobalconnection();
+        $capsule = new Capsule;
+
+        $capsule->addConnection($this->connectionResolver->configToCapsule(new $this->connectionConfig));
+
+        $capsule->setAsGlobal();
+        $capsule->bootEloquent();
 
         
         return $this->activeModel = $this->getEloquentModel()->newQuery();

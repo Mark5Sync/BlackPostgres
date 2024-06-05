@@ -3,18 +3,22 @@
 
 namespace testapp;
 
-use testapp\_markers\models;
+use blackpostgres\run;
+use testapp\_markers\models_test_2;
 
 require '../vendor/autoload.php';
 
 
+// run::generate(null);
+
+
 new class
 {
-    use models;
+    use models_test_2;
 
     function __construct()
     {
-        $data = $this->usersModel->query($sql)->sel(name: 1)->fetch();
+        $data = $this->usersModel->query($sql)->sel(username: 1)->fetch();
         print_r($data);
     }
 };

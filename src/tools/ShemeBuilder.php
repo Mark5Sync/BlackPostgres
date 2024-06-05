@@ -3,14 +3,15 @@
 
 namespace blackpostgres\tools;
 
-use blackpostgres\_system\ModelConfig;
+use blackpostgres\config\Config;
+use blackpostgres\pgsystem\ModelConfig;
 use marksync\provider\MarkInstance;
-use marksync\provider\ReflectionMark;
 
 #[MarkInstance]
 class ShemeBuilder
 {
-    private ?ReflectionMark $connection;
+    private ?Config $config;
+    private string $connectionConfigClass;
     private ?array $relationship;
 
 
@@ -22,9 +23,11 @@ class ShemeBuilder
     }
 
 
-    function injectConnection(ReflectionMark $connection)
+    function injectConnection(Config $config)
     {
-        $this->connection = $connection;
+        $this->config = $config;
+
+        $this->connectionConfigClass = get_class($config);
         return $this;
     }
 
@@ -57,7 +60,6 @@ class ShemeBuilder
             $code = $this->getCode($class, $config->modelNamespace);
             file_put_contents($modelFileName, $code);
         }
-
     }
 
 
@@ -87,12 +89,10 @@ class ShemeBuilder
 
         $props = [
             '___namespace___' => $namespace,
-            '___markerClass___' => $this->connection->markerClass,
             '___class___' => $class,
-            '__connectionMarker__' => $this->connection->marker,
             '__rel__' => $rel,
             '__table__' => $this->table,
-            '__connectionProp__' => $this->connection->prop,
+            '__connection_config__' => $this->connectionConfigClass,
         ];
 
         $abstactCode = file_get_contents(__DIR__ . "/../AbstractModel.php");
@@ -213,12 +213,15 @@ class ShemeBuilder
     private function convertToPHPType($sqlType)
     {
         switch ($sqlType) {
+            case 'integer':
             case 'int':
             case 'bigint':
+            case 'numeric':
                 return 'int';
 
             case 'date':
             case 'datetime':
+            case 'timestamp without time zone':
                 return 'string';
 
             case 'float':
@@ -228,6 +231,7 @@ class ShemeBuilder
             case 'text':
             case 'longtext':
             case 'varchar':
+            case 'character varying':
                 return 'string';
 
             default:
