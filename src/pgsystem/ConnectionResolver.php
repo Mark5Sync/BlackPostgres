@@ -33,7 +33,8 @@ class ConnectionResolver
     {
         return [
             'driver'    => 'pgsql',
-            'host'      => $config->host . ':' . $config->port,
+            'host'      => $config->host,
+            'port'      => $config->port,
             'database'  => $config->database,
             'username'  => $config->user,
             'password'  => $config->password,

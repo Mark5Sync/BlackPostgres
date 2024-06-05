@@ -9,9 +9,6 @@ use testapp\_markers\models_test_2;
 require '../vendor/autoload.php';
 
 
-// run::generate(null);
-
-
 new class
 {
     use models_test_2;
