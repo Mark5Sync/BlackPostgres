@@ -1910,16 +1910,16 @@
         },
         {
             "name": "twcli/twcli",
-            "version": "v1.0.1",
+            "version": "v1.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Mark5Sync/twcli.git",
-                "reference": "cf31f7ef843ed39f0830af62d117b08cbe4bd26b"
+                "reference": "ae60af90dd66f4e3e667fc063d5d771fbe2a61aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Mark5Sync/twcli/zipball/cf31f7ef843ed39f0830af62d117b08cbe4bd26b",
-                "reference": "cf31f7ef843ed39f0830af62d117b08cbe4bd26b",
+                "url": "https://api.github.com/repos/Mark5Sync/twcli/zipball/ae60af90dd66f4e3e667fc063d5d771fbe2a61aa",
+                "reference": "ae60af90dd66f4e3e667fc063d5d771fbe2a61aa",
                 "shasum": ""
             },
             "type": "library",
@@ -1935,9 +1935,9 @@
             "description": "cli",
             "support": {
                 "issues": "https://github.com/Mark5Sync/twcli/issues",
-                "source": "https://github.com/Mark5Sync/twcli/tree/v1.0.1"
+                "source": "https://github.com/Mark5Sync/twcli/tree/v1.0.2"
             },
-            "time": "2024-06-05T08:27:09+00:00"
+            "time": "2024-06-05T21:53:26+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

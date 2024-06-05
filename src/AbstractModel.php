@@ -1,10 +1,9 @@
 <?php
 
 namespace ___namespace___;
+use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 use blackpostgres\Model;
-
-
 
 abstract class ___class___ extends Model
 {
@@ -14,16 +13,12 @@ abstract class ___class___ extends Model
     protected string $connectionConfig = '__connection_config__';
 
 
-    protected function getEloquentModel(): ___class___Eloquent
+    protected function getEloquentModel(): EloquentModel
     {
-        return new ___class___Eloquent;
+        return new class extends EloquentModel {
+            protected $table = '__table__';
+        };
     }
-
-    // function select(...$props)
-    // {
-    //     $this->___select($props);
-    //     return $this;
-    // }
 
     
     function selectRow(&$___bind___)

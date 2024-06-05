@@ -1,10 +1,9 @@
 <?php
 
 namespace testapp\models_test_2\_abstract_models;
+use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 use blackpostgres\Model;
-
-
 
 abstract class AbstractOrdersModel extends Model
 {
@@ -25,16 +24,12 @@ abstract class AbstractOrdersModel extends Model
     protected string $connectionConfig = 'testapp\configs\PGConfig';
 
 
-    protected function getEloquentModel(): AbstractOrdersModelEloquent
+    protected function getEloquentModel(): EloquentModel
     {
-        return new AbstractOrdersModelEloquent;
+        return new class extends EloquentModel {
+            protected $table = 'orders';
+        };
     }
-
-    // function select(...$props)
-    // {
-    //     $this->___select($props);
-    //     return $this;
-    // }
 
     
     function selectRow(

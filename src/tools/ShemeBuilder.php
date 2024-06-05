@@ -48,9 +48,8 @@ class ShemeBuilder
     function createAbstractModel(ModelConfig $config)
     {
         $abstractClass = $this->getAbstractClassName();
-        [$code, $elCode] = $this->getAbstractCode($abstractClass, $config->abstractNamespace);
+        $code = $this->getAbstractCode($abstractClass, $config->abstractNamespace);
         file_put_contents("{$config->abstractFolder}/$abstractClass.php", $code);
-        file_put_contents("{$config->abstractFolder}/{$abstractClass}Eloquent.php", $elCode);
 
 
 
@@ -109,22 +108,7 @@ class ShemeBuilder
             $abstactCode = str_replace("\$___restruct_{$propsType}___", $restruct, $abstactCode);
         }
 
-        return [
-            $abstactCode,
-            <<<PHP
-            <?php
-
-            namespace $namespace;
-            use Illuminate\Database\Eloquent\Model as EloquentModel;
-            use marksync\provider\NotMark;
-
-            #[NotMark]
-            class {$class}Eloquent extends EloquentModel
-            {
-                protected \$table = '$this->table';
-            }
-            PHP,
-        ];
+        return $abstactCode;
     }
 
 
