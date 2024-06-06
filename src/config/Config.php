@@ -7,7 +7,7 @@ abstract class Config
 
     public string $modelsPath;
     public string $namespace;
-    
+
 
     public string $host;
     public string $port;
@@ -16,9 +16,4 @@ abstract class Config
     public string $user;
     public string $password;
 
-
-
-    function getNamespace(){
-        return __NAMESPACE__;
-    }
 }

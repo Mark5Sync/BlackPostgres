@@ -19,10 +19,9 @@
     },
     "scripts": {
         "mark": "php vendor\/bin\/mark",
-        "post-install-cmd": [
-            "blackpostgres\\run::welcome"
-        ],
-        "db:generate": "blackpostgres\\run::generate",
-        "bd:generate": "blackpostgres\\run::generate"
+        "post-install-cmd": "blackpostgres\\run::welcome",
+        "post-update-cmd": "blackpostgres\\run::welcome",
+        "post-package-install": "blackpostgres\\run::welcome",
+        "db:generate": "blackpostgres\\run::generate"
     }
 }
