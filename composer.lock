@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d5ee9c685ed1a1fc0f2acc0e5634040",
+    "content-hash": "f7a1424f0ebc1af78ee6b4fc04904cd0",
     "packages": [
         {
             "name": "brick/math",
@@ -865,16 +865,16 @@
         },
         {
             "name": "marksync/useconfig",
-            "version": "v0.0.1",
+            "version": "v0.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Mark5Sync/UseConfig.git",
-                "reference": "e7bbeb03ec7940b3a5cd9f090202297486fd21b4"
+                "reference": "2c94693125ecba3541574f280bb12e90aebcce13"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Mark5Sync/UseConfig/zipball/e7bbeb03ec7940b3a5cd9f090202297486fd21b4",
-                "reference": "e7bbeb03ec7940b3a5cd9f090202297486fd21b4",
+                "url": "https://api.github.com/repos/Mark5Sync/UseConfig/zipball/2c94693125ecba3541574f280bb12e90aebcce13",
+                "reference": "2c94693125ecba3541574f280bb12e90aebcce13",
                 "shasum": ""
             },
             "require": {
@@ -895,59 +895,9 @@
             "description": "useconfig",
             "support": {
                 "issues": "https://github.com/Mark5Sync/UseConfig/issues",
-                "source": "https://github.com/Mark5Sync/UseConfig/tree/v0.0.1"
+                "source": "https://github.com/Mark5Sync/UseConfig/tree/v0.0.3"
             },
-            "time": "2024-06-04T20:23:21+00:00"
-        },
-        {
-            "name": "mouf/classname-mapper",
-            "version": "v1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thecodingmachine/classname-mapper.git",
-                "reference": "fa32a0ef5a45292d2240a405aed8a1aa5f04d642"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thecodingmachine/classname-mapper/zipball/fa32a0ef5a45292d2240a405aed8a1aa5f04d642",
-                "reference": "fa32a0ef5a45292d2240a405aed8a1aa5f04d642",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "~4.0 | ~5.0",
-                "satooshi/php-coveralls": "~1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Mouf\\Composer\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "David Négrier",
-                    "email": "d.negrier@thecodingmachine.com",
-                    "homepage": "http://mouf-php.com"
-                }
-            ],
-            "description": "Provides a way to find in which PHP files a class will be looked upon.",
-            "homepage": "http://mouf-php.com/packages/thecodingmachine/classname-mapper",
-            "keywords": [
-                "autoload",
-                "composer"
-            ],
-            "support": {
-                "issues": "https://github.com/thecodingmachine/classname-mapper/issues",
-                "source": "https://github.com/thecodingmachine/classname-mapper/tree/1.0"
-            },
-            "time": "2019-01-17T16:26:30+00:00"
+            "time": "2024-06-05T17:04:20+00:00"
         },
         {
             "name": "nesbot/carbon",

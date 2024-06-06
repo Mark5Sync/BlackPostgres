@@ -14,14 +14,11 @@
         "vlucas\/phpdotenv": "^5.6",
         "composer\/class-map-generator": "^1.1",
         "illuminate\/database": "^11.7",
-        "marksync\/useconfig": "^0.0.1",
-        "twcli\/twcli": "^1.0"
+        "twcli\/twcli": "^1.0",
+        "marksync/useconfig": "^0.0.3"
     },
     "scripts": {
         "mark": "php vendor\/bin\/mark",
-        "post-install-cmd": "blackpostgres\\run::welcome",
-        "post-update-cmd": "blackpostgres\\run::welcome",
-        "post-package-install": "blackpostgres\\run::welcome",
         "db:generate": "blackpostgres\\run::generate"
     }
 }
