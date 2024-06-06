@@ -1,44 +1,44 @@
 <?php
 
-namespace testapp\models_test_2\_abstract_models;
+namespace testapp\models\_abstract_models;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 use blackpostgres\Model;
 
-abstract class AbstractUsersModel extends Model
+abstract class AbstractProductsModel extends Model
 {
     protected ?array $relationship = array (
-  'orders' => 
+  'order_details' => 
   array (
     'coll' => 'id',
-    'referenced' => 'user_id',
+    'referenced' => 'product_id',
   ),
 );
 
-    protected string $table = 'users';
+    protected string $table = 'products';
     protected string $connectionConfig = 'testapp\configs\PGConfig';
 
 
     protected function getEloquentModel(): EloquentModel
     {
         return new class extends EloquentModel {
-            protected $table = 'users';
+            protected $table = 'products';
         };
     }
 
     
     function selectRow(
 			&$id = false,
-			&$username = false,
-			&$email = false,
-			&$password = false,
+			&$name = false,
+			&$description = false,
+			&$price = false,
 			&$created_at = false)
     {
         $_cijcbb32ojsallk4ms = $this->sel(...$this->request->filter([
 			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
 			'created_at' => $created_at], false, 1))->fetch();
 
         if ($_cijcbb32ojsallk4ms)
@@ -53,16 +53,16 @@ abstract class AbstractUsersModel extends Model
      */
     function sel(
 			bool $id = false,
-			bool $username = false,
-			bool $email = false,
-			bool $password = false,
+			bool $name = false,
+			bool $description = false,
+			bool $price = false,
 			bool $created_at = false)
     {
         $props = [
 			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
 			'created_at' => $created_at];
         $this->___sel($props);
         return $this;
@@ -73,16 +73,16 @@ abstract class AbstractUsersModel extends Model
      */
     function selectAs(
 			false | string $id = false,
-			false | string $username = false,
-			false | string $email = false,
-			false | string $password = false,
+			false | string $name = false,
+			false | string $description = false,
+			false | string $price = false,
 			false | string $created_at = false)
     {
         $props = [
 			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
 			'created_at' => $created_at];
         $this->___selectAs($props);
         return $this;
@@ -102,16 +102,16 @@ abstract class AbstractUsersModel extends Model
      */
     function like(?string $_ = null, 
 			false | string $id = false,
-			false | string $username = false,
-			false | string $email = false,
-			false | string $password = false,
+			false | string $name = false,
+			false | string $description = false,
+			false | string $price = false,
 			false | string $created_at = false)
     {
         $props = [
 			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
 			'created_at' => $created_at];
         $this->___like($_, $props);
         return $this;
@@ -122,16 +122,16 @@ abstract class AbstractUsersModel extends Model
      */
     function regexp(?string $_ = null, 
 			false | string $id = false,
-			false | string $username = false,
-			false | string $email = false,
-			false | string $password = false,
+			false | string $name = false,
+			false | string $description = false,
+			false | string $price = false,
 			false | string $created_at = false)
     {
         $props = [
 			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
 			'created_at' => $created_at];
         $this->___regexp($_, $props);
         return $this;
@@ -142,16 +142,16 @@ abstract class AbstractUsersModel extends Model
      */
     function in(?string $_ = null, 
 			false | array $id = false,
-			false | array $username = false,
-			false | array $email = false,
-			false | array $password = false,
+			false | array $name = false,
+			false | array $description = false,
+			false | array $price = false,
 			false | array $created_at = false)
     {
         $props = [
 			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
 			'created_at' => $created_at];
         $this->___in($_, $props);
         return $this;
@@ -163,16 +163,16 @@ abstract class AbstractUsersModel extends Model
      */
     function notIn(?string $_ = null, 
 			false | array $id = false,
-			false | array $username = false,
-			false | array $email = false,
-			false | array $password = false,
+			false | array $name = false,
+			false | array $description = false,
+			false | array $price = false,
 			false | array $created_at = false)
     {
         $props = [
 			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
 			'created_at' => $created_at];
         $this->___in($_, $props, true);
         return $this;
@@ -185,16 +185,16 @@ abstract class AbstractUsersModel extends Model
      */
     function isNull(?string $_ = null, 
 			bool $id = false,
-			bool $username = false,
-			bool $email = false,
-			bool $password = false,
+			bool $name = false,
+			bool $description = false,
+			bool $price = false,
 			bool $created_at = false)
     {
         $props = [
 			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
 			'created_at' => $created_at];
         $this->___isNull($_, $props);
         return $this;
@@ -205,16 +205,16 @@ abstract class AbstractUsersModel extends Model
      */
     function isNotNull(?string $_ = null, 
 			bool $id = false,
-			bool $username = false,
-			bool $email = false,
-			bool $password = false,
+			bool $name = false,
+			bool $description = false,
+			bool $price = false,
 			bool $created_at = false)
     {
         $props = [
 			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
 			'created_at' => $created_at];
         $this->___isNotNull($_, $props);
         return $this;
@@ -231,16 +231,16 @@ abstract class AbstractUsersModel extends Model
      */
     function where(?string $_ = null, 
 			 false | int $id = false,
-			 false | string $username = false,
-			 false | string $email = false,
-			 false | string $password = false,
+			 false | string $name = false,
+			 false | null | string $description = false,
+			 false | int $price = false,
 			 false | null | string $created_at = false)
     {
         $props = [
 			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
 			'created_at' => $created_at];
         $this->___where($_, $props);
         return $this;
@@ -251,16 +251,16 @@ abstract class AbstractUsersModel extends Model
      */
     function fwhere(?string $_ = null, 
 			false | string $id = false,
-			false | string $username = false,
-			false | string $email = false,
-			false | string $password = false,
+			false | string $name = false,
+			false | string $description = false,
+			false | string $price = false,
 			false | string $created_at = false)
     {
         $props = [
 			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
 			'created_at' => $created_at];
         $this->___where($_, $props);
         return $this;
@@ -274,16 +274,16 @@ abstract class AbstractUsersModel extends Model
      */
     function updt(
 			 false | int $id = false,
-			 false | string $username = false,
-			 false | string $email = false,
-			 false | string $password = false,
+			 false | string $name = false,
+			 false | null | string $description = false,
+			 false | int $price = false,
 			 false | null | string $created_at = false)
     {
         $props = [
 			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
 			'created_at' => $created_at];
         return $this->___update($props);
     }
@@ -293,16 +293,16 @@ abstract class AbstractUsersModel extends Model
      */
     function insert(
 			 false | int $id = false,
-			 false | string $username = false,
-			 false | string $email = false,
-			 false | string $password = false,
+			 false | string $name = false,
+			 false | null | string $description = false,
+			 false | int $price = false,
 			 false | null | string $created_at = false)
     {
         $props = [
 			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
 			'created_at' => $created_at];
         return $this->___insert($props);
     }
@@ -313,16 +313,16 @@ abstract class AbstractUsersModel extends Model
      */
     function insertOnDublicateUpdate(
 			 false | int $id = false,
-			 false | string $username = false,
-			 false | string $email = false,
-			 false | string $password = false,
+			 false | string $name = false,
+			 false | null | string $description = false,
+			 false | int $price = false,
 			 false | null | string $created_at = false)
     {
         $props = [
 			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
 			'created_at' => $created_at];
         return $this->___insertOnDublicateUpdate($props);
     }
@@ -342,40 +342,61 @@ abstract class AbstractUsersModel extends Model
     }
 
 
-    function join(Model $model)
+    // function join(Model $model)
+    // {
+    //     $this->___join($model);
+    //     return $this;
+    // }
+
+
+    // function joinOn(string $fields, Model $model, string $references)
+    // {
+    //     $this->___join($model, $references, $fields);
+    //     return $this;
+    // }
+
+
+    // function joinCascade(...$models)
+    // {
+
+    //     foreach ($models as $propName => $model) {
+    //         $this->___join($model, null, null, 'left', $propName);
+    //     }
+
+    //     return $this;
+    // }
+
+
+    // function joinCascadeArray(...$models)
+    // {
+
+    //     foreach ($models as $propName => $model) {
+    //         $this->___joinCascadeArray($model, null, null, 'left', $propName);
+    //     }
+
+    //     return $this;
+    // }
+
+
+    
+    function join(?Model $order_details = null, ...$props)
     {
-        $this->___join($model);
+        $props = $this->request->filter(['order_details' => $order_details, ...$props], null);
         return $this;
     }
 
-
-    function joinOn(string $fields, Model $model, string $references)
+    function joinCascade(?Model $order_details = null, ...$props)
     {
-        $this->___join($model, $references, $fields);
+        $props = $this->request->filter(['order_details' => $order_details, ...$props], null);
         return $this;
     }
 
-
-    function joinCascade(...$models)
+    function joinCascadeArray(?Model $order_details = null, ...$props)
     {
-
-        foreach ($models as $propName => $model) {
-            $this->___join($model, null, null, 'left', $propName);
-        }
-
-        return $this;
+        $props = $this->request->filter(['order_details' => $order_details, ...$props], null);
+        return $this;            
     }
 
-
-    function joinCascadeArray(...$models)
-    {
-
-        foreach ($models as $propName => $model) {
-            $this->___joinCascadeArray($model, null, null, 'left', $propName);
-        }
-
-        return $this;
-    }
 
 
     function page(int $index, int $size, int | false | null &$pages = false)
@@ -403,15 +424,15 @@ abstract class AbstractUsersModel extends Model
 
     function orderByAsc(
 			bool $id = false,
-			bool $username = false,
-			bool $email = false,
-			bool $password = false,
+			bool $name = false,
+			bool $description = false,
+			bool $price = false,
 			bool $created_at = false){
         $props = [
 			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
 			'created_at' => $created_at];
         $this->___orderBy('ASC', $props);
         return $this;
@@ -420,15 +441,15 @@ abstract class AbstractUsersModel extends Model
 
     function orderByDesc(
 			bool $id = false,
-			bool $username = false,
-			bool $email = false,
-			bool $password = false,
+			bool $name = false,
+			bool $description = false,
+			bool $price = false,
 			bool $created_at = false){
         $props = [
 			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
 			'created_at' => $created_at];
         $this->___orderBy('DESC', $props);
         return $this;
@@ -437,15 +458,15 @@ abstract class AbstractUsersModel extends Model
 
     function groupBy(
 			bool $id = false,
-			bool $username = false,
-			bool $email = false,
-			bool $password = false,
+			bool $name = false,
+			bool $description = false,
+			bool $price = false,
 			bool $created_at = false){
         $props = [
 			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
 			'created_at' => $created_at];
         $this->___groupBy($props);
         return $this;
@@ -458,14 +479,6 @@ abstract class AbstractUsersModel extends Model
         return $this;
     }
 
-
-
-
-
-    function whereScheme(string $scheme){
-        $this->___whereScheme($scheme);
-        return $this;
-    }
 }
 
 

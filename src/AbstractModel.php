@@ -196,40 +196,43 @@ abstract class ___class___ extends Model
     }
 
 
-    function join(Model $model)
-    {
-        $this->___join($model);
-        return $this;
-    }
+    // function join(Model $model)
+    // {
+    //     $this->___join($model);
+    //     return $this;
+    // }
 
 
-    function joinOn(string $fields, Model $model, string $references)
-    {
-        $this->___join($model, $references, $fields);
-        return $this;
-    }
+    // function joinOn(string $fields, Model $model, string $references)
+    // {
+    //     $this->___join($model, $references, $fields);
+    //     return $this;
+    // }
 
 
-    function joinCascade(...$models)
-    {
+    // function joinCascade(...$models)
+    // {
 
-        foreach ($models as $propName => $model) {
-            $this->___join($model, null, null, 'left', $propName);
-        }
+    //     foreach ($models as $propName => $model) {
+    //         $this->___join($model, null, null, 'left', $propName);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
 
-    function joinCascadeArray(...$models)
-    {
+    // function joinCascadeArray(...$models)
+    // {
 
-        foreach ($models as $propName => $model) {
-            $this->___joinCascadeArray($model, null, null, 'left', $propName);
-        }
+    //     foreach ($models as $propName => $model) {
+    //         $this->___joinCascadeArray($model, null, null, 'left', $propName);
+    //     }
 
-        return $this;
-    }
+    //     return $this;
+    // }
+
+
+    //JOIN
 
 
     function page(int $index, int $size, int | false | null &$pages = false)
@@ -282,14 +285,6 @@ abstract class ___class___ extends Model
         return $this;
     }
 
-
-
-
-
-    function whereScheme(string $scheme){
-        $this->___whereScheme($scheme);
-        return $this;
-    }
 }
 
 

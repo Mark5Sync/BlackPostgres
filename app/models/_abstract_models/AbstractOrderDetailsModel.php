@@ -1,6 +1,6 @@
 <?php
 
-namespace testapp\models_test_2\_abstract_models;
+namespace testapp\models\_abstract_models;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 use blackpostgres\Model;
@@ -347,40 +347,61 @@ abstract class AbstractOrderDetailsModel extends Model
     }
 
 
-    function join(Model $model)
+    // function join(Model $model)
+    // {
+    //     $this->___join($model);
+    //     return $this;
+    // }
+
+
+    // function joinOn(string $fields, Model $model, string $references)
+    // {
+    //     $this->___join($model, $references, $fields);
+    //     return $this;
+    // }
+
+
+    // function joinCascade(...$models)
+    // {
+
+    //     foreach ($models as $propName => $model) {
+    //         $this->___join($model, null, null, 'left', $propName);
+    //     }
+
+    //     return $this;
+    // }
+
+
+    // function joinCascadeArray(...$models)
+    // {
+
+    //     foreach ($models as $propName => $model) {
+    //         $this->___joinCascadeArray($model, null, null, 'left', $propName);
+    //     }
+
+    //     return $this;
+    // }
+
+
+    
+    function join(?Model $orders = null, ?Model $products = null, ...$props)
     {
-        $this->___join($model);
+        $props = $this->request->filter(['orders' => $orders, 'products' => $products, ...$props], null);
         return $this;
     }
 
-
-    function joinOn(string $fields, Model $model, string $references)
+    function joinCascade(?Model $orders = null, ?Model $products = null, ...$props)
     {
-        $this->___join($model, $references, $fields);
+        $props = $this->request->filter(['orders' => $orders, 'products' => $products, ...$props], null);
         return $this;
     }
 
-
-    function joinCascade(...$models)
+    function joinCascadeArray(?Model $orders = null, ?Model $products = null, ...$props)
     {
-
-        foreach ($models as $propName => $model) {
-            $this->___join($model, null, null, 'left', $propName);
-        }
-
-        return $this;
+        $props = $this->request->filter(['orders' => $orders, 'products' => $products, ...$props], null);
+        return $this;            
     }
 
-
-    function joinCascadeArray(...$models)
-    {
-
-        foreach ($models as $propName => $model) {
-            $this->___joinCascadeArray($model, null, null, 'left', $propName);
-        }
-
-        return $this;
-    }
 
 
     function page(int $index, int $size, int | false | null &$pages = false)
@@ -463,14 +484,6 @@ abstract class AbstractOrderDetailsModel extends Model
         return $this;
     }
 
-
-
-
-
-    function whereScheme(string $scheme){
-        $this->___whereScheme($scheme);
-        return $this;
-    }
 }
 
 

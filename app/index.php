@@ -3,21 +3,23 @@
 
 namespace testapp;
 
-use blackpostgres\run;
-use testapp\_markers\models_test_2;
-use twcli\cli;
+use testapp\_markers\models;
 
 require '../vendor/autoload.php';
 
 
 new class
 {
-    use models_test_2;
+    use models;
 
     function __construct()
     {
-        $table = $this->usersModel->sel(username: 1, id: 1)->query($sql)->fetchAll();
-        
-        cli::table($table);
+
+        $this->usersModel
+            ->joinCascade(
+                orders: $this->ordersModel->where(user_id: 1)->sel(status: 1)
+            )
+            ->sel(username: 1)
+            ->fetch();
     }
 };

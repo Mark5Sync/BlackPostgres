@@ -3,6 +3,7 @@
 
 namespace blackpostgres\tools;
 
+use blackpostgres\_markers\generateTools;
 use blackpostgres\config\Config;
 use blackpostgres\pgsystem\ModelConfig;
 use marksync\provider\MarkInstance;
@@ -11,6 +12,8 @@ use twcli\cli;
 #[MarkInstance]
 class ShemeBuilder
 {
+    use generateTools;
+
     private ?Config $config;
     private string $connectionConfigClass;
     private ?array $relationship;
@@ -95,14 +98,14 @@ class ShemeBuilder
     function getAbstractCode($class, $namespace)
     {
         $split = "\n\t\t\t";
-        $rel = $this->getRelationship();
 
         $props = [
             '___namespace___' => $namespace,
             '___class___' => $class,
-            '__rel__' => $rel,
+            '__rel__' => $this->getRelationship(),
             '__table__' => $this->table,
             '__connection_config__' => $this->connectionConfigClass,
+            '//JOIN' => $this->generateJoins->getCode($this->relationship),
         ];
 
         $abstactCode = file_get_contents(__DIR__ . "/../AbstractModel.php");

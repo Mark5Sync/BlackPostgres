@@ -1,18 +1,24 @@
 <?php
 namespace testapp\_markers;
 use marksync\provider\provider;
+use testapp\models\OrdersModel;
 use testapp\models\UsersModel;
-use testapp\models\_abstract_models\AbstractUsersModelEloquent;
+use testapp\models\OrderDetailsModel;
+use testapp\models\ProductsModel;
 
 /**
+ * @property-read OrdersModel $ordersModel
  * @property-read UsersModel $usersModel
- * @property-read AbstractUsersModelEloquent $abstractUsersModelEloquent
+ * @property-read OrderDetailsModel $orderDetailsModel
+ * @property-read ProductsModel $productsModel
 
 */
 trait models {
     use provider;
 
+   function createOrdersModel(): OrdersModel { return new OrdersModel; }
    function createUsersModel(): UsersModel { return new UsersModel; }
-   function createAbstractUsersModelEloquent(): AbstractUsersModelEloquent { return new AbstractUsersModelEloquent; }
+   function createOrderDetailsModel(): OrderDetailsModel { return new OrderDetailsModel; }
+   function createProductsModel(): ProductsModel { return new ProductsModel; }
 
 }

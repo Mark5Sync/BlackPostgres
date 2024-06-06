@@ -5,7 +5,6 @@ namespace blackpostgres\model;
 class Request
 {
 
-
     function filter($props, $except, mixed $set = false): array
     {
         $result = [];
@@ -17,4 +16,5 @@ class Request
 
         return $result;
     }
+
 }

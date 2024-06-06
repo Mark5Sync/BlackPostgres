@@ -6,8 +6,8 @@ use blackpostgres\config\Config;
 
 class PGConfig extends Config
 {
-    public string $modelsPath = 'app/models_test_2';
-    public string $namespace = 'testapp\\models_test_2';
+    public string $modelsPath = 'app/models';
+    public string $namespace = 'testapp\\models';
 
 
     public string $host = 'test-libs-postgres-1';
