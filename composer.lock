@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f7a1424f0ebc1af78ee6b4fc04904cd0",
+    "content-hash": "1a202e6770fe3cf00c5b78465ff75449",
     "packages": [
         {
             "name": "brick/math",
@@ -822,20 +822,21 @@
         },
         {
             "name": "marksync/provider",
-            "version": "v1.1.2",
+            "version": "v1.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Mark5Sync/provider.git",
-                "reference": "1f3998fb6f4edf3821748e25f23065b8a02950a0"
+                "reference": "857b71eb6b06d04d30725b0e9d46d0ee8b32445a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Mark5Sync/provider/zipball/1f3998fb6f4edf3821748e25f23065b8a02950a0",
-                "reference": "1f3998fb6f4edf3821748e25f23065b8a02950a0",
+                "url": "https://api.github.com/repos/Mark5Sync/provider/zipball/857b71eb6b06d04d30725b0e9d46d0ee8b32445a",
+                "reference": "857b71eb6b06d04d30725b0e9d46d0ee8b32445a",
                 "shasum": ""
             },
             "require": {
-                "composer/class-map-generator": "^1.1"
+                "composer/class-map-generator": "^1.1",
+                "vlucas/phpdotenv": "^5.6"
             },
             "bin": [
                 "bin/mark"
@@ -859,9 +860,9 @@
             "description": "provider",
             "support": {
                 "issues": "https://github.com/Mark5Sync/provider/issues",
-                "source": "https://github.com/Mark5Sync/provider/tree/v1.1.2"
+                "source": "https://github.com/Mark5Sync/provider/tree/v1.1.3"
             },
-            "time": "2024-06-05T13:06:11+00:00"
+            "time": "2024-06-06T07:06:50+00:00"
         },
         {
             "name": "marksync/useconfig",
