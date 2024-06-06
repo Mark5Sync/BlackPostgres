@@ -98,9 +98,10 @@ class ShemeBuilController
     function pgConnect()
     {
         try {
+            $this->pdo = null;
             $this->pdo = $this->connectionResolver->configToPDO($this->config);
         } catch (\Throwable $th) {
-            cli::print("<red>не могу подключиться к postgres</red>: {$this->config->host}:{$this->config->port} ({$this->config->database})\n");
+            cli::print("<red>не  удается подключиться к postgres</red>: {$this->config->host}:{$this->config->port} ({$this->config->database})\n");
             die();
         }
     }

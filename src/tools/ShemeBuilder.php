@@ -6,6 +6,7 @@ namespace blackpostgres\tools;
 use blackpostgres\config\Config;
 use blackpostgres\pgsystem\ModelConfig;
 use marksync\provider\MarkInstance;
+use twcli\cli;
 
 #[MarkInstance]
 class ShemeBuilder
@@ -47,17 +48,27 @@ class ShemeBuilder
 
     function createAbstractModel(ModelConfig $config)
     {
-        $abstractClass = $this->getAbstractClassName();
-        $code = $this->getAbstractCode($abstractClass, $config->abstractNamespace);
-        file_put_contents("{$config->abstractFolder}/$abstractClass.php", $code);
+        try {
+            $abstractClass = $this->getAbstractClassName();
+            $code = $this->getAbstractCode($abstractClass, $config->abstractNamespace);
+            file_put_contents("{$config->abstractFolder}/$abstractClass.php", $code);
 
 
 
-        $class = $this->getClassName();
-        $modelFileName = "{$config->modelFolder}/$class.php";
-        if (!file_exists($modelFileName)) {
-            $code = $this->getCode($class, $config->modelNamespace);
-            file_put_contents($modelFileName, $code);
+            $class = $this->getClassName();
+            $modelFileName = "{$config->modelFolder}/$class.php";
+
+            cli::print("<blue>$modelFileName</blue> ");
+
+
+            if (!file_exists($modelFileName)) {
+                $code = $this->getCode($class, $config->modelNamespace);
+                file_put_contents($modelFileName, $code);
+            }
+        } catch (\Throwable $th) {
+            cli::print(<<<HTML
+
+            HTML);
         }
     }
 
