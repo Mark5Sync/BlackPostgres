@@ -5,6 +5,11 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 use blackpostgres\Model;
 
+
+ * @property-read \testapp\models\OrderDetailsModel $joinOrderDetailsModel
+ * @property-read \testapp\models\OrderDetailsModel $leftJoinOrderDetailsModel
+ * @property-read \testapp\models\OrderDetailsModel $rightJoinOrderDetailsModel
+ * @property-read \testapp\models\OrderDetailsModel $innerJoinOrderDetailsModel
 abstract class AbstractProductsModel extends Model
 {
     protected ?array $relationship = array (
@@ -15,7 +20,7 @@ abstract class AbstractProductsModel extends Model
   ),
 );
 
-    protected string $table = 'products';
+    public string $tableName = 'products';
     protected string $connectionConfig = 'testapp\configs\PGConfig';
 
 
@@ -378,25 +383,7 @@ abstract class AbstractProductsModel extends Model
     // }
 
 
-    
-    function join(?Model $order_details = null, ...$props)
-    {
-        $props = $this->request->filter(['order_details' => $order_details, ...$props], null);
-        return $this;
-    }
-
-    function joinCascade(?Model $order_details = null, ...$props)
-    {
-        $props = $this->request->filter(['order_details' => $order_details, ...$props], null);
-        return $this;
-    }
-
-    function joinCascadeArray(?Model $order_details = null, ...$props)
-    {
-        $props = $this->request->filter(['order_details' => $order_details, ...$props], null);
-        return $this;            
-    }
-
+    //JOIN
 
 
     function page(int $index, int $size, int | false | null &$pages = false)

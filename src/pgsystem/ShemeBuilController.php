@@ -22,7 +22,7 @@ class ShemeBuilController
         ini_set('display_errors', 0);
 
 
-        $modelConfig = $this->getModelConfig($config->modelsPath, $config->namespace);
+        $modelConfig = $this->getModelConfig($config);
 
 
 
@@ -34,10 +34,9 @@ class ShemeBuilController
 
         foreach ($tables as $table => $tableProps) {
             try {
-                $this->createShemeBuilder($table, $tableProps)
-                    ->injectConnection($config)
-                    ->setRelationship(isset($relationship[$table]) ? $relationship[$table] : null)
-                    ->createAbstractModel($modelConfig);
+
+                $modelConfig->activeTable($table, $tableProps, $relationship[$table]);
+                $this->createShemeBuilder($modelConfig)->generateAbstractModel();
 
                 cli::print(<<<HTML
                 <yellow>{$table}</yellow> - <green>OK</green>\n
@@ -51,9 +50,9 @@ class ShemeBuilController
     }
 
 
-    private function getModelConfig(string $modelsPath, string $namespace): ModelConfig
+    private function getModelConfig(Config $config): ModelConfig
     {
-        $projectFolder = $this->realPath('/', $this->root, $modelsPath);
+        $projectFolder = $this->realPath('/', $this->root, $config->modelsPath);
         $projectAbstractFolder = $this->realPath('/', $projectFolder, '_abstract_models');
 
         if (file_exists($projectAbstractFolder))
@@ -62,10 +61,11 @@ class ShemeBuilController
         mkdir($projectAbstractFolder, 0777, true);
 
         return new ModelConfig(
+            $config,
             $projectFolder,
-            $this->realPath('\\', $namespace),
+            $this->realPath('\\', $config->namespace),
             $projectAbstractFolder,
-            $this->realPath('\\', $namespace, '_abstract_models'),
+            $this->realPath('\\', $config->namespace, '_abstract_models'),
         );
     }
 

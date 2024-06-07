@@ -2,16 +2,17 @@
 
 namespace blackpostgres\generateTools;
 
+use blackpostgres\_markers\tools;
+use blackpostgres\tools\ShemeBuilder;
 use marksync\provider\Mark;
-use marksync\provider\MarkInstance;
 
 #[Mark(mode: Mark::LOCAL, args: ['parent'])]
 class GenerateJoins
 {
+    use tools;
 
-    function __construct(private $parent)
+    function __construct(private ShemeBuilder $parent)
     {
-        
     }
 
 
@@ -21,29 +22,37 @@ class GenerateJoins
             return '';
 
         $props = array_keys($rel);
-        $propsStr = implode(', ', array_map(fn($tableName) => "?Model \${$tableName} = null", $props));
-        $clearPropsStr = implode(', ', array_map(fn($tableName) => "'$tableName' => \${$tableName}", $props));
+        $propsStr = implode(', ', array_map(fn ($tableName) => "?Model \${$tableName} = null", $props));
+        $clearPropsStr = implode(', ', array_map(fn ($tableName) => "'$tableName' => \${$tableName}", $props));
 
-        return <<<PHP
+        return $this->template->get('Join', [
+            '$____clearPropsStr_____' => $clearPropsStr,
+            '$_____propsStr_____' => $propsStr,
+        ]);
+    }
 
-        function join($propsStr, ...\$props)
-        {
-            \$props = \$this->request->filter([$clearPropsStr, ...\$props], null);
-            return \$this;
+
+
+
+    function getSwitches(): string
+    {
+        $config = $this->parent->modelConfig;
+
+        if (!$config->relations)
+            return '';
+
+
+        $result = [];
+        foreach ($config->relations as $tableName => $colls) {
+            $className = $config->getClassName($tableName);
+            $result[] = <<<PHP
+             * @property-read \\$config->modelNamespace\\$className \$join{$className}
+             * @property-read \\$config->modelNamespace\\$className \$leftJoin{$className}
+             * @property-read \\$config->modelNamespace\\$className \$rightJoin{$className}
+             * @property-read \\$config->modelNamespace\\$className \$innerJoin{$className}
+            PHP;
         }
 
-        function joinCascade($propsStr, ...\$props)
-        {
-            \$props = \$this->request->filter([$clearPropsStr, ...\$props], null);
-            return \$this;
-        }
-
-        function joinCascadeArray($propsStr, ...\$props)
-        {
-            \$props = \$this->request->filter([$clearPropsStr, ...\$props], null);
-            return \$this;            
-        }
-
-    PHP;
+        return implode("\n", $result);
     }
 }

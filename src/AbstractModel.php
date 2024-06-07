@@ -5,11 +5,13 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 use blackpostgres\Model;
 
+
+//JOIN_SWITCHES
 abstract class ___class___ extends Model
 {
     protected ?array $relationship = __rel__;
 
-    protected string $table = '__table__';
+    public string $tableName = '__table__';
     protected string $connectionConfig = '__connection_config__';
 
 

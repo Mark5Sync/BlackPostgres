@@ -4,73 +4,55 @@
 namespace blackpostgres\tools;
 
 use blackpostgres\_markers\generateTools;
-use blackpostgres\config\Config;
 use blackpostgres\pgsystem\ModelConfig;
 use marksync\provider\MarkInstance;
 use twcli\cli;
+
 
 #[MarkInstance]
 class ShemeBuilder
 {
     use generateTools;
 
-    private ?Config $config;
     private string $connectionConfigClass;
     private ?array $relationship;
 
 
     function __construct(
-        private string $table,
-        private array $tableProps,
-
+        public ModelConfig $modelConfig
     ) {
     }
 
 
-    function injectConnection(Config $config)
-    {
-        $this->config = $config;
 
-        $this->connectionConfigClass = get_class($config);
-        return $this;
-    }
-
-    function setRelationship(?array $relationship)
+    private function getRelationship(): string
     {
-        $this->relationship = $relationship;
-        return $this;
-    }
-
-    function getRelationship(): string
-    {
-        if (!$this->relationship)
+        if (!$this->modelConfig->relations)
             return 'null';
 
-        return var_export($this->relationship, true);
+        return var_export($this->modelConfig->relations, true);
     }
 
-    function createAbstractModel(ModelConfig $config)
+
+
+    function generateAbstractModel()
     {
         try {
-            $abstractClass = $this->getAbstractClassName();
-            $code = $this->getAbstractCode($abstractClass, $config->abstractNamespace);
-            file_put_contents("{$config->abstractFolder}/$abstractClass.php", $code);
+            $code = $this->getAbstractCode();
+            file_put_contents("{$this->modelConfig->abstractFolder}/{$this->modelConfig->abstractClass}.php", $code);
 
 
-
-            $class = $this->getClassName();
-            $modelFileName = "{$config->modelFolder}/$class.php";
+            $modelFileName = "{$this->modelConfig->modelFolder}/{$this->modelConfig->class}.php";
 
             cli::print("<blue>$modelFileName</blue> ");
 
-
             if (!file_exists($modelFileName)) {
-                $code = $this->getCode($class, $config->modelNamespace);
+                $code = $this->getCode();
                 file_put_contents($modelFileName, $code);
             }
         } catch (\Throwable $th) {
             cli::print(<<<HTML
-
+            > <red>$modelFileName</red>
             HTML);
         }
     }
@@ -78,16 +60,16 @@ class ShemeBuilder
 
 
 
-    function getCode(string $class, string $namespace)
+    function getCode()
     {
         return <<<PHP
         <?php
 
-        namespace {$namespace};
+        namespace {$this->modelConfig->modelNamespace};
 
-        use {$namespace}\_abstract_models\Abstract$class;
+        use {$this->modelConfig->modelNamespace}\_abstract_models\Abstract{$this->modelConfig->class};
 
-        class $class extends Abstract$class {
+        class {$this->modelConfig->class} extends Abstract{$this->modelConfig->class} {
 
         }
 
@@ -95,17 +77,18 @@ class ShemeBuilder
     }
 
 
-    function getAbstractCode($class, $namespace)
+    function getAbstractCode()
     {
         $split = "\n\t\t\t";
 
         $props = [
-            '___namespace___' => $namespace,
-            '___class___' => $class,
+            '___namespace___' => $this->modelConfig->abstractNamespace,
+            '___class___' => $this->modelConfig->abstractClass,
             '__rel__' => $this->getRelationship(),
-            '__table__' => $this->table,
-            '__connection_config__' => $this->connectionConfigClass,
-            '//JOIN' => $this->generateJoins->getCode($this->relationship),
+            '__table__' => $this->modelConfig->table,
+            '__connection_config__' => $this->modelConfig->connectionConfigClass,
+            // '//JOIN' => $this->generateJoins->getCode($this->relationship),
+            '//JOIN_SWITCHES' => $this->generateJoins->getSwitches(),
         ];
 
         $abstactCode = file_get_contents(__DIR__ . "/../AbstractModel.php");
@@ -113,7 +96,7 @@ class ShemeBuilder
             $abstactCode = str_replace($key, $value, $abstactCode);
         }
 
-        $colls = array_column($this->tableProps, 'coll');
+        $colls = array_column($this->modelConfig->tableProps, 'coll');
         foreach (['auto', 'bool', 'array', 'string', 'bind'] as $propsType) {
             $input = $this->getMethodProps($propsType, $colls, ' = false', in_array($propsType, ['bool', 'bind']) ? '' : 'false | ');
             $restruct = $split . implode(",$split", array_map(fn ($coll) => "'$coll' => \$$coll", $colls));
@@ -126,28 +109,8 @@ class ShemeBuilder
     }
 
 
-    private function getClassName()
-    {
-        $words = explode('_', $this->table);
-        $class = '';
-        foreach ($words as $word) {
-            $class .= ucfirst($word);
-        }
-
-        return "{$class}Model";
-    }
 
 
-    private function getAbstractClassName()
-    {
-        $words = explode('_', $this->table);
-        $class = '';
-        foreach ($words as $word) {
-            $class .= ucfirst($word);
-        }
-
-        return "Abstract{$class}Model";
-    }
 
 
 
@@ -188,7 +151,7 @@ class ShemeBuilder
 
         if ($propType == 'auto') {
             $props = [];
-            foreach ($this->tableProps as $coll) {
+            foreach ($this->modelConfig->tableProps as $coll) {
                 $phpType = $this->convertToPHPType($coll['type']) . " \${$coll['coll']}{$default}";
                 $props[] = ($coll['isNull'] == 'YES' ? 'null | ' : '') . $phpType;
             }

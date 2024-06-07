@@ -5,6 +5,15 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 use blackpostgres\Model;
 
+
+ * @property-read \testapp\models\OrdersModel $joinOrdersModel
+ * @property-read \testapp\models\OrdersModel $leftJoinOrdersModel
+ * @property-read \testapp\models\OrdersModel $rightJoinOrdersModel
+ * @property-read \testapp\models\OrdersModel $innerJoinOrdersModel
+ * @property-read \testapp\models\ProductsModel $joinProductsModel
+ * @property-read \testapp\models\ProductsModel $leftJoinProductsModel
+ * @property-read \testapp\models\ProductsModel $rightJoinProductsModel
+ * @property-read \testapp\models\ProductsModel $innerJoinProductsModel
 abstract class AbstractOrderDetailsModel extends Model
 {
     protected ?array $relationship = array (
@@ -20,7 +29,7 @@ abstract class AbstractOrderDetailsModel extends Model
   ),
 );
 
-    protected string $table = 'order_details';
+    public string $tableName = 'order_details';
     protected string $connectionConfig = 'testapp\configs\PGConfig';
 
 
@@ -383,25 +392,7 @@ abstract class AbstractOrderDetailsModel extends Model
     // }
 
 
-    
-    function join(?Model $orders = null, ?Model $products = null, ...$props)
-    {
-        $props = $this->request->filter(['orders' => $orders, 'products' => $products, ...$props], null);
-        return $this;
-    }
-
-    function joinCascade(?Model $orders = null, ?Model $products = null, ...$props)
-    {
-        $props = $this->request->filter(['orders' => $orders, 'products' => $products, ...$props], null);
-        return $this;
-    }
-
-    function joinCascadeArray(?Model $orders = null, ?Model $products = null, ...$props)
-    {
-        $props = $this->request->filter(['orders' => $orders, 'products' => $products, ...$props], null);
-        return $this;            
-    }
-
+    //JOIN
 
 
     function page(int $index, int $size, int | false | null &$pages = false)
