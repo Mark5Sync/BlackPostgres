@@ -30,10 +30,12 @@ abstract class Model extends Connection
 
     protected function ___applyOperator(string $name)
     {
+
         $top = ucfirst($name);
         if (method_exists($this, "cascade{$top}"))
             return $this->{"cascade{$top}"}();
-        
+
+        throw new \Exception("fall apply operator [$name]", 1);
     }
 
 
@@ -42,7 +44,7 @@ abstract class Model extends Connection
     {
         $colls = array_map(fn ($coll) => $this($coll), array_keys($props));
 
-        $this->getModel()->select(
+        $this->getModel()->addSelect(
             ...$colls
         );
     }
@@ -72,7 +74,15 @@ abstract class Model extends Connection
 
         ['coll' => $coll, 'referenced' => $referenced] = $this->relationship[$joinTableName];
 
-        $il->{$joinMethod}($joinTableName, $this($coll), '=', "$joinTableName.{$referenced}");
+        // $il->{$joinMethod}($joinTableName, $this($coll), '=', "$joinTableName.{$referenced}");
+
+        $joinColl = $this($coll);
+        $joinReference = "$joinTableName.{$referenced}";
+
+        $il->{$joinMethod}($joinTableName, function ($join) use ($joinColl, $joinReference) {
+            $join->on($joinColl, '=', $joinReference);
+        });
+
 
         $this->joinTableName = $joinTableName;
         $this->cascadeName   = $cascadeName;

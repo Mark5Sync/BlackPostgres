@@ -18,12 +18,10 @@ new class
 
         $row = $this
             ->usersModel
-            ->joinOrdersModel
-                ->sel(created_at: 1, status: 1)
-            ->joinUsersModel
-                ->sel(username: 1)
-
-
+                // ->sel(username: 1, email: 1)
+            ->leftJoinOrdersModel
+            ->leftJoinOrderDetailsModel
+            ->leftJoinProductsModel
 
             ->query($sql)
             ->fetch();
