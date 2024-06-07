@@ -3,11 +3,10 @@
 namespace ___namespace___;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 
-use blackpostgres\Model;
 
 
 //JOIN_SWITCHES
-abstract class ___class___ extends Model
+abstract class ___class___ extends ModelContext
 {
     protected ?array $relationship = __rel__;
 

@@ -3,7 +3,6 @@
 namespace testapp\models\_abstract_models;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 
-use blackpostgres\Model;
 
 
 /**
@@ -20,7 +19,7 @@ use blackpostgres\Model;
 * @property-read \testapp\models\OrderDetailsModel $innerJoinOrderDetailsModel
 * ------- 
 * */
-abstract class AbstractOrdersModel extends Model
+abstract class AbstractOrdersModel extends ModelContext
 {
     protected ?array $relationship = array (
   'users' => 

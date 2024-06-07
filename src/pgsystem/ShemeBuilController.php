@@ -2,6 +2,7 @@
 
 namespace blackpostgres\pgsystem;
 
+use blackpostgres\_markers\generateTools;
 use blackpostgres\_markers\pgsystem;
 use blackpostgres\_markers\tools;
 use blackpostgres\config\Config;
@@ -11,6 +12,7 @@ class ShemeBuilController
 {
     use tools;
     use pgsystem;
+    use generateTools;
 
 
     private ?\PDO $pdo;
@@ -31,11 +33,14 @@ class ShemeBuilController
         $tables = $this->findTables();
         $relationship = $this->getRelationship();
 
+        $context = [];
+
         foreach ($tables as $table => $tableProps) {
             try {
-
                 $modelConfig->activeTable($table, $tableProps, $relationship[$table]);
                 $this->createShemeBuilder($modelConfig)->generateAbstractModel();
+
+                $context[$table] = $modelConfig->getContext();
 
                 cli::print(<<<HTML
                 <yellow>{$table}</yellow> - <green>OK</green>\n
@@ -46,6 +51,9 @@ class ShemeBuilController
                 HTML);
             }
         }
+
+
+        $this->createGenerateContext($modelConfig->abstractFolder, $modelConfig->abstractNamespace, $context)->generate();
     }
 
 

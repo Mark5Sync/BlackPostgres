@@ -16,12 +16,18 @@ new class
     function __construct()
     {
 
+        // добавить проверку на join во время переключения контекста
+        // чтобы была возможность переходить туда сюда
+
+
         $row = $this
             ->usersModel
-                // ->sel(username: 1, email: 1)
+                ->sel(username: 1, email: 1)
+
             ->leftJoinOrdersModel
             ->leftJoinOrderDetailsModel
             ->leftJoinProductsModel
+                ->sel(name: 1, price: 1)
 
             ->query($sql)
             ->fetch();

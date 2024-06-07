@@ -4,7 +4,6 @@
 namespace blackpostgres;
 
 use blackpostgres\_markers\model as markersModel;
-use blackpostgres\generateTools\GenerateJoins;
 use blackpostgres\model\Connection;
 
 
@@ -15,14 +14,20 @@ abstract class Model extends Connection
     public string $tableName;
     private ?string $joinTableName = null;
     private ?string $cascadeName   = null;
+    protected ?array $relationShema = null;
+
 
     protected ?array $relationship;
     private   ?string $query = '';
 
 
-    function __invoke(string $collName, ?string $as = null)
+    function __invoke(?string $collName = null, ?string $as = null)
     {
         $table = $this->joinTableName ? $this->joinTableName : $this->tableName;
+
+        if (!$collName)
+            return $table;
+
         return "{$table}.{$collName}" . ($as ? " as $as" : '');
     }
 
@@ -31,9 +36,10 @@ abstract class Model extends Connection
     protected function ___applyOperator(string $name)
     {
 
-        $top = ucfirst($name);
-        if (method_exists($this, "cascade{$top}"))
-            return $this->{"cascade{$top}"}();
+        [$joinMethod, $className] = explode('Join', $name);
+
+        if (isset($this->relationShema[$this()][$className]))
+            return $this->___join($className, "{$joinMethod}Join");
 
         throw new \Exception("fall apply operator [$name]", 1);
     }
@@ -66,15 +72,16 @@ abstract class Model extends Connection
     }
 
 
-    protected function ___join(string $joinTableName, string $joinMethod, ?string $cascadeName = null)
+    protected function ___join(string $joinShortClassName, string $joinMethod, ?string $cascadeName = null)
     {
         $il = $this->getModel();
 
 
+        [
+            'joinTableName' => $joinTableName,
+            'joinColls' => ['coll' => $coll, 'referenced' => $referenced],
+        ] = $this->relationShema[$this()][$joinShortClassName];
 
-        ['coll' => $coll, 'referenced' => $referenced] = $this->relationship[$joinTableName];
-
-        // $il->{$joinMethod}($joinTableName, $this($coll), '=', "$joinTableName.{$referenced}");
 
         $joinColl = $this($coll);
         $joinReference = "$joinTableName.{$referenced}";

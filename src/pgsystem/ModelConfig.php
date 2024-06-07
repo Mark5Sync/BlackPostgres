@@ -3,7 +3,9 @@
 namespace blackpostgres\pgsystem;
 
 use blackpostgres\config\Config;
+use marksync\provider\MarkInstance;
 
+#[MarkInstance]
 class ModelConfig
 {
 
@@ -12,7 +14,7 @@ class ModelConfig
     public string $abstractClass = 'no_abstract_class';
     public array $tableProps = [];
     public ?array $relations = null;
-    
+
     public string $connectionConfigClass = 'no_config';
 
 
@@ -56,5 +58,21 @@ class ModelConfig
     function getAbstractClassName(string $table)
     {
         return "Abstract{$this->getClassName($table)}";
+    }
+
+
+    function getContext()
+    {
+        $result = [];
+
+        foreach ($this->relations as $joinTable => $colls) {
+            $result[$this->getClassName($joinTable)] = [
+                'joinTableName' => $joinTable,
+                'joinColls' => $colls
+            ];
+        }
+
+
+        return $result;
     }
 }
