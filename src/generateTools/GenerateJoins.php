@@ -11,25 +11,53 @@ class GenerateJoins
 {
     use tools;
 
+    public static $joins = [
+        'join',
+        'leftJoin',
+        'rightJoin',
+        'innerJoin',
+    ];
+
     function __construct(private ShemeBuilder $parent)
     {
     }
 
 
-    function getCode(?array $rel)
+    function getCode()
     {
-        if (!$rel)
+        $config = $this->parent->modelConfig;
+
+        if (!$config->relations)
             return '';
 
-        $props = array_keys($rel);
-        $propsStr = implode(', ', array_map(fn ($tableName) => "?Model \${$tableName} = null", $props));
-        $clearPropsStr = implode(', ', array_map(fn ($tableName) => "'$tableName' => \${$tableName}", $props));
 
-        return $this->template->get('Join', [
-            '$____clearPropsStr_____' => $clearPropsStr,
-            '$_____propsStr_____' => $propsStr,
-        ]);
+        $result = [];
+        foreach ($config->relations as $tableName => $colls) {
+            $className = $config->getClassName($tableName);
+
+            foreach (static::$joins as $join) {
+                $topJoin = ucfirst($join);
+                $result[] = <<<PHP
+                    protected function cascade{$topJoin}{$className}(?string \$cascadeName = null)
+                    {
+                        \$this->___join(
+                            joinTableName: "$tableName",
+                            joinMethod: "$join",
+                            cascadeName: \$cascadeName,
+                        );
+
+                        return \$this;
+                    }
+                PHP;
+            }
+        }
+
+
+        $resultStr = implode("\n\n\n", $result);
+        return $resultStr;
     }
+
+
 
 
 
@@ -45,14 +73,25 @@ class GenerateJoins
         $result = [];
         foreach ($config->relations as $tableName => $colls) {
             $className = $config->getClassName($tableName);
-            $result[] = <<<PHP
-             * @property-read \\$config->modelNamespace\\$className \$join{$className}
-             * @property-read \\$config->modelNamespace\\$className \$leftJoin{$className}
-             * @property-read \\$config->modelNamespace\\$className \$rightJoin{$className}
-             * @property-read \\$config->modelNamespace\\$className \$innerJoin{$className}
-            PHP;
+
+            $result[] = "* $tableName ";
+
+            foreach (static::$joins as $join) {
+                $result[] = <<<PHP
+                * @property-read \\$config->modelNamespace\\$className \${$join}{$className}
+                PHP;
+            }
+
+            $result[] = '* ------- ';
         }
 
-        return implode("\n", $result);
+
+        $resultStr = implode("\n", $result);
+
+        return <<<PHP
+        /**
+        $resultStr
+        * */
+        PHP;
     }
 }

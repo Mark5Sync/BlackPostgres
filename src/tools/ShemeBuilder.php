@@ -87,8 +87,8 @@ class ShemeBuilder
             '__rel__' => $this->getRelationship(),
             '__table__' => $this->modelConfig->table,
             '__connection_config__' => $this->modelConfig->connectionConfigClass,
-            // '//JOIN' => $this->generateJoins->getCode($this->relationship),
             '//JOIN_SWITCHES' => $this->generateJoins->getSwitches(),
+            '//JOIN' => $this->generateJoins->getCode(),
         ];
 
         $abstactCode = file_get_contents(__DIR__ . "/../AbstractModel.php");
@@ -127,7 +127,7 @@ class ShemeBuilder
         $select = $split . implode(",$split", array_map(fn ($coll) => "'$coll' => \$$coll", $colls));
 
 
-        $body = "\$this->___{$methodName}([$select
+        $body = "\$this->___{$methodName}([$select--\n
         ]);";
         $body = $returnThis ? "$body$split return \$this;" : "return $body";
 

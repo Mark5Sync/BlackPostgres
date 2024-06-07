@@ -4,6 +4,7 @@
 namespace blackpostgres;
 
 use blackpostgres\_markers\model as markersModel;
+use blackpostgres\generateTools\GenerateJoins;
 use blackpostgres\model\Connection;
 
 
@@ -12,7 +13,8 @@ abstract class Model extends Connection
     use markersModel;
 
     public string $tableName;
-    public ?string $joinTableName = null;
+    private ?string $joinTableName = null;
+    private ?string $cascadeName   = null;
 
     protected ?array $relationship;
     private   ?string $query = '';
@@ -25,11 +27,20 @@ abstract class Model extends Connection
     }
 
 
+
+    protected function ___applyOperator(string $name)
+    {
+        $top = ucfirst($name);
+        if (method_exists($this, "cascade{$top}"))
+            return $this->{"cascade{$top}"}();
+        
+    }
+
+
+
     protected function ___sel(array $props)
     {
-        $colls = array_map(fn ($coll) => $this($coll), array_keys(
-            $this->request->filter($props, false)
-        ));
+        $colls = array_map(fn ($coll) => $this($coll), array_keys($props));
 
         $this->getModel()->select(
             ...$colls
@@ -53,14 +64,21 @@ abstract class Model extends Connection
     }
 
 
-    protected function ___join(Model $joinModel, ?string $cascadeName = null)
+    protected function ___join(string $joinTableName, string $joinMethod, ?string $cascadeName = null)
     {
-        $model = $this->getModel();
+        $il = $this->getModel();
 
-        ['coll' => $coll, 'referenced' => $referenced] = $this->relationship[$joinModel->tableName];
 
-        $model->join($joinModel->tableName, $this($coll), '=', $joinModel($referenced));
+
+        ['coll' => $coll, 'referenced' => $referenced] = $this->relationship[$joinTableName];
+
+        $il->{$joinMethod}($joinTableName, $this($coll), '=', "$joinTableName.{$referenced}");
+
+        $this->joinTableName = $joinTableName;
+        $this->cascadeName   = $cascadeName;
     }
+
+
 
 
     protected function ___joinCascadeArray(Model $model, ?string $cascadeName = null)

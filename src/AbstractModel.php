@@ -37,9 +37,9 @@ abstract class ___class___ extends Model
     /** 
      * SELECT title FROM ...
      */
-    function sel(&$___bool___)
+    function sel(&$___bool___, ...$anyProps)
     {
-        $props = [$___restruct_bool___];
+        $props = $this->request->filter([$___restruct_bool___, ...$anyProps], false);
         $this->___sel($props);
         return $this;
     }
@@ -47,9 +47,9 @@ abstract class ___class___ extends Model
     /** 
      * SELECT title as MyTitle FROM ...
      */
-    function selectAs(&$___string___)
+    function selectAs(&$___string___, ...$anyProps)
     {
-        $props = [$___restruct_string___];
+        $props = $this->request->filter([$___restruct_string___, ...$anyProps], false);
         $this->___selectAs($props);
         return $this;
     }
@@ -66,9 +66,9 @@ abstract class ___class___ extends Model
     /** 
      * ... WHERE title LIKE \'%1%\' ...
      */
-    function like(?string $_ = null, &$___string___)
+    function like(?string $_ = null, &$___string___, ...$anyProps)
     {
-        $props = [$___restruct_string___];
+        $props = $this->request->filter([$___restruct_string___, ...$anyProps], false);
         $this->___like($_, $props);
         return $this;
     }
@@ -76,9 +76,9 @@ abstract class ___class___ extends Model
     /** 
      * ... WHERE id REGEXP \'1\' ...
      */
-    function regexp(?string $_ = null, &$___string___)
+    function regexp(?string $_ = null, &$___string___, ...$anyProps)
     {
-        $props = [$___restruct_string___];
+        $props = $this->request->filter([$___restruct_string___, ...$anyProps], false);
         $this->___regexp($_, $props);
         return $this;
     }
@@ -86,9 +86,9 @@ abstract class ___class___ extends Model
     /** 
      * ... WHERE id IN (1, 2, 3)
      */
-    function in(?string $_ = null, &$___array___)
+    function in(?string $_ = null, &$___array___, ...$anyProps)
     {
-        $props = [$___restruct_array___];
+        $props = $this->request->filter([$___restruct_array___, ...$anyProps], false);
         $this->___in($_, $props);
         return $this;
     }
@@ -97,9 +97,9 @@ abstract class ___class___ extends Model
     /** 
      * ... WHERE id IN (1, 2, 3)
      */
-    function notIn(?string $_ = null, &$___array___)
+    function notIn(?string $_ = null, &$___array___, ...$anyProps)
     {
-        $props = [$___restruct_array___];
+        $props = $this->request->filter([$___restruct_array___, ...$anyProps], false);
         $this->___in($_, $props, true);
         return $this;
     }
@@ -109,9 +109,9 @@ abstract class ___class___ extends Model
     /** 
      * IS NULL
      */
-    function isNull(?string $_ = null, &$___bool___)
+    function isNull(?string $_ = null, &$___bool___, ...$anyProps)
     {
-        $props = [$___restruct_bool___];
+        $props = $this->request->filter([$___restruct_bool___, ...$anyProps], false);
         $this->___isNull($_, $props);
         return $this;
     }
@@ -119,9 +119,9 @@ abstract class ___class___ extends Model
     /** 
      * IS NOT NULL
      */
-    function isNotNull(?string $_ = null, &$___bool___)
+    function isNotNull(?string $_ = null, &$___bool___, ...$anyProps)
     {
-        $props = [$___restruct_bool___];
+        $props = $this->request->filter([$___restruct_bool___, ...$anyProps], false);
         $this->___isNotNull($_, $props);
         return $this;
     }
@@ -135,9 +135,9 @@ abstract class ___class___ extends Model
     /** 
      * WHERE id = 1
      */
-    function where(?string $_ = null, &$___auto___)
+    function where(?string $_ = null, &$___auto___, ...$anyProps)
     {
-        $props = [$___restruct_auto___];
+        $props = $this->request->filter([$___restruct_auto___, ...$anyProps], false);
         $this->___where($_, $props);
         return $this;
     }
@@ -145,9 +145,9 @@ abstract class ___class___ extends Model
     /** 
      * ... WHERE id = \'1\'
      */
-    function fwhere(?string $_ = null, &$___string___)
+    function fwhere(?string $_ = null, &$___string___, ...$anyProps)
     {
-        $props = [$___restruct_string___];
+        $props = $this->request->filter([$___restruct_string___, ...$anyProps], false);
         $this->___where($_, $props);
         return $this;
     }
@@ -158,18 +158,18 @@ abstract class ___class___ extends Model
     /** 
      * ...SET id = 1
      */
-    function updt(&$___auto___)
+    function update(&$___auto___, ...$anyProps)
     {
-        $props = [$___restruct_auto___];
+        $props = $this->request->filter([$___restruct_auto___, ...$anyProps], false);
         return $this->___update($props);
     }
 
     /** 
      * ... INSERT (id) VALUES(1)
      */
-    function insert(&$___auto___)
+    function insert(&$___auto___, ...$anyProps)
     {
-        $props = [$___restruct_auto___];
+        $props = $this->request->filter([$___restruct_auto___, ...$anyProps], false);
         return $this->___insert($props);
     }
 
@@ -177,9 +177,9 @@ abstract class ___class___ extends Model
     /** 
      * ... INSERT (id) VALUES(1) ON DUBLICATE UPDATE
      */
-    function insertOnDublicateUpdate(&$___auto___)
+    function insertOnDublicateUpdate(&$___auto___, ...$anyProps)
     {
-        $props = [$___restruct_auto___];
+        $props = $this->request->filter([$___restruct_auto___, ...$anyProps], false);
         return $this->___insertOnDublicateUpdate($props);
     }
 
@@ -195,6 +195,8 @@ abstract class ___class___ extends Model
     function ___get($name)
     {
         $this->___applyOperator($name);
+
+        return $this;
     }
 
 
@@ -234,7 +236,7 @@ abstract class ___class___ extends Model
     // }
 
 
-    //JOIN
+//JOIN
 
 
     function page(int $index, int $size, int | false | null &$pages = false)

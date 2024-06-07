@@ -18,11 +18,12 @@ new class
 
         $row = $this
             ->usersModel
-            ->sel(id: 1)
-            ->where(id: 333)
-
             ->joinOrdersModel
-            ->sel(status: 1, created_at: 1)
+                ->sel(created_at: 1, status: 1)
+            ->joinUsersModel
+                ->sel(username: 1)
+
+
 
             ->query($sql)
             ->fetch();
