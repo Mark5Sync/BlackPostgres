@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 /**
 * users 
-* @property-read \testapp\models\UsersModel $joinUsersModel
+* @property-read \testapp\models\UsersModel $otherJoinUsersModel
 * @property-read \testapp\models\UsersModel $leftJoinUsersModel
 * @property-read \testapp\models\UsersModel $rightJoinUsersModel
 * @property-read \testapp\models\UsersModel $innerJoinUsersModel
 * ------- 
 * order_details 
-* @property-read \testapp\models\OrderDetailsModel $joinOrderDetailsModel
+* @property-read \testapp\models\OrderDetailsModel $otherJoinOrderDetailsModel
 * @property-read \testapp\models\OrderDetailsModel $leftJoinOrderDetailsModel
 * @property-read \testapp\models\OrderDetailsModel $rightJoinOrderDetailsModel
 * @property-read \testapp\models\OrderDetailsModel $innerJoinOrderDetailsModel
@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 * */
 abstract class AbstractOrdersModel extends ModelContext
 {
+    protected string $currentShort = 'OrdersModel'; 
     protected ?array $relationship = array (
   'users' => 
   array (
@@ -371,11 +372,11 @@ abstract class AbstractOrdersModel extends ModelContext
     // }
 
 
-    protected function cascadeJoinUsersModel(?string $cascadeName = null)
+    protected function cascadeOtherJoinUsersModel(?string $cascadeName = null)
     {
         $this->___join(
             joinTableName: "users",
-            joinMethod: "join",
+            joinMethod: "otherJoin",
             cascadeName: $cascadeName,
         );
 
@@ -419,11 +420,11 @@ abstract class AbstractOrdersModel extends ModelContext
     }
 
 
-    protected function cascadeJoinOrderDetailsModel(?string $cascadeName = null)
+    protected function cascadeOtherJoinOrderDetailsModel(?string $cascadeName = null)
     {
         $this->___join(
             joinTableName: "order_details",
-            joinMethod: "join",
+            joinMethod: "otherJoin",
             cascadeName: $cascadeName,
         );
 

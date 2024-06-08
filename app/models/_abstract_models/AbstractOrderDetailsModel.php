@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 /**
 * orders 
-* @property-read \testapp\models\OrdersModel $joinOrdersModel
+* @property-read \testapp\models\OrdersModel $otherJoinOrdersModel
 * @property-read \testapp\models\OrdersModel $leftJoinOrdersModel
 * @property-read \testapp\models\OrdersModel $rightJoinOrdersModel
 * @property-read \testapp\models\OrdersModel $innerJoinOrdersModel
 * ------- 
 * products 
-* @property-read \testapp\models\ProductsModel $joinProductsModel
+* @property-read \testapp\models\ProductsModel $otherJoinProductsModel
 * @property-read \testapp\models\ProductsModel $leftJoinProductsModel
 * @property-read \testapp\models\ProductsModel $rightJoinProductsModel
 * @property-read \testapp\models\ProductsModel $innerJoinProductsModel
@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 * */
 abstract class AbstractOrderDetailsModel extends ModelContext
 {
+    protected string $currentShort = 'OrderDetailsModel'; 
     protected ?array $relationship = array (
   'orders' => 
   array (
@@ -399,11 +400,11 @@ abstract class AbstractOrderDetailsModel extends ModelContext
     // }
 
 
-    protected function cascadeJoinOrdersModel(?string $cascadeName = null)
+    protected function cascadeOtherJoinOrdersModel(?string $cascadeName = null)
     {
         $this->___join(
             joinTableName: "orders",
-            joinMethod: "join",
+            joinMethod: "otherJoin",
             cascadeName: $cascadeName,
         );
 
@@ -447,11 +448,11 @@ abstract class AbstractOrderDetailsModel extends ModelContext
     }
 
 
-    protected function cascadeJoinProductsModel(?string $cascadeName = null)
+    protected function cascadeOtherJoinProductsModel(?string $cascadeName = null)
     {
         $this->___join(
             joinTableName: "products",
-            joinMethod: "join",
+            joinMethod: "otherJoin",
             cascadeName: $cascadeName,
         );
 

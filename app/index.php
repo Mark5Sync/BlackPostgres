@@ -25,9 +25,10 @@ new class
                 ->sel(username: 1, email: 1)
 
             ->leftJoinOrdersModel
-            ->leftJoinOrderDetailsModel
-            ->leftJoinProductsModel
-                ->sel(name: 1, price: 1)
+                ->sel(user_id: 1)
+
+            ->leftJoinUsersModel
+                ->sel(password: 1)
 
             ->query($sql)
             ->fetch();

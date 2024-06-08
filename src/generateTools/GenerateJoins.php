@@ -12,7 +12,7 @@ class GenerateJoins
     use tools;
 
     public static $joins = [
-        'join',
+        'otherJoin',
         'leftJoin',
         'rightJoin',
         'innerJoin',

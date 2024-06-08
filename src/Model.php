@@ -11,14 +11,23 @@ abstract class Model extends Connection
 {
     use markersModel;
 
+    protected string $currentShort = 'no_class'; 
     public string $tableName;
     private ?string $joinTableName = null;
     private ?string $cascadeName   = null;
     protected ?array $relationShema = null;
 
+    private array $applyJoin = [];
+
 
     protected ?array $relationship;
     private   ?string $query = '';
+
+
+    private function clear()
+    {
+        $this->applyJoin = [];
+    }
 
 
     function __invoke(?string $collName = null, ?string $as = null)
@@ -37,8 +46,9 @@ abstract class Model extends Connection
     {
 
         [$joinMethod, $className] = explode('Join', $name);
+        $table = $this();
 
-        if (isset($this->relationShema[$this()][$className]))
+        if (isset($this->relationShema[$table][$className]))
             return $this->___join($className, "{$joinMethod}Join");
 
         throw new \Exception("fall apply operator [$name]", 1);
@@ -74,7 +84,11 @@ abstract class Model extends Connection
 
     protected function ___join(string $joinShortClassName, string $joinMethod, ?string $cascadeName = null)
     {
-        $il = $this->getModel();
+        if ($this->currentShort == $joinShortClassName) {
+            $this->joinTableName = null;
+            $this->cascadeName   = null;
+            return;
+        }
 
 
         [
@@ -83,12 +97,16 @@ abstract class Model extends Connection
         ] = $this->relationShema[$this()][$joinShortClassName];
 
 
-        $joinColl = $this($coll);
-        $joinReference = "$joinTableName.{$referenced}";
+        if (!isset($this->applyJoin[$joinShortClassName])) {
+            $joinColl = $this($coll);
+            $joinReference = "$joinTableName.{$referenced}";
 
-        $il->{$joinMethod}($joinTableName, function ($join) use ($joinColl, $joinReference) {
-            $join->on($joinColl, '=', $joinReference);
-        });
+            $this->getModel()->{$joinMethod}($joinTableName, function ($join) use ($joinColl, $joinReference) {
+                $join->on($joinColl, '=', $joinReference);
+            });
+
+            $this->applyJoin[$joinShortClassName] = true;
+        }
 
 
         $this->joinTableName = $joinTableName;

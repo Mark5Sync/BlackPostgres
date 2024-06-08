@@ -83,7 +83,8 @@ class ShemeBuilder
 
         $props = [
             '___namespace___' => $this->modelConfig->abstractNamespace,
-            '___class___' => $this->modelConfig->abstractClass,
+            '___abstract_class___' => $this->modelConfig->abstractClass,
+            '___class___' => $this->modelConfig->class,
             '__rel__' => $this->getRelationship(),
             '__table__' => $this->modelConfig->table,
             '__connection_config__' => $this->modelConfig->connectionConfigClass,

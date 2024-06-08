@@ -6,8 +6,9 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 
 //JOIN_SWITCHES
-abstract class ___class___ extends ModelContext
+abstract class ___abstract_class___ extends ModelContext
 {
+    protected string $currentShort = '___class___'; 
     protected ?array $relationship = __rel__;
 
     public string $tableName = '__table__';
