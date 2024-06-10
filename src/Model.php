@@ -11,7 +11,7 @@ abstract class Model extends Connection
 {
     use markersModel;
 
-    protected string $currentShort = 'no_class'; 
+    protected string $currentShort = 'no_class';
     public string $tableName;
     private ?string $joinTableName = null;
     private ?string $cascadeName   = null;
@@ -153,5 +153,10 @@ abstract class Model extends Connection
     {
         $this->bindQuery();
         return $this->getModel()->get()->toArray();
+    }
+
+    function toSql()
+    {
+        return $this->getModel()->toSql();
     }
 }

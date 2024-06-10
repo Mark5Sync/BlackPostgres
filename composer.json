@@ -18,6 +18,15 @@
     },
     "scripts": {
         "mark": "php vendor\/bin\/mark",
-        "db:generate": "blackpostgres\\run::generate"
+        "db:generate": "blackpostgres\\run::generate",
+        "test": "./vendor/bin/pest"
+    },
+    "require-dev": {
+        "pestphp/pest": "^2.34"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }
