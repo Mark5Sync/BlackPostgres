@@ -35,6 +35,11 @@ abstract class Connection
     }
 
 
+    protected function resetModel() {
+        $this->activeModel = null;
+    }
+
+
     protected function getEloquentModel(): Model
     {
         return new Model;

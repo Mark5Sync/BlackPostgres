@@ -1,14 +1,16 @@
 <?php
 
 namespace ___namespace___;
+
+use blackpostgres\Model;
 use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 
 
 //JOIN_SWITCHES
-abstract class ___abstract_class___ extends ModelContext
+abstract class ___abstract_class___ extends Model //class
 {
-    protected string $currentShort = '___class___'; 
+    protected string $currentShort = '___class___';
     protected ?array $relationship = __rel__;
 
     public string $tableName = '__table__';
@@ -17,36 +19,27 @@ abstract class ___abstract_class___ extends ModelContext
 
     protected function getEloquentModel(): EloquentModel
     {
-        return new class extends EloquentModel {
+        return new class extends EloquentModel
+        {
             protected $table = '__table__';
         };
     }
 
-    
-    function selectRow(&$___bind___)
+    function row(&$___bind___)
     {
-        $_cijcbb32ojsallk4ms = $this->sel(...$this->request->filter([$___restruct_bind___], false, 1))->fetch();
 
-        if ($_cijcbb32ojsallk4ms)
-            foreach ($_cijcbb32ojsallk4ms as $_jjfj23i2nnm2nm3nm4 => $_jjjfjij2i2i3j4nnvkxjlkjd) {
-                $$_jjfj23i2nnm2nm3nm4 = $_jjjfjij2i2i3j4nnvkxjlkjd;
-            }
-    }
-
-
-    /** 
-     * SELECT title FROM ...
-     */
-    function sel(&$___bool___, ...$anyProps)
-    {
-        $props = $this->request->filter([$___restruct_bool___, ...$anyProps], false);
-        $this->___sel($props);
         return $this;
     }
 
-    /** 
-     * SELECT title as MyTitle FROM ...
-     */
+
+
+    function sel(?string $_ = null, &$___bool___, ...$anyProps)
+    {
+        $props = $this->request->filter([$___restruct_bool___, ...$anyProps], false);
+        $this->___sel($_, $props);
+        return $this;
+    }
+
     function selectAs(&$___string___, ...$anyProps)
     {
         $props = $this->request->filter([$___restruct_string___, ...$anyProps], false);
@@ -63,9 +56,7 @@ abstract class ___abstract_class___ extends ModelContext
     // }
 
 
-    /** 
-     * ... WHERE title LIKE \'%1%\' ...
-     */
+
     function like(?string $_ = null, &$___string___, ...$anyProps)
     {
         $props = $this->request->filter([$___restruct_string___, ...$anyProps], false);
@@ -73,9 +64,6 @@ abstract class ___abstract_class___ extends ModelContext
         return $this;
     }
 
-    /** 
-     * ... WHERE id REGEXP \'1\' ...
-     */
     function regexp(?string $_ = null, &$___string___, ...$anyProps)
     {
         $props = $this->request->filter([$___restruct_string___, ...$anyProps], false);
@@ -83,9 +71,6 @@ abstract class ___abstract_class___ extends ModelContext
         return $this;
     }
 
-    /** 
-     * ... WHERE id IN (1, 2, 3)
-     */
     function in(?string $_ = null, &$___array___, ...$anyProps)
     {
         $props = $this->request->filter([$___restruct_array___, ...$anyProps], false);
@@ -93,10 +78,6 @@ abstract class ___abstract_class___ extends ModelContext
         return $this;
     }
 
-
-    /** 
-     * ... WHERE id IN (1, 2, 3)
-     */
     function notIn(?string $_ = null, &$___array___, ...$anyProps)
     {
         $props = $this->request->filter([$___restruct_array___, ...$anyProps], false);
@@ -106,9 +87,6 @@ abstract class ___abstract_class___ extends ModelContext
 
 
 
-    /** 
-     * IS NULL
-     */
     function isNull(?string $_ = null, &$___bool___, ...$anyProps)
     {
         $props = $this->request->filter([$___restruct_bool___, ...$anyProps], false);
@@ -116,9 +94,6 @@ abstract class ___abstract_class___ extends ModelContext
         return $this;
     }
 
-    /** 
-     * IS NOT NULL
-     */
     function isNotNull(?string $_ = null, &$___bool___, ...$anyProps)
     {
         $props = $this->request->filter([$___restruct_bool___, ...$anyProps], false);
@@ -132,9 +107,6 @@ abstract class ___abstract_class___ extends ModelContext
 
 
 
-    /** 
-     * WHERE id = 1
-     */
     function where(?string $_ = null, &$___auto___, ...$anyProps)
     {
         $props = $this->request->filter([$___restruct_auto___, ...$anyProps], false);
@@ -142,9 +114,6 @@ abstract class ___abstract_class___ extends ModelContext
         return $this;
     }
 
-    /** 
-     * ... WHERE id = \'1\'
-     */
     function fwhere(?string $_ = null, &$___string___, ...$anyProps)
     {
         $props = $this->request->filter([$___restruct_string___, ...$anyProps], false);
@@ -155,41 +124,34 @@ abstract class ___abstract_class___ extends ModelContext
 
 
 
-    /** 
-     * ...SET id = 1
-     */
     function update(&$___auto___, ...$anyProps)
     {
         $props = $this->request->filter([$___restruct_auto___, ...$anyProps], false);
         return $this->___update($props);
     }
 
-    /** 
-     * ... INSERT (id) VALUES(1)
-     */
     function insert(&$___auto___, ...$anyProps)
     {
         $props = $this->request->filter([$___restruct_auto___, ...$anyProps], false);
         return $this->___insert($props);
     }
 
-
-    /** 
-     * ... INSERT (id) VALUES(1) ON DUBLICATE UPDATE
-     */
-    function insertOnDublicateUpdate(&$___auto___, ...$anyProps)
+    function insertOrIgnore(&$___auto___, ...$anyProps)
     {
         $props = $this->request->filter([$___restruct_auto___, ...$anyProps], false);
-        return $this->___insertOnDublicateUpdate($props);
+        return $this->___insertOrIgnore($props);
     }
 
-
-
-    function desc(string $description)
+    function updateOrInsert(&$___auto___, ...$anyProps)
     {
-        $this->___desc($description);
-        return $this;
+        $insertProps = $this->request->filter([$___restruct_auto___, ...$anyProps], false);
+
+        return function(&$___auto___, ...$anyProps) use($insertProps) {
+            $keysProps = $this->request->filter([$___restruct_auto___, ...$anyProps], false);
+            return $this->___updateOrInsert($insertProps, $keysProps);
+        };
     }
+
 
 
     function ___get($name)
@@ -200,43 +162,7 @@ abstract class ___abstract_class___ extends ModelContext
     }
 
 
-    // function join(Model $model)
-    // {
-    //     $this->___join($model);
-    //     return $this;
-    // }
-
-
-    // function joinOn(string $fields, Model $model, string $references)
-    // {
-    //     $this->___join($model, $references, $fields);
-    //     return $this;
-    // }
-
-
-    // function joinCascade(...$models)
-    // {
-
-    //     foreach ($models as $propName => $model) {
-    //         $this->___join($model, null, null, 'left', $propName);
-    //     }
-
-    //     return $this;
-    // }
-
-
-    // function joinCascadeArray(...$models)
-    // {
-
-    //     foreach ($models as $propName => $model) {
-    //         $this->___joinCascadeArray($model, null, null, 'left', $propName);
-    //     }
-
-    //     return $this;
-    // }
-
-
-//JOIN
+    //JOIN
 
 
     function page(int $index, int $size, int | false | null &$pages = false)
@@ -245,14 +171,12 @@ abstract class ___abstract_class___ extends ModelContext
         return $this;
     }
 
-
     function limit($limit)
     {
 
         $this->___limit($limit);
         return $this;
     }
-
 
     function offset($offset)
     {
@@ -261,34 +185,39 @@ abstract class ___abstract_class___ extends ModelContext
         return $this;
     }
 
-
-    function orderByAsc(&$___bool___){
-        $props = [$___restruct_bool___];
+    function orderByAsc(&$___bool___)
+    {
+        $props = $this->request->filter([$___restruct_bool___], false);
         $this->___orderBy('ASC', $props);
         return $this;
     }
 
-
-    function orderByDesc(&$___bool___){
-        $props = [$___restruct_bool___];
+    function orderByDesc(&$___bool___)
+    {
+        $props = $this->request->filter([$___restruct_bool___], false);
         $this->___orderBy('DESC', $props);
         return $this;
     }
 
-
-    function groupBy(&$___bool___){
-        $props = [$___restruct_bool___];
+    function groupBy(&$___bool___)
+    {
+        $props = $this->request->filter([$___restruct_bool___], false);
         $this->___groupBy($props);
         return $this;
     }
 
 
-    function mark(string $mark)
+
+
+
+
+    function fetchRow(&$___bind___)
     {
-        $this->___mark($mark);
-        return $this;
+        $_cijcbb32ojsallk4ms = $this->sel(...$this->request->filter([$___restruct_bind___], false, 1))->fetch();
+
+        if ($_cijcbb32ojsallk4ms)
+            foreach ($_cijcbb32ojsallk4ms as $_jjfj23i2nnm2nm3nm4 => $_jjjfjij2i2i3j4nnvkxjlkjd) {
+                $$_jjfj23i2nnm2nm3nm4 = $_jjjfjij2i2i3j4nnvkxjlkjd;
+            }
     }
-
 }
-
-

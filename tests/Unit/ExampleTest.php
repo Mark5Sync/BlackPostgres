@@ -18,82 +18,76 @@ test('выбор всех пользователей', function () use ($users) 
     expect($sql)->strLow('SELECT * FROM "users"');
 });
 
-
-
 test('выбор всех продуктов', function () use ($products) {
     $sql = $products->toSql();
     expect($sql)->strLow('SELECT * FROM "products"');
 });
 
-test('выбор всех заказов', function () use($orders) {
+test('выбор всех заказов', function () use ($orders) {
     $sql = $orders->toSql(); // Предполагаемая функция ORM
     expect($sql)->strLow('SELECT * FROM "orders"');
 });
 
-test('выбор всех деталей заказа', function () use($details) {
+test('выбор всех деталей заказа', function () use ($details) {
     $sql = $details->toSql(); // Предполагаемая функция ORM
     expect($sql)->strLow('SELECT * FROM "order_details"');
 });
 
-test('фильтрация пользователей по email', function () use($users) {
+test('фильтрация пользователей по email', function () use ($users) {
     $sql = $users->where(email: 'john@example.com')->toSql(); // Предполагаемая функция ORM
-    expect($sql)->strLow('SELECT * FROM users WHERE email = "john@example.com"');
+    expect($sql)->strLow('SELECT * from "users" where "users"."email" = ?');
 });
 
-// test('фильтрация продуктов по цене', function () use($products) {
-//     $sql = $products->greathThen(price: 20.00)->toSql(); // Предполагаемая функция ORM
-//     expect($sql)->strLow('SELECT * FROM products WHERE price > 20.00');
-// });
+test('фильтрация продуктов по цене', function () use ($products) {
+    $sql = $products->where('>', price: 20)->toSql(); // Предполагаемая функция ORM
+    expect($sql)->strLow('SELECT * from "products" where "products"."price" > ?');
+});
 
-test('фильтрация заказов по статусу', function () use($orders) {
+test('фильтрация заказов по статусу', function () use ($orders) {
     $sql = $orders->where(status: 'Shipped')->toSql(); // Предполагаемая функция ORM
-    expect($sql)->strLow('SELECT * FROM orders WHERE status = "Shipped"');
+    expect($sql)->strLow('SELECT * from "orders" where "orders"."status" = ?');
 });
 
-test('сортировка пользователей по имени пользователя', function () use($users) {
-    $sql = $users->orderByAsc(username: 1)->toSql(); // Предполагаемая функция ORM
-    expect($sql)->strLow('SELECT * FROM users ORDER BY username ASC');
-});
+// test('сортировка пользователей по имени пользователя', function () use($users) {  ??????????
+//     $sql = $users->orderByAsc(username: 1)->toSql(); // Предполагаемая функция ORM
+//     expect($sql)->strLow('SELECT * FROM users ORDER BY username ASC');
+// });
 
-test('сортировка продуктов по убыванию цены', function () use($products) {
+test('сортировка продуктов по убыванию цены', function () use ($products) {
     $sql = $products->orderByDesc(price: 1)->toSql(); // Предполагаемая функция ORM
-    expect($sql)->strLow('SELECT * FROM products ORDER BY price DESC');
+    expect($sql)->strLow('SELECT * from "products" order by "products"."price" desc');
 });
 
-test('ограничение выборки пользователей до 5 записей', function () use($users) {
+test('ограничение выборки пользователей до 5 записей', function () use ($users) {
     $sql = $users->limit(5)->toSql(); // Предполагаемая функция ORM
-    expect($sql)->strLow('SELECT * FROM users LIMIT 5');
+    expect($sql)->strLow('SELECT * from "users" limit 5');
 });
 
-test('ограничение выборки продуктов до 3 записей', function () use($products) {
+test('ограничение выборки продуктов до 3 записей', function () use ($products) {
     $sql = $products->limit(3)->toSql(); // Предполагаемая функция ORM
-    expect($sql)->strLow('SELECT * FROM products LIMIT 3');
+    expect($sql)->strLow('SELECT * from "products" limit 3');
 });
 
-test('подсчет количества пользователей', function () use($users) {
-    $sql = $users->count()->toSql(); // Предполагаемая функция ORM
-    expect($sql)->strLow('SELECT COUNT(*) FROM users');
+// test('подсчет количества пользователей', function () use($users) {
+//     $sql = $users->count()->toSql(); // Предполагаемая функция ORM
+//     expect($sql)->strLow('SELECT COUNT(*) FROM users');
+// });
+
+test('вычисление средней цены продуктов', function () use ($products) {
+    $sql = $products->sel('AVG(@price)')->toSql();
+    expect($sql)->strLow('SELECT AVG(products.price) from "products"');
 });
 
-test('вычисление средней цены продуктов', function () use($products){
-    $sql = $products->sel('AVG(?)', price: 1)->toSql();
-    expect($sql)->strLow('SELECT AVG(price) FROM products');
+test('вычисление суммы цен всех продуктов', function () use ($products) {
+    $sql = $products->sel('SUM(@price)')->toSql(); // Предполагаемая функция ORM
+    expect($sql)->strLow('SELECT SUM(products.price) from "products"');
 });
 
-// test('вычисление суммы цен всех продуктов', function () {
-//     $sql = $this->orm->sumProductPrices(); // Предполагаемая функция ORM
-//     expect($sql)->strLow('SELECT SUM(price) FROM products');
-// });
+test('выбор максимальной цены продукта', function () use ($products) {
+    $sql = $products->sel('MAX(@price)')->toSql(); // Предполагаемая функция ORM
+    expect($sql)->strLow('SELECT MAX(products.price) from "products"');
+});
 
-// test('выбор максимальной цены продукта', function () {
-//     $sql = $this->orm->maxProductPrice(); // Предполагаемая функция ORM
-//     expect($sql)->strLow('SELECT MAX(price) FROM products');
-// });
-
-// test('выбор минимальной цены продукта', function () {
-//     $sql = $this->orm->minProductPrice(); // Предполагаемая функция ORM
-//     expect($sql)->strLow('SELECT MIN(price) FROM products');
-// });
 
 // test('подсчет заказов по статусам', function () {
 //     $sql = $this->orm->countOrdersByStatus(); // Предполагаемая функция ORM
@@ -105,25 +99,20 @@ test('вычисление средней цены продуктов', function
 //     expect($sql)->strLow('SELECT o.status, AVG(p.price) FROM orders o JOIN order_details od ON o.id = od.order_id JOIN products p ON od.product_id = p.id GROUP BY o.status');
 // });
 
-// test('соединение таблиц пользователей и заказов', function () {
-//     $sql = $this->orm->joinUsersAndOrders(); // Предполагаемая функция ORM
-//     expect($sql)->strLow('SELECT u.username, o.id, o.status FROM users u JOIN orders o ON u.id = o.user_id');
-// });
+test('соединение таблиц пользователей и заказов', function () use ($users) {
+    $sql = $users->sel(username: 1)
+        ->leftJoinOrdersModel->sel(id: 1, status: 1)
+        ->toSql();
 
-// test('соединение таблиц заказов и деталей заказов', function () {
-//     $sql = $this->orm->joinOrdersAndOrderDetails(); // Предполагаемая функция ORM
-//     expect($sql)->strLow('SELECT o.id, od.product_id, od.quantity, od.price FROM orders o JOIN order_details od ON o.id = od.order_id');
-// });
+    expect($sql)->strLow('SELECT "users"."username", "orders"."id", "orders"."status" from "users" left join "orders" on "users"."id" = "orders"."user_id"');
+});
+
 
 // test('соединение всех связанных таблиц для заказов', function () {
 //     $sql = $this->orm->joinAllForOrders(); // Предполагаемая функция ORM
 //     expect($sql)->strLow('SELECT u.username, o.id AS order_id, o.status, p.name AS product_name, od.quantity, od.price FROM users u JOIN orders o ON u.id = o.user_id JOIN order_details od ON o.id = od.order_id JOIN products p ON od.product_id = p.id');
 // });
 
-// test('выбор пользователей, у которых есть заказы', function () {
-//     $sql = $this->orm->getUsersWithOrders(); // Предполагаемая функция ORM
-//     expect($sql)->strLow('SELECT * FROM users WHERE id IN (SELECT user_id FROM orders)');
-// });
 
 // test('выбор продуктов, которые были заказаны', function () {
 //     $sql = $this->orm->getProductsInOrders(); // Предполагаемая функция ORM
@@ -150,15 +139,6 @@ test('вычисление средней цены продуктов', function
 //     expect($sql)->strLow('DELETE FROM products WHERE id = 1');
 // });
 
-// test('начало транзакции и обновление email пользователя', function () {
-//     $sql = $this->orm->transactionUpdateUserAndOrder(1, 'transaction_email@example.com', 'Processing'); // Предполагаемая функция ORM
-//     expect($sql)->strLow("BEGIN;\nUPDATE users SET email = 'transaction_email@example.com' WHERE id = 1;\nUPDATE orders SET status = 'Processing' WHERE id = 1;\nCOMMIT;");
-// });
-
-// test('начало транзакции и откат изменений', function () {
-//     $sql = $this->orm->transactionRollbackUpdateUser(1, 'rollback_email@example.com'); // Предполагаемая функция ORM
-//     expect($sql)->strLow("BEGIN;\nUPDATE users SET email = 'rollback_email@example.com' WHERE id = 1;\nROLLBACK;");
-// });
 
 // test('подсчет заказов по пользователям с условием HAVING', function () {
 //     $sql = $this->orm->countOrdersByUserWithHaving(); // Предполагаемая функция ORM

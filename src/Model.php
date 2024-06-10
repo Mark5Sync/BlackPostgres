@@ -5,7 +5,8 @@ namespace blackpostgres;
 
 use blackpostgres\_markers\model as markersModel;
 use blackpostgres\model\Connection;
-
+use Illuminate\Support\Facades\Schema;
+use PDO;
 
 abstract class Model extends Connection
 {
@@ -56,28 +57,48 @@ abstract class Model extends Connection
 
 
 
-    protected function ___sel(array $props)
+    protected function ___sel(?string $schema, array $props)
     {
-        $colls = array_map(fn ($coll) => $this($coll), array_keys($props));
+        if ($schema) {
+            $schema = str_replace('@', $this() . '.', $schema);
+            $this->getModel()->selectRaw($schema, array_values($props));
+        } else {
+            $colls = array_map(fn ($coll) => $this($coll), array_keys($props));
 
-        $this->getModel()->addSelect(
-            ...$colls
-        );
+            $this->getModel()->addSelect(
+                ...$colls
+            );
+        }
     }
 
 
-    protected function ___where(string $comparisonOperator, string $logicalOperatorAnd, array $props)
+    protected function ___where(?string $schema, array $props)
     {
-        $props = $this->request->filter($props, false);
-        $model = $this->getModel();
+        $comparisonOperator = '=';
 
-        foreach ($props as $coll => $value) {
-            $model->where(
-                $coll,
-                $comparisonOperator,
-                $value,
-                $logicalOperatorAnd
-            );
+        if ($schema && in_array(trim($schema), ['>', '>=', '=', '<>', '<', '<=', 'like', 'regexp'])) {
+            $comparisonOperator = $schema;
+            $schema = null;
+        }
+
+
+        $model = $this->getModel();
+        $raw = [];
+        foreach (array_keys($props) as $index => $coll) {
+            if (!$schema)
+                $model->where(
+                    $this($coll),
+                    $comparisonOperator,
+                    $props[$coll]
+                );
+
+
+            $raw[] = $props[$coll];
+        }
+
+        if ($schema) {
+            $schema = str_replace('@', $this() . '.', $schema);
+            $model->whereRaw($schema, $raw);
         }
     }
 
@@ -120,6 +141,44 @@ abstract class Model extends Connection
     {
     }
 
+
+
+    protected function ___limit(int $limit)
+    {
+        $this->getModel()->limit($limit);
+    }
+
+
+    protected function ___offset(int $offset)
+    {
+        $this->getModel()->offset($offset);
+    }
+
+
+    protected function ___orderBy(string $orderType, array $colls)
+    {
+        $props = array_map(fn ($coll) => $this($coll), array_keys($colls));
+
+        switch ($orderType) {
+            case 'ASC':
+                $this->getModel()->orderByAsc(...$props);
+                break;
+
+            case 'DESC':
+                $this->getModel()->orderByDesc(...$props);
+                break;
+
+            default:
+                throw new \Exception("Неизвестный тип orderBy [$orderType]", 1);
+        }
+    }
+
+    protected function ___groupBy(array $props)
+    {
+        $row = array_map(fn ($coll) => $this($coll), $props);
+        $this->getModel()->groupByRaw(implode(',', $row));
+    }
+
     // protected function ___in()
     // {
     //     $this->getModel()->whereIn('name', ['masha', 'natasha']);
@@ -136,16 +195,22 @@ abstract class Model extends Connection
         if (!is_null($this->query))
             return;
 
-        $cloneModel = clone $this->getModel();
+        // $cloneModel = clone $this->getModel();
 
-        $this->query = $cloneModel->toSql();
+        $this->query = $this->getModel()->toSql();
     }
+
+
 
 
     function fetch()
     {
         $this->bindQuery();
-        return $this->getModel()->first()->toArray();
+        $result = $this->getModel()->first();
+        if (!$result)
+            return null;
+
+        return $result->toArray();
     }
 
 
@@ -157,6 +222,42 @@ abstract class Model extends Connection
 
     function toSql()
     {
-        return $this->getModel()->toSql();
+        $query = $this->getModel()->toSql();
+        $this->resetModel();
+        return $query;
+    }
+
+
+
+    function ___page(int $index, int $size, int | false | null &$pages = false)
+    {
+    }
+
+
+
+
+
+
+    function ___insert(array $props)
+    {
+        return $this->getModel()->insert($props);
+    }
+
+
+    function ___insertOrIgnore(array $props)
+    {
+        return $this->getModel()->insertOrIgnore($props);
+    }
+
+
+    function ___updateOrInsert(array $updateProps, array $keysProps)
+    {
+        return $this->getModel()->updateOrInsert($updateProps, $keysProps);
+    }
+
+
+    function ___update(array $props)
+    {
+        return $this->getModel()->update($props);
     }
 }

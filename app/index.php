@@ -16,25 +16,27 @@ new class
     function __construct()
     {
 
-        // добавить проверку на join во время переключения контекста
-        // чтобы была возможность переходить туда сюда
 
 
         $row = $this
             ->usersModel
                 ->sel(username: 1, email: 1)
 
+
             ->leftJoinOrdersModel
                 ->sel(user_id: 1)
 
+
             ->leftJoinUsersModel
                 ->sel(password: 1)
+
 
             ->query($sql)
             ->fetch();
 
 
         cli::table([$row]);
+        cli::print("<red>{$sql}</red>");
         echo "\n\n";
     }
 };

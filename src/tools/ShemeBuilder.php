@@ -90,6 +90,7 @@ class ShemeBuilder
             '__connection_config__' => $this->modelConfig->connectionConfigClass,
             '//JOIN_SWITCHES' => $this->generateJoins->getSwitches(),
             '//JOIN' => $this->generateJoins->getCode(),
+            'Model //class' => 'ModelContext',
         ];
 
         $abstactCode = file_get_contents(__DIR__ . "/../AbstractModel.php");
