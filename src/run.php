@@ -42,7 +42,7 @@ class run
     {
         $root = $event ? $event->getComposer()->getConfig()->get('vendor-dir') . '/../' : '../';
         echo "find config - $root\n";
-        $configs = UseConfig::find(Config::class, $root, ['vendor']);
+        $configs = UseConfig::find(Config::class, $root);
 
         foreach ($configs as $configClass) {
             new ShemeBuilController($root, new $configClass);

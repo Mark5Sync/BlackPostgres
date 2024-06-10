@@ -195,8 +195,6 @@ abstract class Model extends Connection
         if (!is_null($this->query))
             return;
 
-        // $cloneModel = clone $this->getModel();
-
         $this->query = $this->getModel()->toSql();
     }
 
