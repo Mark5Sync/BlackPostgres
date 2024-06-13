@@ -67,7 +67,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			bool $created_at = false,
 			bool $status = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
@@ -82,7 +82,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			false | string $created_at = false,
 			false | string $status = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
@@ -107,7 +107,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			false | string $created_at = false,
 			false | string $status = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
@@ -122,7 +122,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			false | string $created_at = false,
 			false | string $status = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
@@ -137,7 +137,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			false | array $created_at = false,
 			false | array $status = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
@@ -152,7 +152,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			false | array $created_at = false,
 			false | array $status = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
@@ -169,7 +169,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			bool $created_at = false,
 			bool $status = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
@@ -184,7 +184,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			bool $created_at = false,
 			bool $status = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
@@ -205,7 +205,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			 false | null | string $created_at = false,
 			 false | string $status = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
@@ -220,7 +220,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			false | string $created_at = false,
 			false | string $status = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
@@ -238,7 +238,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			 false | null | string $created_at = false,
 			 false | string $status = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
@@ -252,7 +252,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			 false | null | string $created_at = false,
 			 false | string $status = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
@@ -266,7 +266,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			 false | null | string $created_at = false,
 			 false | string $status = false, ...$anyProps)
     {
-        $insertProps = $this->request->filter([
+        $insertProps = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
@@ -277,7 +277,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			 false | int $user_id = false,
 			 false | null | string $created_at = false,
 			 false | string $status = false, ...$anyProps) use($insertProps) {
-            $keysProps = $this->request->filter([
+            $keysProps = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
@@ -418,7 +418,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			bool $created_at = false,
 			bool $status = false)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
@@ -433,7 +433,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			bool $created_at = false,
 			bool $status = false)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
@@ -448,7 +448,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			bool $created_at = false,
 			bool $status = false)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
@@ -468,7 +468,7 @@ abstract class AbstractOrdersModel extends ModelContext
 			&$created_at = false,
 			&$status = false)
     {
-        $_cijcbb32ojsallk4ms = $this->sel(...$this->request->filter([
+        $_cijcbb32ojsallk4ms = $this->sel(...$this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,

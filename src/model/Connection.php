@@ -3,11 +3,11 @@
 namespace blackpostgres\model;
 
 use blackpostgres\_markers\pgsystem;
+use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use blackpostgres\_system\ConnectionSource;
+use Illuminate\Support\Facades\DB;
 use marksync\provider\NotMark;
-use Illuminate\Database\Capsule\Manager as Capsule;
 
 #[NotMark]
 abstract class Connection
@@ -23,19 +23,49 @@ abstract class Connection
         if ($this->activeModel)
             return $this->activeModel;
 
-        $capsule = new Capsule;
+        $this->capsule->addConnection($this->connectionConfig);
 
-        $capsule->addConnection($this->connectionResolver->configToCapsule(new $this->connectionConfig));
-
-        $capsule->setAsGlobal();
-        $capsule->bootEloquent();
-
-        
         return $this->activeModel = $this->getEloquentModel()->newQuery();
     }
 
 
-    protected function resetModel() {
+
+
+    function transaction()
+    {
+        return new class()
+        {
+            private $destroyIt = true;
+
+            function __construct()
+            {
+                Manager::beginTransaction();
+            }
+
+            function __destruct()
+            {
+                if ($this->destroyIt)
+                Manager::rollback();
+            }
+
+            function commit()
+            {
+                Manager::commit();
+                $this->destroyIt = false;
+            }
+
+            function rollback()
+            {
+                Manager::rollback();
+                $this->destroyIt = false;
+            }
+        };
+    }
+
+
+
+    protected function resetModel()
+    {
         $this->activeModel = null;
     }
 
@@ -44,5 +74,4 @@ abstract class Connection
     {
         return new Model;
     }
-
 }

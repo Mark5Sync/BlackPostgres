@@ -69,7 +69,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			bool $quantity = false,
 			bool $price = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
@@ -86,7 +86,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			false | string $quantity = false,
 			false | string $price = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
@@ -113,7 +113,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			false | string $quantity = false,
 			false | string $price = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
@@ -130,7 +130,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			false | string $quantity = false,
 			false | string $price = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
@@ -147,7 +147,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			false | array $quantity = false,
 			false | array $price = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
@@ -164,7 +164,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			false | array $quantity = false,
 			false | array $price = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
@@ -183,7 +183,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			bool $quantity = false,
 			bool $price = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
@@ -200,7 +200,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			bool $quantity = false,
 			bool $price = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
@@ -223,7 +223,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			 false | int $quantity = false,
 			 false | int $price = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
@@ -240,7 +240,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			false | string $quantity = false,
 			false | string $price = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
@@ -260,7 +260,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			 false | int $quantity = false,
 			 false | int $price = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
@@ -276,7 +276,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			 false | int $quantity = false,
 			 false | int $price = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
@@ -292,7 +292,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			 false | int $quantity = false,
 			 false | int $price = false, ...$anyProps)
     {
-        $insertProps = $this->request->filter([
+        $insertProps = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
@@ -305,7 +305,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			 false | int $product_id = false,
 			 false | int $quantity = false,
 			 false | int $price = false, ...$anyProps) use($insertProps) {
-            $keysProps = $this->request->filter([
+            $keysProps = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
@@ -448,7 +448,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			bool $quantity = false,
 			bool $price = false)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
@@ -465,7 +465,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			bool $quantity = false,
 			bool $price = false)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
@@ -482,7 +482,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			bool $quantity = false,
 			bool $price = false)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
@@ -504,7 +504,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			&$quantity = false,
 			&$price = false)
     {
-        $_cijcbb32ojsallk4ms = $this->sel(...$this->request->filter([
+        $_cijcbb32ojsallk4ms = $this->sel(...$this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,

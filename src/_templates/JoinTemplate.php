@@ -28,7 +28,7 @@ abstract class JOIN extends Model
 
     function join($_____propsStr_____, ...$props)
     {
-        $props = $this->request->filter([$____clearPropsStr_____, ...$props], null);
+        $props = $this->requestFilter->filter([$____clearPropsStr_____, ...$props], null);
 
         foreach ($props as $model) {
             $this->___join($model);
@@ -39,7 +39,7 @@ abstract class JOIN extends Model
 
     function joinCascade($_____propsStr_____, ...$props)
     {
-        $props = $this->request->filter([$____clearPropsStr_____, ...$props], null);
+        $props = $this->requestFilter->filter([$____clearPropsStr_____, ...$props], null);
 
         foreach ($props as $modelName => $model) {
             $this->___join($model, cascadeName: $modelName);
@@ -50,7 +50,7 @@ abstract class JOIN extends Model
 
     function joinCascadeArray($_____propsStr_____, ...$props)
     {
-        $props = $this->request->filter([$____clearPropsStr_____, ...$props], null);
+        $props = $this->requestFilter->filter([$____clearPropsStr_____, ...$props], null);
 
         foreach ($props as $modelName => $model) {
             $this->___joinCascadeArray($model, cascadeName: $modelName);

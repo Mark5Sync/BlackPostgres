@@ -35,14 +35,14 @@ abstract class ___abstract_class___ extends Model //class
 
     function sel(?string $_ = null, &$___bool___, ...$anyProps)
     {
-        $props = $this->request->filter([$___restruct_bool___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_bool___, ...$anyProps], false);
         $this->___sel($_, $props);
         return $this;
     }
 
     function selectAs(&$___string___, ...$anyProps)
     {
-        $props = $this->request->filter([$___restruct_string___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_string___, ...$anyProps], false);
         $this->___selectAs($props);
         return $this;
     }
@@ -59,28 +59,28 @@ abstract class ___abstract_class___ extends Model //class
 
     function like(?string $_ = null, &$___string___, ...$anyProps)
     {
-        $props = $this->request->filter([$___restruct_string___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_string___, ...$anyProps], false);
         $this->___like($_, $props);
         return $this;
     }
 
     function regexp(?string $_ = null, &$___string___, ...$anyProps)
     {
-        $props = $this->request->filter([$___restruct_string___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_string___, ...$anyProps], false);
         $this->___regexp($_, $props);
         return $this;
     }
 
     function in(?string $_ = null, &$___array___, ...$anyProps)
     {
-        $props = $this->request->filter([$___restruct_array___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_array___, ...$anyProps], false);
         $this->___in($_, $props);
         return $this;
     }
 
     function notIn(?string $_ = null, &$___array___, ...$anyProps)
     {
-        $props = $this->request->filter([$___restruct_array___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_array___, ...$anyProps], false);
         $this->___in($_, $props, true);
         return $this;
     }
@@ -89,14 +89,14 @@ abstract class ___abstract_class___ extends Model //class
 
     function isNull(?string $_ = null, &$___bool___, ...$anyProps)
     {
-        $props = $this->request->filter([$___restruct_bool___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_bool___, ...$anyProps], false);
         $this->___isNull($_, $props);
         return $this;
     }
 
     function isNotNull(?string $_ = null, &$___bool___, ...$anyProps)
     {
-        $props = $this->request->filter([$___restruct_bool___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_bool___, ...$anyProps], false);
         $this->___isNotNull($_, $props);
         return $this;
     }
@@ -109,14 +109,14 @@ abstract class ___abstract_class___ extends Model //class
 
     function where(?string $_ = null, &$___auto___, ...$anyProps)
     {
-        $props = $this->request->filter([$___restruct_auto___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_auto___, ...$anyProps], false);
         $this->___where($_, $props);
         return $this;
     }
 
     function fwhere(?string $_ = null, &$___string___, ...$anyProps)
     {
-        $props = $this->request->filter([$___restruct_string___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_string___, ...$anyProps], false);
         $this->___where($_, $props);
         return $this;
     }
@@ -126,28 +126,28 @@ abstract class ___abstract_class___ extends Model //class
 
     function update(&$___auto___, ...$anyProps)
     {
-        $props = $this->request->filter([$___restruct_auto___, ...$anyProps], false);
+        $props = $this->requestFilter->filterRequest([$___restruct_auto___, ...$anyProps], false);
         return $this->___update($props);
     }
 
     function insert(&$___auto___, ...$anyProps)
     {
-        $props = $this->request->filter([$___restruct_auto___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_auto___, ...$anyProps], false);
         return $this->___insert($props);
     }
 
     function insertOrIgnore(&$___auto___, ...$anyProps)
     {
-        $props = $this->request->filter([$___restruct_auto___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_auto___, ...$anyProps], false);
         return $this->___insertOrIgnore($props);
     }
 
     function updateOrInsert(&$___auto___, ...$anyProps)
     {
-        $insertProps = $this->request->filter([$___restruct_auto___, ...$anyProps], false);
+        $insertProps = $this->requestFilter->filter([$___restruct_auto___, ...$anyProps], false);
 
         return function(&$___auto___, ...$anyProps) use($insertProps) {
-            $keysProps = $this->request->filter([$___restruct_auto___, ...$anyProps], false);
+            $keysProps = $this->requestFilter->filter([$___restruct_auto___, ...$anyProps], false);
             return $this->___updateOrInsert($insertProps, $keysProps);
         };
     }
@@ -187,21 +187,21 @@ abstract class ___abstract_class___ extends Model //class
 
     function orderByAsc(&$___bool___)
     {
-        $props = $this->request->filter([$___restruct_bool___], false);
+        $props = $this->requestFilter->filter([$___restruct_bool___], false);
         $this->___orderBy('ASC', $props);
         return $this;
     }
 
     function orderByDesc(&$___bool___)
     {
-        $props = $this->request->filter([$___restruct_bool___], false);
+        $props = $this->requestFilter->filter([$___restruct_bool___], false);
         $this->___orderBy('DESC', $props);
         return $this;
     }
 
     function groupBy(&$___bool___)
     {
-        $props = $this->request->filter([$___restruct_bool___], false);
+        $props = $this->requestFilter->filter([$___restruct_bool___], false);
         $this->___groupBy($props);
         return $this;
     }
@@ -213,7 +213,7 @@ abstract class ___abstract_class___ extends Model //class
 
     function fetchRow(&$___bind___)
     {
-        $_cijcbb32ojsallk4ms = $this->sel(...$this->request->filter([$___restruct_bind___], false, 1))->fetch();
+        $_cijcbb32ojsallk4ms = $this->sel(...$this->requestFilter->filter([$___restruct_bind___], false, 1))->fetch();
 
         if ($_cijcbb32ojsallk4ms)
             foreach ($_cijcbb32ojsallk4ms as $_jjfj23i2nnm2nm3nm4 => $_jjjfjij2i2i3j4nnvkxjlkjd) {

@@ -58,7 +58,7 @@ abstract class AbstractProductsModel extends ModelContext
 			bool $price = false,
 			bool $created_at = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -75,7 +75,7 @@ abstract class AbstractProductsModel extends ModelContext
 			false | string $price = false,
 			false | string $created_at = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -102,7 +102,7 @@ abstract class AbstractProductsModel extends ModelContext
 			false | string $price = false,
 			false | string $created_at = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -119,7 +119,7 @@ abstract class AbstractProductsModel extends ModelContext
 			false | string $price = false,
 			false | string $created_at = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -136,7 +136,7 @@ abstract class AbstractProductsModel extends ModelContext
 			false | array $price = false,
 			false | array $created_at = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -153,7 +153,7 @@ abstract class AbstractProductsModel extends ModelContext
 			false | array $price = false,
 			false | array $created_at = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -172,7 +172,7 @@ abstract class AbstractProductsModel extends ModelContext
 			bool $price = false,
 			bool $created_at = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -189,7 +189,7 @@ abstract class AbstractProductsModel extends ModelContext
 			bool $price = false,
 			bool $created_at = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -212,7 +212,7 @@ abstract class AbstractProductsModel extends ModelContext
 			 false | int $price = false,
 			 false | null | string $created_at = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -229,7 +229,7 @@ abstract class AbstractProductsModel extends ModelContext
 			false | string $price = false,
 			false | string $created_at = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -249,7 +249,7 @@ abstract class AbstractProductsModel extends ModelContext
 			 false | int $price = false,
 			 false | null | string $created_at = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -265,7 +265,7 @@ abstract class AbstractProductsModel extends ModelContext
 			 false | int $price = false,
 			 false | null | string $created_at = false, ...$anyProps)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -281,7 +281,7 @@ abstract class AbstractProductsModel extends ModelContext
 			 false | int $price = false,
 			 false | null | string $created_at = false, ...$anyProps)
     {
-        $insertProps = $this->request->filter([
+        $insertProps = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -294,7 +294,7 @@ abstract class AbstractProductsModel extends ModelContext
 			 false | null | string $description = false,
 			 false | int $price = false,
 			 false | null | string $created_at = false, ...$anyProps) use($insertProps) {
-            $keysProps = $this->request->filter([
+            $keysProps = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -389,7 +389,7 @@ abstract class AbstractProductsModel extends ModelContext
 			bool $price = false,
 			bool $created_at = false)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -406,7 +406,7 @@ abstract class AbstractProductsModel extends ModelContext
 			bool $price = false,
 			bool $created_at = false)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -423,7 +423,7 @@ abstract class AbstractProductsModel extends ModelContext
 			bool $price = false,
 			bool $created_at = false)
     {
-        $props = $this->request->filter([
+        $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -445,7 +445,7 @@ abstract class AbstractProductsModel extends ModelContext
 			&$price = false,
 			&$created_at = false)
     {
-        $_cijcbb32ojsallk4ms = $this->sel(...$this->request->filter([
+        $_cijcbb32ojsallk4ms = $this->sel(...$this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,

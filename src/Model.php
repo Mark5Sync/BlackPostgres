@@ -3,14 +3,12 @@
 
 namespace blackpostgres;
 
-use blackpostgres\_markers\model as markersModel;
+use blackpostgres\_markers\model as _markersModel;
 use blackpostgres\model\Connection;
-use Illuminate\Support\Facades\Schema;
-use PDO;
 
 abstract class Model extends Connection
 {
-    use markersModel;
+    use _markersModel;
 
     protected string $currentShort = 'no_class';
     public string $tableName;
@@ -41,6 +39,8 @@ abstract class Model extends Connection
         return "{$table}.{$collName}" . ($as ? " as $as" : '');
     }
 
+
+    
 
 
     protected function ___applyOperator(string $name)
@@ -240,7 +240,7 @@ abstract class Model extends Connection
 
     function ___insert(array $props)
     {
-        return $this->getModel()->insert($props);
+        return $this->getModel()->insertGetId($props);
     }
 
 
