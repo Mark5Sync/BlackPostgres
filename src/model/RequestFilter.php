@@ -2,7 +2,7 @@
 
 namespace blackpostgres\model;
 
-class Request
+class RequestFilter
 {
 
     function filter($props, $except, mixed $set = false): array
