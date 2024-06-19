@@ -89,9 +89,10 @@ test('выбор максимальной цены продукта', function (
 });
 
 
-// test('подсчет заказов по статусам', function () {
-//     $sql = $this->orm->countOrdersByStatus(); // Предполагаемая функция ORM
-//     expect($sql)->strLow('SELECT status, COUNT(*) FROM orders GROUP BY status');
+// test('подсчет заказов по статусам', function () use($orders) {
+//     $count = $orders->groupBy(status: 1)->getCount();
+//     // echo 22;
+//     expect($count)->toBe(1);
 // });
 
 // test('вычисление средней цены продуктов по статусам заказа', function () {
