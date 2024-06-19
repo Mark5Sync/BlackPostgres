@@ -57,47 +57,47 @@ abstract class ___abstract_class___ extends Model //class
 
 
 
-    function like(?string $_ = null, &$___string___, ...$anyProps)
+    function like(&$___string___, ...$anyProps)
     {
         $props = $this->requestFilter->filter([$___restruct_string___, ...$anyProps], false);
-        $this->___like($_, $props);
+        $this->___where('like', $props);
         return $this;
     }
 
-    function regexp(?string $_ = null, &$___string___, ...$anyProps)
+    function regexp(&$___string___, ...$anyProps)
     {
         $props = $this->requestFilter->filter([$___restruct_string___, ...$anyProps], false);
-        $this->___regexp($_, $props);
+        $this->___where('regexp', $props);
         return $this;
     }
 
-    function in(?string $_ = null, &$___array___, ...$anyProps)
+    function in(&$___array___, ...$anyProps)
     {
         $props = $this->requestFilter->filter([$___restruct_array___, ...$anyProps], false);
-        $this->___in($_, $props);
+        $this->___in($props);
         return $this;
     }
 
-    function notIn(?string $_ = null, &$___array___, ...$anyProps)
+    function notIn(&$___array___, ...$anyProps)
     {
         $props = $this->requestFilter->filter([$___restruct_array___, ...$anyProps], false);
-        $this->___in($_, $props, true);
+        $this->___in($props, true);
         return $this;
     }
 
 
 
-    function isNull(?string $_ = null, &$___bool___, ...$anyProps)
+    function isNull(&$___bool___, ...$anyProps)
     {
         $props = $this->requestFilter->filter([$___restruct_bool___, ...$anyProps], false);
-        $this->___isNull($_, $props);
+        $this->___where('IS', $props);
         return $this;
     }
 
-    function isNotNull(?string $_ = null, &$___bool___, ...$anyProps)
+    function isNotNull(&$___bool___, ...$anyProps)
     {
         $props = $this->requestFilter->filter([$___restruct_bool___, ...$anyProps], false);
-        $this->___isNotNull($_, $props);
+        $this->___where('IS NOT', $props);
         return $this;
     }
 
@@ -146,7 +146,7 @@ abstract class ___abstract_class___ extends Model //class
     {
         $insertProps = $this->requestFilter->filter([$___restruct_auto___, ...$anyProps], false);
 
-        return function(&$___auto___, ...$anyProps) use($insertProps) {
+        return function (&$___auto___, ...$anyProps) use ($insertProps) {
             $keysProps = $this->requestFilter->filter([$___restruct_auto___, ...$anyProps], false);
             return $this->___updateOrInsert($insertProps, $keysProps);
         };

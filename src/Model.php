@@ -40,7 +40,7 @@ abstract class Model extends Connection
     }
 
 
-    
+
 
 
     protected function ___applyOperator(string $name)
@@ -69,6 +69,21 @@ abstract class Model extends Connection
                 ...$colls
             );
         }
+    }
+
+
+
+    protected function ___selectAs(array $props)
+    {
+        $colls = [];
+
+        foreach ($props as $select => $selectAs) {
+            $colls[] = $this($select) . ' AS ' . $selectAs;
+        }
+
+        $this->getModel()->addSelect(
+            ...$colls
+        );
     }
 
 
@@ -101,6 +116,21 @@ abstract class Model extends Connection
             $model->whereRaw($schema, $raw);
         }
     }
+
+
+    protected function ___in(array $props, bool $notIn = false)
+    {
+        $model = $this->getModel();
+
+        foreach ($props as $coll => $value) {
+            if ($notIn)
+                $model->wheteNotIn($coll, $value);
+            else
+                $model->wheteIn($coll, $value);
+        }
+    }
+
+
 
 
     protected function ___join(string $joinShortClassName, string $joinMethod, ?string $cascadeName = null)
@@ -203,6 +233,19 @@ abstract class Model extends Connection
 
 
 
+
+
+
+    /** RESET MODEL WRAPPER */
+    private function RMW($result)
+    {
+        $this->resetModel();
+        return $result;
+    }
+
+
+
+
     function fetch()
     {
         $this->bindQuery();
@@ -210,23 +253,27 @@ abstract class Model extends Connection
         if (!$result)
             return null;
 
-        return $result->toArray();
+        return $this->RMW($result->toArray());
     }
 
 
     function fetchAll()
     {
         $this->bindQuery();
-        return $this->getModel()->get()->toArray();
+        return $this->RMW($this->getModel()->get()->toArray());
     }
 
     function toSql()
     {
-        $query = $this->getModel()->toSql();
-        $this->resetModel();
-        return $query;
+        return $this->RMW($this->getModel()->toSql());
     }
 
+
+    function getCount()
+    {
+        $this->bindQuery();
+        return $this->RMW($this->getModel()->get()->count());
+    }
 
 
     function ___page(int $index, int $size, int | false | null &$pages = false)
@@ -237,27 +284,26 @@ abstract class Model extends Connection
 
 
 
-
     function ___insert(array $props)
     {
-        return $this->getModel()->insertGetId($props);
+        return $this->RMW($this->getModel()->insertGetId($props));
     }
 
 
     function ___insertOrIgnore(array $props)
     {
-        return $this->getModel()->insertOrIgnore($props);
+        return $this->RMW($this->getModel()->insertOrIgnore($props));
     }
 
 
     function ___updateOrInsert(array $updateProps, array $keysProps)
     {
-        return $this->getModel()->updateOrInsert($updateProps, $keysProps);
+        return $this->RMW($this->getModel()->updateOrInsert($updateProps, $keysProps));
     }
 
 
     function ___update(array $props)
     {
-        return $this->getModel()->update($props);
+        return $this->RMW($this->getModel()->update($props));
     }
 }
