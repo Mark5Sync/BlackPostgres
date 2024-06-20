@@ -126,7 +126,7 @@ abstract class ___abstract_class___ extends Model //class
 
     function update(&$___auto___, ...$anyProps)
     {
-        $props = $this->requestFilter->filterRequest([$___restruct_auto___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_auto___, ...$anyProps], false);
         return $this->___update($props);
     }
 
