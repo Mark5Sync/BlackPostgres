@@ -205,7 +205,7 @@ abstract class Model extends Connection
 
     protected function ___groupBy(array $props)
     {
-        $row = array_map(fn ($coll) => $this($coll), $props);
+        $row = array_map(fn ($coll) => $this($coll), array_keys($props));
         $this->getModel()->groupByRaw(implode(',', $row));
     }
 
