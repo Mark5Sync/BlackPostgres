@@ -287,7 +287,7 @@ abstract class Model extends Connection
         foreach ($props as $coll => &$bind) {
             if (!is_null($bind))
                 continue;
-            
+
 
             $key = 'val' . count($this->row);
             $raw = $this($coll) . " as " . $key;
@@ -298,7 +298,8 @@ abstract class Model extends Connection
         }
     }
 
-    protected function ___fetchRow(){
+    protected function ___fetchRow()
+    {
         $colls = array_column($this->row, 'raw');
         $this->getModel()->select(...$colls);
 
@@ -333,5 +334,13 @@ abstract class Model extends Connection
     function ___update(array $props)
     {
         return $this->RMW($this->getModel()->update($props));
+    }
+
+
+
+    function delete()
+    {
+        return $this->RMW($this->getModel()->delete());
+
     }
 }
