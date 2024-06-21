@@ -295,7 +295,6 @@ abstract class Model extends Connection
                 'raw' => $raw,
                 'bind' => &$bind,
             ];
-
         }
     }
 
@@ -309,6 +308,7 @@ abstract class Model extends Connection
             $prop = $data[$coll];
         }
 
+        $this->row = [];
     }
 
 

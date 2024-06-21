@@ -20,12 +20,13 @@ new class
 
         $this->usersModel
             ->leftJoinOrdersModel
-                ->row(created_at: $create)
+                ->row(created_at: $create, status: $status)
             ->leftJoinUsersModel
                 ->fetchRow(username: $name);
 
+        $this->usersModel->fetchRow(email: $email);
 
-        cli::print("<red>{$name}</red> ($create)");
+        cli::print("<red>{$name} ($email)</red> ($create) - $status");
         echo "\n\n";
     }
 };
