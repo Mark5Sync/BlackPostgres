@@ -25,11 +25,6 @@ abstract class ___abstract_class___ extends Model //class
         };
     }
 
-    function row(&$___bind___)
-    {
-
-        return $this;
-    }
 
 
 
@@ -210,14 +205,27 @@ abstract class ___abstract_class___ extends Model //class
 
 
 
+    function row(&$___bind___, &...$anyProps)
+    {
+        $this->___row(...[$___restruct_bind___, ...$anyProps]);
+
+        return $this;
+    }
+
 
     function fetchRow(&$___bind___)
     {
+        $this->___row(...[$___restruct_bind___]);
+        return $this->___fetchRow();
+
+        /*
         $_cijcbb32ojsallk4ms = $this->sel(...$this->requestFilter->filter([$___restruct_bind___], false, 1))->fetch();
 
         if ($_cijcbb32ojsallk4ms)
             foreach ($_cijcbb32ojsallk4ms as $_jjfj23i2nnm2nm3nm4 => $_jjjfjij2i2i3j4nnvkxjlkjd) {
                 $$_jjfj23i2nnm2nm3nm4 = $_jjjfjij2i2i3j4nnvkxjlkjd;
             }
+
+        */
     }
 }

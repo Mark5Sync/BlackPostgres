@@ -49,16 +49,6 @@ abstract class AbstractOrderDetailsModel extends ModelContext
         };
     }
 
-    function row(
-			&$id = false,
-			&$order_id = false,
-			&$product_id = false,
-			&$quantity = false,
-			&$price = false)
-    {
-
-        return $this;
-    }
 
 
 
@@ -106,7 +96,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 
 
 
-    function like(?string $_ = null, 
+    function like(
 			false | string $id = false,
 			false | string $order_id = false,
 			false | string $product_id = false,
@@ -119,11 +109,11 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			'product_id' => $product_id,
 			'quantity' => $quantity,
 			'price' => $price, ...$anyProps], false);
-        $this->___like($_, $props);
+        $this->___where('like', $props);
         return $this;
     }
 
-    function regexp(?string $_ = null, 
+    function regexp(
 			false | string $id = false,
 			false | string $order_id = false,
 			false | string $product_id = false,
@@ -136,11 +126,11 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			'product_id' => $product_id,
 			'quantity' => $quantity,
 			'price' => $price, ...$anyProps], false);
-        $this->___regexp($_, $props);
+        $this->___where('regexp', $props);
         return $this;
     }
 
-    function in(?string $_ = null, 
+    function in(
 			false | array $id = false,
 			false | array $order_id = false,
 			false | array $product_id = false,
@@ -153,11 +143,11 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			'product_id' => $product_id,
 			'quantity' => $quantity,
 			'price' => $price, ...$anyProps], false);
-        $this->___in($_, $props);
+        $this->___in($props);
         return $this;
     }
 
-    function notIn(?string $_ = null, 
+    function notIn(
 			false | array $id = false,
 			false | array $order_id = false,
 			false | array $product_id = false,
@@ -170,13 +160,13 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			'product_id' => $product_id,
 			'quantity' => $quantity,
 			'price' => $price, ...$anyProps], false);
-        $this->___in($_, $props, true);
+        $this->___in($props, true);
         return $this;
     }
 
 
 
-    function isNull(?string $_ = null, 
+    function isNull(
 			bool $id = false,
 			bool $order_id = false,
 			bool $product_id = false,
@@ -189,11 +179,11 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			'product_id' => $product_id,
 			'quantity' => $quantity,
 			'price' => $price, ...$anyProps], false);
-        $this->___isNull($_, $props);
+        $this->___where('IS', $props);
         return $this;
     }
 
-    function isNotNull(?string $_ = null, 
+    function isNotNull(
 			bool $id = false,
 			bool $order_id = false,
 			bool $product_id = false,
@@ -206,7 +196,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			'product_id' => $product_id,
 			'quantity' => $quantity,
 			'price' => $price, ...$anyProps], false);
-        $this->___isNotNull($_, $props);
+        $this->___where('IS NOT', $props);
         return $this;
     }
 
@@ -285,6 +275,22 @@ abstract class AbstractOrderDetailsModel extends ModelContext
         return $this->___insert($props);
     }
 
+    function insertOrIgnore(
+			 false | int $id = false,
+			 false | int $order_id = false,
+			 false | int $product_id = false,
+			 false | int $quantity = false,
+			 false | int $price = false, ...$anyProps)
+    {
+        $props = $this->requestFilter->filter([
+			'id' => $id,
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price, ...$anyProps], false);
+        return $this->___insertOrIgnore($props);
+    }
+
     function updateOrInsert(
 			 false | int $id = false,
 			 false | int $order_id = false,
@@ -299,12 +305,12 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			'quantity' => $quantity,
 			'price' => $price, ...$anyProps], false);
 
-        return function(
+        return function (
 			 false | int $id = false,
 			 false | int $order_id = false,
 			 false | int $product_id = false,
 			 false | int $quantity = false,
-			 false | int $price = false, ...$anyProps) use($insertProps) {
+			 false | int $price = false, ...$anyProps) use ($insertProps) {
             $keysProps = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
@@ -496,6 +502,23 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 
 
 
+    function row(
+			&$id = false,
+			&$order_id = false,
+			&$product_id = false,
+			&$quantity = false,
+			&$price = false, &...$anyProps)
+    {
+        $this->___row(...[
+			'id' => $id,
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price, ...$anyProps]);
+
+        return $this;
+    }
+
 
     function fetchRow(
 			&$id = false,
@@ -504,6 +527,15 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			&$quantity = false,
 			&$price = false)
     {
+        $this->___row(...[
+			'id' => $id,
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price]);
+        return $this->___fetchRow();
+
+        /*
         $_cijcbb32ojsallk4ms = $this->sel(...$this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
@@ -515,5 +547,7 @@ abstract class AbstractOrderDetailsModel extends ModelContext
             foreach ($_cijcbb32ojsallk4ms as $_jjfj23i2nnm2nm3nm4 => $_jjjfjij2i2i3j4nnvkxjlkjd) {
                 $$_jjfj23i2nnm2nm3nm4 = $_jjjfjij2i2i3j4nnvkxjlkjd;
             }
+
+        */
     }
 }

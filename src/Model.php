@@ -281,7 +281,38 @@ abstract class Model extends Connection
     }
 
 
+    private $row = [];
+    protected function ___row(&...$props)
+    {
+        foreach ($props as $coll => &$bind) {
+            if (!is_null($bind))
+                continue;
+            
 
+            $key = 'val' . count($this->row);
+            $raw = $this($coll) . " as " . $key;
+            $this->row[$key] = [
+                'raw' => $raw,
+                'bind' => &$bind,
+            ];
+
+        }
+    }
+
+    protected function ___fetchRow(){
+        $colls = array_column($this->row, 'raw');
+        $this->getModel()->select(...$colls);
+
+        $data = $this->fetch();
+
+        $bind = array_column($this->row, 'bind'); //?
+        foreach ($bind as $coll => &$prop) {
+            $key = 'val' . $coll;
+            $prop = $data[$key];
+        }
+
+        return $data;
+    }
 
 
     function ___insert(array $props)

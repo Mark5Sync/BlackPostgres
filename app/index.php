@@ -18,25 +18,10 @@ new class
 
 
 
-        $row = $this
-            ->usersModel
-                ->sel(username: 1, email: 1)
+        $this->usersModel->fetchRow(username: $name, password: $pass);
 
 
-            ->leftJoinOrdersModel
-                ->sel(user_id: 1)
-
-
-            ->leftJoinUsersModel
-                ->sel(password: 1)
-
-
-            ->query($sql)
-            ->fetch();
-
-
-        cli::table([$row]);
-        cli::print("<red>{$sql}</red>");
+        cli::print("<red>{$name}</red> ($pass)");
         echo "\n\n";
     }
 };

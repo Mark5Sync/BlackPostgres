@@ -38,16 +38,6 @@ abstract class AbstractProductsModel extends ModelContext
         };
     }
 
-    function row(
-			&$id = false,
-			&$name = false,
-			&$description = false,
-			&$price = false,
-			&$created_at = false)
-    {
-
-        return $this;
-    }
 
 
 
@@ -95,7 +85,7 @@ abstract class AbstractProductsModel extends ModelContext
 
 
 
-    function like(?string $_ = null, 
+    function like(
 			false | string $id = false,
 			false | string $name = false,
 			false | string $description = false,
@@ -108,11 +98,11 @@ abstract class AbstractProductsModel extends ModelContext
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at, ...$anyProps], false);
-        $this->___like($_, $props);
+        $this->___where('like', $props);
         return $this;
     }
 
-    function regexp(?string $_ = null, 
+    function regexp(
 			false | string $id = false,
 			false | string $name = false,
 			false | string $description = false,
@@ -125,11 +115,11 @@ abstract class AbstractProductsModel extends ModelContext
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at, ...$anyProps], false);
-        $this->___regexp($_, $props);
+        $this->___where('regexp', $props);
         return $this;
     }
 
-    function in(?string $_ = null, 
+    function in(
 			false | array $id = false,
 			false | array $name = false,
 			false | array $description = false,
@@ -142,11 +132,11 @@ abstract class AbstractProductsModel extends ModelContext
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at, ...$anyProps], false);
-        $this->___in($_, $props);
+        $this->___in($props);
         return $this;
     }
 
-    function notIn(?string $_ = null, 
+    function notIn(
 			false | array $id = false,
 			false | array $name = false,
 			false | array $description = false,
@@ -159,13 +149,13 @@ abstract class AbstractProductsModel extends ModelContext
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at, ...$anyProps], false);
-        $this->___in($_, $props, true);
+        $this->___in($props, true);
         return $this;
     }
 
 
 
-    function isNull(?string $_ = null, 
+    function isNull(
 			bool $id = false,
 			bool $name = false,
 			bool $description = false,
@@ -178,11 +168,11 @@ abstract class AbstractProductsModel extends ModelContext
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at, ...$anyProps], false);
-        $this->___isNull($_, $props);
+        $this->___where('IS', $props);
         return $this;
     }
 
-    function isNotNull(?string $_ = null, 
+    function isNotNull(
 			bool $id = false,
 			bool $name = false,
 			bool $description = false,
@@ -195,7 +185,7 @@ abstract class AbstractProductsModel extends ModelContext
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at, ...$anyProps], false);
-        $this->___isNotNull($_, $props);
+        $this->___where('IS NOT', $props);
         return $this;
     }
 
@@ -274,6 +264,22 @@ abstract class AbstractProductsModel extends ModelContext
         return $this->___insert($props);
     }
 
+    function insertOrIgnore(
+			 false | int $id = false,
+			 false | string $name = false,
+			 false | null | string $description = false,
+			 false | int $price = false,
+			 false | null | string $created_at = false, ...$anyProps)
+    {
+        $props = $this->requestFilter->filter([
+			'id' => $id,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
+			'created_at' => $created_at, ...$anyProps], false);
+        return $this->___insertOrIgnore($props);
+    }
+
     function updateOrInsert(
 			 false | int $id = false,
 			 false | string $name = false,
@@ -288,12 +294,12 @@ abstract class AbstractProductsModel extends ModelContext
 			'price' => $price,
 			'created_at' => $created_at, ...$anyProps], false);
 
-        return function(
+        return function (
 			 false | int $id = false,
 			 false | string $name = false,
 			 false | null | string $description = false,
 			 false | int $price = false,
-			 false | null | string $created_at = false, ...$anyProps) use($insertProps) {
+			 false | null | string $created_at = false, ...$anyProps) use ($insertProps) {
             $keysProps = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
@@ -437,6 +443,23 @@ abstract class AbstractProductsModel extends ModelContext
 
 
 
+    function row(
+			&$id = false,
+			&$name = false,
+			&$description = false,
+			&$price = false,
+			&$created_at = false, &...$anyProps)
+    {
+        $this->___row(...[
+			'id' => $id,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
+			'created_at' => $created_at, ...$anyProps]);
+
+        return $this;
+    }
+
 
     function fetchRow(
 			&$id = false,
@@ -445,6 +468,15 @@ abstract class AbstractProductsModel extends ModelContext
 			&$price = false,
 			&$created_at = false)
     {
+        $this->___row(...[
+			'id' => $id,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
+			'created_at' => $created_at]);
+        return $this->___fetchRow();
+
+        /*
         $_cijcbb32ojsallk4ms = $this->sel(...$this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
@@ -456,5 +488,7 @@ abstract class AbstractProductsModel extends ModelContext
             foreach ($_cijcbb32ojsallk4ms as $_jjfj23i2nnm2nm3nm4 => $_jjjfjij2i2i3j4nnvkxjlkjd) {
                 $$_jjfj23i2nnm2nm3nm4 = $_jjjfjij2i2i3j4nnvkxjlkjd;
             }
+
+        */
     }
 }

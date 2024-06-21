@@ -16,7 +16,7 @@ class ConnectionResolver
         $user = $config->user;
         $password = $config->password;
 
-        $dsn = "pgsql:host=$host;port=$port;dbname=$db;";
+        $dsn = "pgsql:host=$host;port=$port;dbname=$db";
 
 
         return new \PDO(
