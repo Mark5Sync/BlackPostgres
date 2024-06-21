@@ -305,13 +305,10 @@ abstract class Model extends Connection
 
         $data = $this->fetch();
 
-        $bind = array_column($this->row, 'bind'); //?
-        foreach ($bind as $coll => &$prop) {
-            $key = 'val' . $coll;
-            $prop = $data[$key];
+        foreach ($this->row as $coll => ['bind' => &$prop]) {
+            $prop = $data[$coll];
         }
 
-        return $data;
     }
 
 

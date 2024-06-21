@@ -451,11 +451,11 @@ abstract class AbstractUsersModel extends ModelContext
 			&$created_at = false, &...$anyProps)
     {
         $this->___row(...[
-			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
-			'created_at' => $created_at, ...$anyProps]);
+			'id' => &$id,
+			'username' => &$username,
+			'email' => &$email,
+			'password' => &$password,
+			'created_at' => &$created_at, ...$anyProps]);
 
         return $this;
     }
@@ -469,20 +469,20 @@ abstract class AbstractUsersModel extends ModelContext
 			&$created_at = false)
     {
         $this->___row(...[
-			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
-			'created_at' => $created_at]);
+			'id' => &$id,
+			'username' => &$username,
+			'email' => &$email,
+			'password' => &$password,
+			'created_at' => &$created_at]);
         return $this->___fetchRow();
 
         /*
         $_cijcbb32ojsallk4ms = $this->sel(...$this->requestFilter->filter([
-			'id' => $id,
-			'username' => $username,
-			'email' => $email,
-			'password' => $password,
-			'created_at' => $created_at], false, 1))->fetch();
+			'id' => &$id,
+			'username' => &$username,
+			'email' => &$email,
+			'password' => &$password,
+			'created_at' => &$created_at], false, 1))->fetch();
 
         if ($_cijcbb32ojsallk4ms)
             foreach ($_cijcbb32ojsallk4ms as $_jjfj23i2nnm2nm3nm4 => $_jjjfjij2i2i3j4nnvkxjlkjd) {

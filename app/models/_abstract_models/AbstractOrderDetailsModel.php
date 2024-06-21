@@ -510,11 +510,11 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			&$price = false, &...$anyProps)
     {
         $this->___row(...[
-			'id' => $id,
-			'order_id' => $order_id,
-			'product_id' => $product_id,
-			'quantity' => $quantity,
-			'price' => $price, ...$anyProps]);
+			'id' => &$id,
+			'order_id' => &$order_id,
+			'product_id' => &$product_id,
+			'quantity' => &$quantity,
+			'price' => &$price, ...$anyProps]);
 
         return $this;
     }
@@ -528,20 +528,20 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			&$price = false)
     {
         $this->___row(...[
-			'id' => $id,
-			'order_id' => $order_id,
-			'product_id' => $product_id,
-			'quantity' => $quantity,
-			'price' => $price]);
+			'id' => &$id,
+			'order_id' => &$order_id,
+			'product_id' => &$product_id,
+			'quantity' => &$quantity,
+			'price' => &$price]);
         return $this->___fetchRow();
 
         /*
         $_cijcbb32ojsallk4ms = $this->sel(...$this->requestFilter->filter([
-			'id' => $id,
-			'order_id' => $order_id,
-			'product_id' => $product_id,
-			'quantity' => $quantity,
-			'price' => $price], false, 1))->fetch();
+			'id' => &$id,
+			'order_id' => &$order_id,
+			'product_id' => &$product_id,
+			'quantity' => &$quantity,
+			'price' => &$price], false, 1))->fetch();
 
         if ($_cijcbb32ojsallk4ms)
             foreach ($_cijcbb32ojsallk4ms as $_jjfj23i2nnm2nm3nm4 => $_jjjfjij2i2i3j4nnvkxjlkjd) {

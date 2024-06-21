@@ -473,10 +473,10 @@ abstract class AbstractOrdersModel extends ModelContext
 			&$status = false, &...$anyProps)
     {
         $this->___row(...[
-			'id' => $id,
-			'user_id' => $user_id,
-			'created_at' => $created_at,
-			'status' => $status, ...$anyProps]);
+			'id' => &$id,
+			'user_id' => &$user_id,
+			'created_at' => &$created_at,
+			'status' => &$status, ...$anyProps]);
 
         return $this;
     }
@@ -489,18 +489,18 @@ abstract class AbstractOrdersModel extends ModelContext
 			&$status = false)
     {
         $this->___row(...[
-			'id' => $id,
-			'user_id' => $user_id,
-			'created_at' => $created_at,
-			'status' => $status]);
+			'id' => &$id,
+			'user_id' => &$user_id,
+			'created_at' => &$created_at,
+			'status' => &$status]);
         return $this->___fetchRow();
 
         /*
         $_cijcbb32ojsallk4ms = $this->sel(...$this->requestFilter->filter([
-			'id' => $id,
-			'user_id' => $user_id,
-			'created_at' => $created_at,
-			'status' => $status], false, 1))->fetch();
+			'id' => &$id,
+			'user_id' => &$user_id,
+			'created_at' => &$created_at,
+			'status' => &$status], false, 1))->fetch();
 
         if ($_cijcbb32ojsallk4ms)
             foreach ($_cijcbb32ojsallk4ms as $_jjfj23i2nnm2nm3nm4 => $_jjjfjij2i2i3j4nnvkxjlkjd) {

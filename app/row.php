@@ -4,16 +4,25 @@
 $dd = new class {
     private $result = [];
 
+
+
     function row(?int &$id, ?string &$user, &...$props) {
 
-        foreach (['id' => &$id, 'user' => &$user, ...$props] as $coll => &$prop) {
-            $this->result[$coll] = &$prop;
-        }
+        $this->__row(...['id' => &$id, 'user' => &$user, ...$props]);
+        // foreach (['id' => &$id, 'user' => &$user, ...$props] as $coll => &$prop) {
+        //     $this->result[$coll]['bind'] = &$prop;
+        // }
 
     }
 
+    function __row(&...$props){
+        foreach ($props as $coll => &$prop) {
+            $this->result[$coll]['bind'] = &$prop;
+        }
+    }
+
     function fetchRow()  {
-        foreach ($this->result as $coll => &$prop) {
+        foreach ($this->result as $coll => ['bind' => &$prop]) {
             switch ($coll) {
                 case 'id':
                     $prop = 555;

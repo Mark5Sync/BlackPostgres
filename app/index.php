@@ -18,10 +18,14 @@ new class
 
 
 
-        $this->usersModel->fetchRow(username: $name, password: $pass);
+        $this->usersModel
+            ->leftJoinOrdersModel
+                ->row(created_at: $create)
+            ->leftJoinUsersModel
+                ->fetchRow(username: $name);
 
 
-        cli::print("<red>{$name}</red> ($pass)");
+        cli::print("<red>{$name}</red> ($create)");
         echo "\n\n";
     }
 };
