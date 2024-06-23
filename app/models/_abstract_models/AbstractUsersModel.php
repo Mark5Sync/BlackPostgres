@@ -10,9 +10,13 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 /**
 * orders 
 * @property-read \testapp\models\OrdersModel $otherJoinOrdersModel
+* @method \testapp\models\OrdersModel otherJoinOrdersModel(string $name, ?int $limit = null)
 * @property-read \testapp\models\OrdersModel $leftJoinOrdersModel
+* @method \testapp\models\OrdersModel leftJoinOrdersModel(string $name, ?int $limit = null)
 * @property-read \testapp\models\OrdersModel $rightJoinOrdersModel
+* @method \testapp\models\OrdersModel rightJoinOrdersModel(string $name, ?int $limit = null)
 * @property-read \testapp\models\OrdersModel $innerJoinOrdersModel
+* @method \testapp\models\OrdersModel innerJoinOrdersModel(string $name, ?int $limit = null)
 * ------- 
 * */
 abstract class AbstractUsersModel extends ModelContext
@@ -35,6 +39,7 @@ abstract class AbstractUsersModel extends ModelContext
         return new class extends EloquentModel
         {
             protected $table = 'users';
+            public $timestamps = false;
         };
     }
 
@@ -312,60 +317,8 @@ abstract class AbstractUsersModel extends ModelContext
 
 
 
-    function ___get($name)
-    {
-        $this->___applyOperator($name);
 
-        return $this;
-    }
-
-
-        protected function cascadeOtherJoinOrdersModel(?string $cascadeName = null)
-    {
-        $this->___join(
-            joinTableName: "orders",
-            joinMethod: "otherJoin",
-            cascadeName: $cascadeName,
-        );
-
-        return $this;
-    }
-
-
-    protected function cascadeLeftJoinOrdersModel(?string $cascadeName = null)
-    {
-        $this->___join(
-            joinTableName: "orders",
-            joinMethod: "leftJoin",
-            cascadeName: $cascadeName,
-        );
-
-        return $this;
-    }
-
-
-    protected function cascadeRightJoinOrdersModel(?string $cascadeName = null)
-    {
-        $this->___join(
-            joinTableName: "orders",
-            joinMethod: "rightJoin",
-            cascadeName: $cascadeName,
-        );
-
-        return $this;
-    }
-
-
-    protected function cascadeInnerJoinOrdersModel(?string $cascadeName = null)
-    {
-        $this->___join(
-            joinTableName: "orders",
-            joinMethod: "innerJoin",
-            cascadeName: $cascadeName,
-        );
-
-        return $this;
-    }
+    
 
 
     function page(int $index, int $size, int | false | null &$pages = false)
@@ -466,29 +419,14 @@ abstract class AbstractUsersModel extends ModelContext
 			&$username = false,
 			&$email = false,
 			&$password = false,
-			&$created_at = false)
+			&$created_at = false, &...$anyProps)
     {
         $this->___row(...[
 			'id' => &$id,
 			'username' => &$username,
 			'email' => &$email,
 			'password' => &$password,
-			'created_at' => &$created_at]);
+			'created_at' => &$created_at, ...$anyProps]);
         return $this->___fetchRow();
-
-        /*
-        $_cijcbb32ojsallk4ms = $this->sel(...$this->requestFilter->filter([
-			'id' => &$id,
-			'username' => &$username,
-			'email' => &$email,
-			'password' => &$password,
-			'created_at' => &$created_at], false, 1))->fetch();
-
-        if ($_cijcbb32ojsallk4ms)
-            foreach ($_cijcbb32ojsallk4ms as $_jjfj23i2nnm2nm3nm4 => $_jjjfjij2i2i3j4nnvkxjlkjd) {
-                $$_jjfj23i2nnm2nm3nm4 = $_jjjfjij2i2i3j4nnvkxjlkjd;
-            }
-
-        */
     }
 }

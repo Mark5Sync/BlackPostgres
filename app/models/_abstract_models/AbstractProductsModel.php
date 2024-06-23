@@ -10,9 +10,13 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 /**
 * order_details 
 * @property-read \testapp\models\OrderDetailsModel $otherJoinOrderDetailsModel
+* @method \testapp\models\OrderDetailsModel otherJoinOrderDetailsModel(string $name, ?int $limit = null)
 * @property-read \testapp\models\OrderDetailsModel $leftJoinOrderDetailsModel
+* @method \testapp\models\OrderDetailsModel leftJoinOrderDetailsModel(string $name, ?int $limit = null)
 * @property-read \testapp\models\OrderDetailsModel $rightJoinOrderDetailsModel
+* @method \testapp\models\OrderDetailsModel rightJoinOrderDetailsModel(string $name, ?int $limit = null)
 * @property-read \testapp\models\OrderDetailsModel $innerJoinOrderDetailsModel
+* @method \testapp\models\OrderDetailsModel innerJoinOrderDetailsModel(string $name, ?int $limit = null)
 * ------- 
 * */
 abstract class AbstractProductsModel extends ModelContext
@@ -35,6 +39,7 @@ abstract class AbstractProductsModel extends ModelContext
         return new class extends EloquentModel
         {
             protected $table = 'products';
+            public $timestamps = false;
         };
     }
 
@@ -312,60 +317,8 @@ abstract class AbstractProductsModel extends ModelContext
 
 
 
-    function ___get($name)
-    {
-        $this->___applyOperator($name);
 
-        return $this;
-    }
-
-
-        protected function cascadeOtherJoinOrderDetailsModel(?string $cascadeName = null)
-    {
-        $this->___join(
-            joinTableName: "order_details",
-            joinMethod: "otherJoin",
-            cascadeName: $cascadeName,
-        );
-
-        return $this;
-    }
-
-
-    protected function cascadeLeftJoinOrderDetailsModel(?string $cascadeName = null)
-    {
-        $this->___join(
-            joinTableName: "order_details",
-            joinMethod: "leftJoin",
-            cascadeName: $cascadeName,
-        );
-
-        return $this;
-    }
-
-
-    protected function cascadeRightJoinOrderDetailsModel(?string $cascadeName = null)
-    {
-        $this->___join(
-            joinTableName: "order_details",
-            joinMethod: "rightJoin",
-            cascadeName: $cascadeName,
-        );
-
-        return $this;
-    }
-
-
-    protected function cascadeInnerJoinOrderDetailsModel(?string $cascadeName = null)
-    {
-        $this->___join(
-            joinTableName: "order_details",
-            joinMethod: "innerJoin",
-            cascadeName: $cascadeName,
-        );
-
-        return $this;
-    }
+    
 
 
     function page(int $index, int $size, int | false | null &$pages = false)
@@ -466,29 +419,14 @@ abstract class AbstractProductsModel extends ModelContext
 			&$name = false,
 			&$description = false,
 			&$price = false,
-			&$created_at = false)
+			&$created_at = false, &...$anyProps)
     {
         $this->___row(...[
 			'id' => &$id,
 			'name' => &$name,
 			'description' => &$description,
 			'price' => &$price,
-			'created_at' => &$created_at]);
+			'created_at' => &$created_at, ...$anyProps]);
         return $this->___fetchRow();
-
-        /*
-        $_cijcbb32ojsallk4ms = $this->sel(...$this->requestFilter->filter([
-			'id' => &$id,
-			'name' => &$name,
-			'description' => &$description,
-			'price' => &$price,
-			'created_at' => &$created_at], false, 1))->fetch();
-
-        if ($_cijcbb32ojsallk4ms)
-            foreach ($_cijcbb32ojsallk4ms as $_jjfj23i2nnm2nm3nm4 => $_jjjfjij2i2i3j4nnvkxjlkjd) {
-                $$_jjfj23i2nnm2nm3nm4 = $_jjjfjij2i2i3j4nnvkxjlkjd;
-            }
-
-        */
     }
 }
