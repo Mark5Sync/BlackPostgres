@@ -150,13 +150,6 @@ abstract class ___abstract_class___ extends Model //class
 
 
 
-    function ___get($name)
-    {
-        $this->___applyOperator($name);
-
-        return $this;
-    }
-
 
     //JOIN
 

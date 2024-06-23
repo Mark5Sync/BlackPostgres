@@ -32,26 +32,6 @@ class GenerateJoins
 
 
         $result = [];
-        foreach ($config->relations as $tableName => $colls) {
-            $className = $config->getClassName($tableName);
-
-            foreach (static::$joins as $join) {
-                $topJoin = ucfirst($join);
-                $result[] = <<<PHP
-                    protected function cascade{$topJoin}{$className}(?string \$cascadeName = null)
-                    {
-                        \$this->___join(
-                            joinTableName: "$tableName",
-                            joinMethod: "$join",
-                            cascadeName: \$cascadeName,
-                        );
-
-                        return \$this;
-                    }
-                PHP;
-            }
-        }
-
 
         $resultStr = implode("\n\n\n", $result);
         return $resultStr;
@@ -79,6 +59,7 @@ class GenerateJoins
             foreach (static::$joins as $join) {
                 $result[] = <<<PHP
                 * @property-read \\$config->modelNamespace\\$className \${$join}{$className}
+                * @method \\$config->modelNamespace\\$className {$join}{$className}(string \$name, ?int \$limit = null)
                 PHP;
             }
 

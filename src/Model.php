@@ -13,7 +13,8 @@ abstract class Model extends Connection
     protected string $currentShort = 'no_class';
     public string $tableName;
     private ?string $joinTableName = null;
-    private ?string $cascadeName   = null;
+    private array $cascade = [];
+    private array $cascades = [];
     protected ?array $relationShema = null;
 
     private array $applyJoin = [];
@@ -29,28 +30,47 @@ abstract class Model extends Connection
     }
 
 
-    function __invoke(?string $collName = null, ?string $as = null)
+    function __invoke(?string $collName = null, string | false | null $as = null)
     {
         $table = $this->joinTableName ? $this->joinTableName : $this->tableName;
 
         if (!$collName)
             return $table;
 
+        if ($as !== false)
+            if (!empty($this->cascade)) {
+                $cascadeName = implode('/', $this->cascade);
+                $as = "__cascade__{$cascadeName}/" . ($as ? "{$as}" : "{$collName}");
+            }
+
         return "{$table}.{$collName}" . ($as ? " as $as" : '');
     }
 
 
+    function ___get($name)
+    {
+        $this->___applyOperator($name);
+
+        return $this;
+    }
 
 
+    function __call($name, $props)
+    {
+        $this->___applyOperator($name, $props);
 
-    protected function ___applyOperator(string $name)
+        return $this;
+    }
+
+
+    protected function ___applyOperator(string $name, ?array $props = null)
     {
 
         [$joinMethod, $className] = explode('Join', $name);
         $table = $this();
 
         if (isset($this->relationShema[$table][$className]))
-            return $this->___join($className, "{$joinMethod}Join");
+            return $this->___join($className, "{$joinMethod}Join", $props);
 
         throw new \Exception("fall apply operator [$name]", 1);
     }
@@ -133,11 +153,11 @@ abstract class Model extends Connection
 
 
 
-    protected function ___join(string $joinShortClassName, string $joinMethod, ?string $cascadeName = null)
+    protected function ___join(string $joinShortClassName, string $joinMethod, ?array $props = null)
     {
         if ($this->currentShort == $joinShortClassName) {
             $this->joinTableName = null;
-            $this->cascadeName   = null;
+            $this->cascade = array_slice($this->cascade, 0, -1);
             return;
         }
 
@@ -148,8 +168,10 @@ abstract class Model extends Connection
         ] = $this->relationShema[$this()][$joinShortClassName];
 
 
+
+
         if (!isset($this->applyJoin[$joinShortClassName])) {
-            $joinColl = $this($coll);
+            $joinColl = $this($coll, false);
             $joinReference = "$joinTableName.{$referenced}";
 
             $this->getModel()->{$joinMethod}($joinTableName, function ($join) use ($joinColl, $joinReference) {
@@ -161,15 +183,16 @@ abstract class Model extends Connection
 
 
         $this->joinTableName = $joinTableName;
-        $this->cascadeName   = $cascadeName;
+
+
+        if ($props) {
+            [$cascade, $cascadeLimit] = [...$props, null];
+            $this->cascade[] = $cascade;
+        }
     }
 
 
 
-
-    protected function ___joinCascadeArray(Model $model, ?string $cascadeName = null)
-    {
-    }
 
 
 
@@ -237,13 +260,62 @@ abstract class Model extends Connection
 
 
     /** RESET MODEL WRAPPER */
-    private function RMW($result)
+    private function RMW(array $result)
     {
         $this->resetModel();
         return $result;
     }
 
 
+    private function cascadeHandleResult($data, $isTable = false)
+    {
+        if (empty($this->cascade))
+            return $data;
+
+
+
+        $nullableEssences = [];
+
+
+        $result = [];
+
+        foreach ($isTable ? $data : [$data] as $index => $row) {
+
+            foreach ($row as $key => $value) {
+                if (!str_starts_with($key, '__cascade__')){
+                    $result[$index][$key] = $value;
+                    continue;
+                }
+                    
+                $key = substr($key, 11);
+                if (is_null($value)) {
+                    $nullableEssences[] = $key;
+                    continue;
+                }
+
+                $breadcrubs = explode('/', $key);
+
+                $to = &$result[$index];
+                foreach ($breadcrubs as $breadcrub) {
+                    if (!isset($to[$breadcrub]))
+                        $to[$breadcrub] = [];
+
+                    $to = &$to[$breadcrub];
+                }
+
+                $to = $value;
+            }
+        }
+
+        if (!empty($nullableEssences)) {
+            foreach ($nullableEssences as $nullableKey) {
+                unset($result[$nullableKey]); // = null;
+            }
+        }
+
+
+        return $isTable ? $result : $result[0];
+    }
 
 
     function fetch()
@@ -253,14 +325,14 @@ abstract class Model extends Connection
         if (!$result)
             return null;
 
-        return $this->RMW($result->toArray());
+        return $this->RMW($this->cascadeHandleResult($result->toArray()));
     }
 
 
     function fetchAll()
     {
         $this->bindQuery();
-        return $this->RMW($this->getModel()->get()->toArray());
+        return $this->RMW($this->cascadeHandleResult($this->getModel()->get()->toArray(), true));
     }
 
     function toSql()
@@ -341,6 +413,5 @@ abstract class Model extends Connection
     function delete()
     {
         return $this->RMW($this->getModel()->delete());
-
     }
 }
