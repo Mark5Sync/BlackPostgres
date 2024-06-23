@@ -6,7 +6,6 @@ use blackpostgres\_markers\pgsystem;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
 use marksync\provider\NotMark;
 
 #[NotMark]
