@@ -18,12 +18,27 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 * @property-read \testapp\models\OrdersModel $innerJoinOrdersModel
 * @method \testapp\models\OrdersModel innerJoinOrdersModel(string $name, ?string $groupBy = null, ?int $limit = null)
 * ------- 
+* promocode 
+* @property-read \testapp\models\PromocodeModel $otherJoinPromocodeModel
+* @method \testapp\models\PromocodeModel otherJoinPromocodeModel(string $name, ?string $groupBy = null, ?int $limit = null)
+* @property-read \testapp\models\PromocodeModel $leftJoinPromocodeModel
+* @method \testapp\models\PromocodeModel leftJoinPromocodeModel(string $name, ?string $groupBy = null, ?int $limit = null)
+* @property-read \testapp\models\PromocodeModel $rightJoinPromocodeModel
+* @method \testapp\models\PromocodeModel rightJoinPromocodeModel(string $name, ?string $groupBy = null, ?int $limit = null)
+* @property-read \testapp\models\PromocodeModel $innerJoinPromocodeModel
+* @method \testapp\models\PromocodeModel innerJoinPromocodeModel(string $name, ?string $groupBy = null, ?int $limit = null)
+* ------- 
 * */
 abstract class AbstractUsersModel extends ModelContext
 {
     protected string $currentShort = 'UsersModel';
     protected ?array $relationship = array (
   'orders' => 
+  array (
+    'coll' => 'id',
+    'referenced' => 'user_id',
+  ),
+  'promocode' => 
   array (
     'coll' => 'id',
     'referenced' => 'user_id',

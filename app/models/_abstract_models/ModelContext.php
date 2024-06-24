@@ -20,6 +20,15 @@ abstract class ModelContext extends Model
         'referenced' => 'user_id',
       ),
     ),
+    'PromocodeModel' => 
+    array (
+      'joinTableName' => 'promocode',
+      'joinColls' => 
+      array (
+        'coll' => 'id',
+        'referenced' => 'user_id',
+      ),
+    ),
   ),
   'orders' => 
   array (
@@ -72,6 +81,18 @@ abstract class ModelContext extends Model
       array (
         'coll' => 'id',
         'referenced' => 'product_id',
+      ),
+    ),
+  ),
+  'promocode' => 
+  array (
+    'UsersModel' => 
+    array (
+      'joinTableName' => 'users',
+      'joinColls' => 
+      array (
+        'coll' => 'user_id',
+        'referenced' => 'id',
       ),
     ),
   ),
