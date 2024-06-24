@@ -10,13 +10,13 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 /**
 * order_details 
 * @property-read \testapp\models\OrderDetailsModel $otherJoinOrderDetailsModel
-* @method \testapp\models\OrderDetailsModel otherJoinOrderDetailsModel(string $name, ?int $limit = null)
+* @method \testapp\models\OrderDetailsModel otherJoinOrderDetailsModel(string $name, ?string $groupBy = null, ?int $limit = null)
 * @property-read \testapp\models\OrderDetailsModel $leftJoinOrderDetailsModel
-* @method \testapp\models\OrderDetailsModel leftJoinOrderDetailsModel(string $name, ?int $limit = null)
+* @method \testapp\models\OrderDetailsModel leftJoinOrderDetailsModel(string $name, ?string $groupBy = null, ?int $limit = null)
 * @property-read \testapp\models\OrderDetailsModel $rightJoinOrderDetailsModel
-* @method \testapp\models\OrderDetailsModel rightJoinOrderDetailsModel(string $name, ?int $limit = null)
+* @method \testapp\models\OrderDetailsModel rightJoinOrderDetailsModel(string $name, ?string $groupBy = null, ?int $limit = null)
 * @property-read \testapp\models\OrderDetailsModel $innerJoinOrderDetailsModel
-* @method \testapp\models\OrderDetailsModel innerJoinOrderDetailsModel(string $name, ?int $limit = null)
+* @method \testapp\models\OrderDetailsModel innerJoinOrderDetailsModel(string $name, ?string $groupBy = null, ?int $limit = null)
 * ------- 
 * */
 abstract class AbstractProductsModel extends ModelContext

@@ -10,13 +10,13 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 /**
 * orders 
 * @property-read \testapp\models\OrdersModel $otherJoinOrdersModel
-* @method \testapp\models\OrdersModel otherJoinOrdersModel(string $name, ?int $limit = null)
+* @method \testapp\models\OrdersModel otherJoinOrdersModel(string $name, ?string $groupBy = null, ?int $limit = null)
 * @property-read \testapp\models\OrdersModel $leftJoinOrdersModel
-* @method \testapp\models\OrdersModel leftJoinOrdersModel(string $name, ?int $limit = null)
+* @method \testapp\models\OrdersModel leftJoinOrdersModel(string $name, ?string $groupBy = null, ?int $limit = null)
 * @property-read \testapp\models\OrdersModel $rightJoinOrdersModel
-* @method \testapp\models\OrdersModel rightJoinOrdersModel(string $name, ?int $limit = null)
+* @method \testapp\models\OrdersModel rightJoinOrdersModel(string $name, ?string $groupBy = null, ?int $limit = null)
 * @property-read \testapp\models\OrdersModel $innerJoinOrdersModel
-* @method \testapp\models\OrdersModel innerJoinOrdersModel(string $name, ?int $limit = null)
+* @method \testapp\models\OrdersModel innerJoinOrdersModel(string $name, ?string $groupBy = null, ?int $limit = null)
 * ------- 
 * */
 abstract class AbstractUsersModel extends ModelContext

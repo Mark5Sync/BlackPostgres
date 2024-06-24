@@ -14,7 +14,7 @@ abstract class Model extends Connection
     public string $tableName;
     private ?string $joinTableName = null;
     private array $cascade = [];
-    private array $cascades = [];
+    private array $cascadeProps = [];
     protected ?array $relationShema = null;
 
     private array $applyJoin = [];
@@ -162,6 +162,18 @@ abstract class Model extends Connection
         }
 
 
+        if ($props) {
+            ['0' => $cascade, 'limit' => $limit, 'groupBy' => $groupBy] = ['limit' => null, 'groupBy' => null, ...$props];
+            $this->cascade[] = $cascade;
+            $this->cascadeProps[implode('/', $this->cascade)] = [
+                'limit' => $limit,
+                'groupBy' => $groupBy,
+            ];
+        }
+
+
+
+
         [
             'joinTableName' => $joinTableName,
             'joinColls' => ['coll' => $coll, 'referenced' => $referenced],
@@ -183,12 +195,6 @@ abstract class Model extends Connection
 
 
         $this->joinTableName = $joinTableName;
-
-
-        if ($props) {
-            [$cascade, $cascadeLimit] = [...$props, null];
-            $this->cascade[] = $cascade;
-        }
     }
 
 
@@ -260,7 +266,7 @@ abstract class Model extends Connection
 
 
     /** RESET MODEL WRAPPER */
-    private function RMW(array $result)
+    private function RMW($result)
     {
         $this->resetModel();
         return $result;
@@ -282,11 +288,11 @@ abstract class Model extends Connection
         foreach ($isTable ? $data : [$data] as $index => $row) {
 
             foreach ($row as $key => $value) {
-                if (!str_starts_with($key, '__cascade__')){
+                if (!str_starts_with($key, '__cascade__')) {
                     $result[$index][$key] = $value;
                     continue;
                 }
-                    
+
                 $key = substr($key, 11);
                 if (is_null($value)) {
                     $nullableEssences[] = $key;
@@ -294,6 +300,7 @@ abstract class Model extends Connection
                 }
 
                 $breadcrubs = explode('/', $key);
+                // $cascadeProps = $this->cascadeProps[implode('/', array_slice($breadcrubs, 0, -1))] ?? null;
 
                 $to = &$result[$index];
                 foreach ($breadcrubs as $breadcrub) {

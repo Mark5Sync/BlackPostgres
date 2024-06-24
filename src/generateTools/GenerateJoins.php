@@ -59,7 +59,7 @@ class GenerateJoins
             foreach (static::$joins as $join) {
                 $result[] = <<<PHP
                 * @property-read \\$config->modelNamespace\\$className \${$join}{$className}
-                * @method \\$config->modelNamespace\\$className {$join}{$className}(string \$name, ?int \$limit = null)
+                * @method \\$config->modelNamespace\\$className {$join}{$className}(string \$name, ?string \$groupBy = null, ?int \$limit = null)
                 PHP;
             }
 

@@ -20,7 +20,7 @@ new class
 
         $result = $this->usersModel
                 ->sel(username: 1, email: 1)
-            ->leftJoinOrdersModel('order')
+            ->leftJoinOrdersModel('order', groupBy: 'email')
                 ->sel(id: 1, status: 1)
             ->leftJoinOrderDetailsModel('detail')
                 ->sel(product_id: 1, quantity: 1, price: 1)
