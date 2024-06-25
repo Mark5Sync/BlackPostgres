@@ -131,7 +131,7 @@ abstract class Model extends Connection
 
         if ($schema) {
             $schema = str_replace('@', $this() . '.', $schema);
-            $this->querySchema->add('whereRaw', $raw);
+            $this->querySchema->add('whereRaw', [$schema, $raw]);
         }
     }
 

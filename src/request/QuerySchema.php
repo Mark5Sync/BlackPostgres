@@ -44,8 +44,14 @@ class QuerySchema
                     $model->selectRaw(...$data);
                     break;
 
+
+
                 case 'where':
                     $model->where(...$data);
+                    break;
+
+                case 'whereRaw';
+                    $model->whereRaw(...$data);
                     break;
 
 
@@ -69,6 +75,7 @@ class QuerySchema
                     $this->join($model, $joinMethod, $joinModel->tableName, $props);
                     $joinModel->querySchema->build($model);
                     break;
+
 
 
                 default:
