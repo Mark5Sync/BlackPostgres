@@ -17,17 +17,11 @@ new class
     {
 
 
-        $result = $this->usersModel
-            ->sel(username: 1, email: 1)
-            ->join(
-                orders: $this->ordersModel->selectAs(status: 'статус'),
-                promocode: $this->promocodeModel->sel(url: 1)->where(url: 'c99a'),
-            )
-            ->fetchAll();
+        $this->usersModel->fetchRow(username: $user);
 
 
 
-        print_r($result);
+        print_r($user);
         echo "\n\n";
     }
 };

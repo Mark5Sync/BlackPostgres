@@ -408,7 +408,7 @@ abstract class Model extends Connection
     protected function ___fetchRow()
     {
         $colls = array_column($this->row, 'raw');
-        $this->getModel()->select(...$colls);
+        $this->___sel(implode(', ', $colls), []);
 
         $data = $this->fetch();
 
