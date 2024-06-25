@@ -211,4 +211,14 @@ abstract class ___abstract_class___ extends Model //class
         $this->___row(...[$___restruct_bind___]);
         return $this->___fetchRow();
     }
+
+
+
+    function cascade(string $name)
+    {
+
+        $this->___cascade($name);
+
+        return $this;
+    }
 }

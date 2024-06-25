@@ -324,6 +324,9 @@ abstract class AbstractProductsModel extends ModelContext
                     'referenced' => $model($referenced),
                 ]
             ]);
+
+
+            $this->cascadeController->setParent($model->tableName, $this->tableName);
         }
     }
 
@@ -481,5 +484,15 @@ abstract class AbstractProductsModel extends ModelContext
 			'price' => &$price,
 			'created_at' => &$created_at]);
         return $this->___fetchRow();
+    }
+
+
+
+    function cascade(string $name)
+    {
+
+        $this->___cascade($name);
+
+        return $this;
     }
 }

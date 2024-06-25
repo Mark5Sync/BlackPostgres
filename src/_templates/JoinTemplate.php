@@ -43,6 +43,9 @@ abstract class JOIN extends Model
                     'referenced' => $model($referenced),
                 ]
             ]);
+
+
+            $this->cascadeController->setParent($model->tableName, $this->tableName);
         }
     }
 

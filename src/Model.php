@@ -16,9 +16,7 @@ abstract class Model extends Connection
     protected string $currentShort = 'no_class';
     public string $tableName;
     private ?string $joinTableName = null;
-    private array $cascade = [];
-    private array $cascadeProps = [];
-    protected ?array $relationShema = null;
+    private ?string $cascade = null;
 
     private array $applyJoin = [];
 
@@ -33,66 +31,64 @@ abstract class Model extends Connection
     }
 
 
-    function __invoke(?string $collName = null, string | false | null $as = null)
+    function __invoke(?string $collName = null, string | false | null $as = null, bool $useCascade = false)
     {
         $table = $this->joinTableName ? $this->joinTableName : $this->tableName;
 
         if (!$collName)
             return $table;
 
-        if ($as !== false)
-            if (!empty($this->cascade)) {
-                $cascadeName = implode('/', $this->cascade);
-                $as = "__cascade__{$cascadeName}/" . ($as ? "{$as}" : "{$collName}");
-            }
+        if ($useCascade && $this->cascade)
+            $as = "$this->cascade/" . ($as ? "{$as}" : "{$collName}");
+
 
         return "{$table}.{$collName}" . ($as ? " as $as" : '');
     }
 
 
-    function ___get($name)
+    function ___cascade(string $name)
     {
-        $this->___applyOperator($name);
-
-        return $this;
+        $alias = $this->cascadeController->add($this, $name);
+        $this->cascade = $alias;
     }
 
+    // function ___get($name)
+    // {
+    //     $this->___applyOperator($name);
 
-    function __call($name, $props)
-    {
-        $this->___applyOperator($name, $props);
-
-        return $this;
-    }
+    //     return $this;
+    // }
 
 
-    protected function ___applyOperator(string $name, ?array $props = null)
-    {
-        [$joinMethod, $className] = explode('Join', $name);
-        $table = $this();
+    // function __call($name, $props)
+    // {
+    //     $this->___applyOperator($name, $props);
 
-        if (isset($this->relationShema[$table][$className]))
-            return $this->___join($className, "{$joinMethod}Join", $props);
+    //     return $this;
+    // }
 
-        throw new \Exception("fall apply operator [$name]", 1);
-    }
+
+    // protected function ___applyOperator(string $name, ?array $props = null)
+    // {
+    //     [$joinMethod, $className] = explode('Join', $name);
+    //     $table = $this();
+
+    //     if (isset($this->relationShema[$table][$className]))
+    //         return $this->___join($className, "{$joinMethod}Join", $props);
+
+    //     throw new \Exception("fall apply operator [$name]", 1);
+    // }
 
 
 
     protected function ___sel(?string $schema, array $props)
     {
         if ($schema) {
-            $schema = str_replace('@', $this() . '.', $schema);
+            $schema = str_replace('@', $this(useCascade: true) . '.', $schema);
             $this->querySchema->add('selectRaw', [$schema, array_values($props)]);
-
-            // $this->getModel()->selectRaw($schema, array_values($props));
         } else {
-            $colls = array_map(fn ($coll) => $this($coll), array_keys($props));
+            $colls = array_map(fn ($coll) => $this($coll, useCascade: true), array_keys($props));
             $this->querySchema->add('select', $colls);
-
-            // $this->getModel()->addSelect(
-            //     ...$colls
-            // );
         }
     }
 
@@ -103,14 +99,10 @@ abstract class Model extends Connection
         $colls = [];
 
         foreach ($props as $select => $selectAs) {
-            $colls[] = $this($select) . ' AS ' . $selectAs;
+            $colls[] = $this($select, false, useCascade: true) . ' AS ' . $selectAs;
         }
 
         $this->querySchema->add('select', $colls);
-
-        // $this->getModel()->addSelect(
-        //     ...$colls
-        // );
     }
 
 
@@ -124,7 +116,6 @@ abstract class Model extends Connection
         }
 
 
-        // $model = $this->getModel();
         $raw = [];
         foreach (array_keys($props) as $index => $coll) {
             if (!$schema)
@@ -134,19 +125,12 @@ abstract class Model extends Connection
                     $props[$coll]
                 ]);
 
-            // $model->where(
-            //     $this($coll),
-            //     $comparisonOperator,
-            //     $props[$coll]
-            // );
-
 
             $raw[] = $props[$coll];
         }
 
         if ($schema) {
             $schema = str_replace('@', $this() . '.', $schema);
-            // $model->whereRaw($schema, $raw);
             $this->querySchema->add('whereRaw', $raw);
         }
     }
@@ -154,69 +138,17 @@ abstract class Model extends Connection
 
     protected function ___in(array $props, bool $notIn = false)
     {
-        // $model = $this->getModel();
-
         foreach ($props as $coll => $value) {
             $this->querySchema->add($notIn ? 'wheteNotIn' : 'wheteIn', [$coll, $value]);
-
-            // if ($notIn)
-            //     $model->wheteNotIn($coll, $value);
-            // else
-            //     $model->wheteIn($coll, $value);
         }
     }
 
 
 
 
-    // protected function ___join(string $joinShortClassName, string $joinMethod, ?array $props = null)
     protected function ___join(array $props)
     {
-        // $this->getModel()->{$joinMethod}($joinTableName, function ($join) use ($joinColl, $joinReference) {
-        //     $join->on($joinColl, '=', $joinReference);
-        // });
         $this->querySchema->add('join', $props);
-
-        // if ($this->currentShort == $joinShortClassName) {
-        //     $this->joinTableName = null;
-        //     $this->cascade = array_slice($this->cascade, 0, -1);
-        //     return;
-        // }
-
-
-        // if ($props) {
-        //     ['0' => $cascade, 'limit' => $limit, 'groupBy' => $groupBy] = ['limit' => null, 'groupBy' => null, ...$props];
-        //     $this->cascade[] = $cascade;
-        //     $this->cascadeProps[implode('/', $this->cascade)] = [
-        //         'limit' => $limit,
-        //         'groupBy' => $groupBy,
-        //     ];
-        // }
-
-
-
-
-        // [
-        //     'joinTableName' => $joinTableName,
-        //     'joinColls' => ['coll' => $coll, 'referenced' => $referenced],
-        // ] = $this->relationShema[$this()][$joinShortClassName];
-
-
-
-
-        // if (!isset($this->applyJoin[$joinShortClassName])) {
-        //     $joinColl = $this($coll, false);
-        //     $joinReference = "$joinTableName.{$referenced}";
-
-        //     $this->getModel()->{$joinMethod}($joinTableName, function ($join) use ($joinColl, $joinReference) {
-        //         $join->on($joinColl, '=', $joinReference);
-        //     });
-
-        //     $this->applyJoin[$joinShortClassName] = true;
-        // }
-
-
-        // $this->joinTableName = $joinTableName;
     }
 
 
@@ -226,14 +158,12 @@ abstract class Model extends Connection
 
     protected function ___limit(int $limit)
     {
-        // $this->getModel()->limit($limit);
         $this->querySchema->add('limit', $limit);
     }
 
 
     protected function ___offset(int $offset)
     {
-        // $this->getModel()->offset($offset);
         $this->querySchema->add('offset', $offset);
     }
 
@@ -242,32 +172,14 @@ abstract class Model extends Connection
     {
         $props = array_map(fn ($coll) => $this($coll), array_keys($colls));
         $this->querySchema->add("orderBy$orderType", $props);
-
-        // switch ($orderType) {
-        //     case 'ASC':
-        //         $this->getModel()->orderByAsc(...$props);
-        //         break;
-
-        //     case 'DESC':
-        //         $this->getModel()->orderByDesc(...$props);
-        //         break;
-
-        //     default:
-        //         throw new \Exception("Неизвестный тип orderBy [$orderType]", 1);
-        // }
     }
 
     protected function ___groupBy(array $props)
     {
         $row = array_map(fn ($coll) => $this($coll), array_keys($props));
         $this->querySchema->add("groupByRaw", $props);
-        // $this->getModel()->groupByRaw(implode(',', $row));
     }
 
-    // protected function ___in()
-    // {
-    //     $this->getModel()->whereIn('name', ['masha', 'natasha']);
-    // }
 
     function query(?string &$query)
     {
@@ -285,62 +197,10 @@ abstract class Model extends Connection
     private function RMW($result)
     {
         $this->querySchema->reset();
-
-        // $this->resetModel();
         return $result;
     }
 
 
-    private function cascadeHandleResult($data, $isTable = false)
-    {
-        if (empty($this->cascade))
-            return $data;
-
-
-
-        $nullableEssences = [];
-
-
-        $result = [];
-
-        foreach ($isTable ? $data : [$data] as $index => $row) {
-
-            foreach ($row as $key => $value) {
-                if (!str_starts_with($key, '__cascade__')) {
-                    $result[$index][$key] = $value;
-                    continue;
-                }
-
-                $key = substr($key, 11);
-                if (is_null($value)) {
-                    $nullableEssences[] = $key;
-                    continue;
-                }
-
-                $breadcrubs = explode('/', $key);
-                // $cascadeProps = $this->cascadeProps[implode('/', array_slice($breadcrubs, 0, -1))] ?? null;
-
-                $to = &$result[$index];
-                foreach ($breadcrubs as $breadcrub) {
-                    if (!isset($to[$breadcrub]))
-                        $to[$breadcrub] = [];
-
-                    $to = &$to[$breadcrub];
-                }
-
-                $to = $value;
-            }
-        }
-
-        if (!empty($nullableEssences)) {
-            foreach ($nullableEssences as $nullableKey) {
-                unset($result[$nullableKey]); // = null;
-            }
-        }
-
-
-        return $isTable ? $result : $result[0];
-    }
 
 
     private function buildModel()
@@ -351,7 +211,7 @@ abstract class Model extends Connection
 
         if (is_null($this->query))
             $this->query = $model->toSql();
-            
+
 
         return $model;
     }
@@ -363,13 +223,13 @@ abstract class Model extends Connection
         if (!$result)
             return null;
 
-        return $this->RMW($this->cascadeHandleResult($result->toArray()));
+        return $this->RMW($this->cascadeController->handleResult($this->tableName, $result->toArray()));
     }
 
 
     function fetchAll()
     {
-        return $this->RMW($this->cascadeHandleResult($this->buildModel()->get()->toArray(), true));
+        return $this->RMW($this->cascadeController->handleResult($this->tableName, $this->buildModel()->get()->toArray(), true));
     }
 
     function toSql()
@@ -408,7 +268,6 @@ abstract class Model extends Connection
         $data = $this->fetch();
 
         foreach ($this->rowSelect->getBinds() as $coll => &$prop) {
-        // foreach ($this->row as $coll => ['bind' => &$prop]) {
             $prop = $data[$coll];
         }
 

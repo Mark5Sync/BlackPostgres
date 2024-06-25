@@ -299,6 +299,9 @@ abstract class AbstractOrdersModel extends ModelContext
                     'referenced' => $model($referenced),
                 ]
             ]);
+
+
+            $this->cascadeController->setParent($model->tableName, $this->tableName);
         }
     }
 
@@ -446,5 +449,15 @@ abstract class AbstractOrdersModel extends ModelContext
 			'created_at' => &$created_at,
 			'status' => &$status]);
         return $this->___fetchRow();
+    }
+
+
+
+    function cascade(string $name)
+    {
+
+        $this->___cascade($name);
+
+        return $this;
     }
 }
