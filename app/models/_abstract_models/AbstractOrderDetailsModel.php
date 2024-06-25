@@ -7,28 +7,7 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 
 
-/**
-* orders 
-* @property-read \testapp\models\OrdersModel $otherJoinOrdersModel
-* @method \testapp\models\OrdersModel otherJoinOrdersModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\OrdersModel $leftJoinOrdersModel
-* @method \testapp\models\OrdersModel leftJoinOrdersModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\OrdersModel $rightJoinOrdersModel
-* @method \testapp\models\OrdersModel rightJoinOrdersModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\OrdersModel $innerJoinOrdersModel
-* @method \testapp\models\OrdersModel innerJoinOrdersModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* ------- 
-* products 
-* @property-read \testapp\models\ProductsModel $otherJoinProductsModel
-* @method \testapp\models\ProductsModel otherJoinProductsModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\ProductsModel $leftJoinProductsModel
-* @method \testapp\models\ProductsModel leftJoinProductsModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\ProductsModel $rightJoinProductsModel
-* @method \testapp\models\ProductsModel rightJoinProductsModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\ProductsModel $innerJoinProductsModel
-* @method \testapp\models\ProductsModel innerJoinProductsModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* ------- 
-* */
+
 abstract class AbstractOrderDetailsModel extends ModelContext
 {
     protected string $currentShort = 'OrderDetailsModel';
@@ -66,14 +45,14 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			bool $order_id = false,
 			bool $product_id = false,
 			bool $quantity = false,
-			bool $price = false, ...$anyProps)
+			bool $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
 			'quantity' => $quantity,
-			'price' => $price, ...$anyProps], false);
+			'price' => $price], false);
         $this->___sel($_, $props);
         return $this;
     }
@@ -83,14 +62,14 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			false | string $order_id = false,
 			false | string $product_id = false,
 			false | string $quantity = false,
-			false | string $price = false, ...$anyProps)
+			false | string $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
 			'quantity' => $quantity,
-			'price' => $price, ...$anyProps], false);
+			'price' => $price], false);
         $this->___selectAs($props);
         return $this;
     }
@@ -110,14 +89,14 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			false | string $order_id = false,
 			false | string $product_id = false,
 			false | string $quantity = false,
-			false | string $price = false, ...$anyProps)
+			false | string $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
 			'quantity' => $quantity,
-			'price' => $price, ...$anyProps], false);
+			'price' => $price], false);
         $this->___where('like', $props);
         return $this;
     }
@@ -127,14 +106,14 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			false | string $order_id = false,
 			false | string $product_id = false,
 			false | string $quantity = false,
-			false | string $price = false, ...$anyProps)
+			false | string $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
 			'quantity' => $quantity,
-			'price' => $price, ...$anyProps], false);
+			'price' => $price], false);
         $this->___where('regexp', $props);
         return $this;
     }
@@ -144,14 +123,14 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			false | array $order_id = false,
 			false | array $product_id = false,
 			false | array $quantity = false,
-			false | array $price = false, ...$anyProps)
+			false | array $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
 			'quantity' => $quantity,
-			'price' => $price, ...$anyProps], false);
+			'price' => $price], false);
         $this->___in($props);
         return $this;
     }
@@ -161,14 +140,14 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			false | array $order_id = false,
 			false | array $product_id = false,
 			false | array $quantity = false,
-			false | array $price = false, ...$anyProps)
+			false | array $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
 			'quantity' => $quantity,
-			'price' => $price, ...$anyProps], false);
+			'price' => $price], false);
         $this->___in($props, true);
         return $this;
     }
@@ -180,14 +159,14 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			bool $order_id = false,
 			bool $product_id = false,
 			bool $quantity = false,
-			bool $price = false, ...$anyProps)
+			bool $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
 			'quantity' => $quantity,
-			'price' => $price, ...$anyProps], false);
+			'price' => $price], false);
         $this->___where('IS', $props);
         return $this;
     }
@@ -197,14 +176,14 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			bool $order_id = false,
 			bool $product_id = false,
 			bool $quantity = false,
-			bool $price = false, ...$anyProps)
+			bool $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
 			'quantity' => $quantity,
-			'price' => $price, ...$anyProps], false);
+			'price' => $price], false);
         $this->___where('IS NOT', $props);
         return $this;
     }
@@ -220,14 +199,14 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			 false | int $order_id = false,
 			 false | int $product_id = false,
 			 false | int $quantity = false,
-			 false | int $price = false, ...$anyProps)
+			 false | int $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
 			'quantity' => $quantity,
-			'price' => $price, ...$anyProps], false);
+			'price' => $price], false);
         $this->___where($_, $props);
         return $this;
     }
@@ -237,14 +216,14 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			false | string $order_id = false,
 			false | string $product_id = false,
 			false | string $quantity = false,
-			false | string $price = false, ...$anyProps)
+			false | string $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
 			'quantity' => $quantity,
-			'price' => $price, ...$anyProps], false);
+			'price' => $price], false);
         $this->___where($_, $props);
         return $this;
     }
@@ -257,14 +236,14 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			 false | int $order_id = false,
 			 false | int $product_id = false,
 			 false | int $quantity = false,
-			 false | int $price = false, ...$anyProps)
+			 false | int $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
 			'quantity' => $quantity,
-			'price' => $price, ...$anyProps], false);
+			'price' => $price], false);
         return $this->___update($props);
     }
 
@@ -273,14 +252,14 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			 false | int $order_id = false,
 			 false | int $product_id = false,
 			 false | int $quantity = false,
-			 false | int $price = false, ...$anyProps)
+			 false | int $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
 			'quantity' => $quantity,
-			'price' => $price, ...$anyProps], false);
+			'price' => $price], false);
         return $this->___insert($props);
     }
 
@@ -289,14 +268,14 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			 false | int $order_id = false,
 			 false | int $product_id = false,
 			 false | int $quantity = false,
-			 false | int $price = false, ...$anyProps)
+			 false | int $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
 			'quantity' => $quantity,
-			'price' => $price, ...$anyProps], false);
+			'price' => $price], false);
         return $this->___insertOrIgnore($props);
     }
 
@@ -305,35 +284,100 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			 false | int $order_id = false,
 			 false | int $product_id = false,
 			 false | int $quantity = false,
-			 false | int $price = false, ...$anyProps)
+			 false | int $price = false)
     {
         $insertProps = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
 			'quantity' => $quantity,
-			'price' => $price, ...$anyProps], false);
+			'price' => $price], false);
 
         return function (
 			 false | int $id = false,
 			 false | int $order_id = false,
 			 false | int $product_id = false,
 			 false | int $quantity = false,
-			 false | int $price = false, ...$anyProps) use ($insertProps) {
+			 false | int $price = false) use ($insertProps) {
             $keysProps = $this->requestFilter->filter([
 			'id' => $id,
 			'order_id' => $order_id,
 			'product_id' => $product_id,
 			'quantity' => $quantity,
-			'price' => $price, ...$anyProps], false);
+			'price' => $price], false);
             return $this->___updateOrInsert($insertProps, $keysProps);
         };
     }
 
+    
 
+    private function joins($joinMethod, $models)
+    {
+        $table = $this();
+
+        foreach ($models as $joinTable => $model) {
+            if (!isset($this->relationShema[$table][$joinTable]))
+                throw new \Exception("Нет отношений ($table - $joinTable)", 1);
+
+            ['coll' => $coll, 'referenced' => $referenced] = $this->relationShema[$table][$joinTable];
+
+            $this->___join([
+                'model' => $model,
+                'joinMethod' => $joinMethod,
+                'props' => [
+                    'coll' => $this($coll),
+                    'referenced' => $model($referenced),
+                ]
+            ]);
+        }
+    }
+
+
+    function join(?Model $orders = null, ?Model $products = null)
+    {
+        $models = $this->requestFilter->filter(['orders' => $orders, 'products' => $products], null);
+        $this->joins('leftJoin', $models);
+
+        return $this;
+    }
+
+    function leftJoin(?Model $orders = null, ?Model $products = null)
+    {
+        $models = $this->requestFilter->filter(['orders' => $orders, 'products' => $products], null);
+        $this->joins('leftJoin', $models);
+
+        return $this;
+    }
+
+    function rightJoin(?Model $orders = null, ?Model $products = null)
+    {
+        $models = $this->requestFilter->filter(['orders' => $orders, 'products' => $products], null);
+        $this->joins('rightJoin', $models);
+
+        return $this;
+    }
+
+    function innerJoin(?Model $orders = null, ?Model $products = null)
+    {
+        $models = $this->requestFilter->filter(['orders' => $orders, 'products' => $products], null);
+        $this->joins('innerJoin', $models);
+
+        return $this;
+    }
+
+    function otherJoin(?Model $orders = null, ?Model $products = null)
+    {
+        $models = $this->requestFilter->filter(['orders' => $orders, 'products' => $products], null);
+        $this->joins('otherJoin', $models);
+
+        return $this;
+    }
 
 
     
+
+
+
 
 
     function page(int $index, int $size, int | false | null &$pages = false)
@@ -416,32 +460,31 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 			&$order_id = false,
 			&$product_id = false,
 			&$quantity = false,
-			&$price = false, &...$anyProps)
+			&$price = false)
     {
         $this->___row(...[
 			'id' => &$id,
 			'order_id' => &$order_id,
 			'product_id' => &$product_id,
 			'quantity' => &$quantity,
-			'price' => &$price, ...$anyProps]);
+			'price' => &$price]);
 
         return $this;
     }
-
 
     function fetchRow(
 			&$id = false,
 			&$order_id = false,
 			&$product_id = false,
 			&$quantity = false,
-			&$price = false, &...$anyProps)
+			&$price = false)
     {
         $this->___row(...[
 			'id' => &$id,
 			'order_id' => &$order_id,
 			'product_id' => &$product_id,
 			'quantity' => &$quantity,
-			'price' => &$price, ...$anyProps]);
+			'price' => &$price]);
         return $this->___fetchRow();
     }
 }

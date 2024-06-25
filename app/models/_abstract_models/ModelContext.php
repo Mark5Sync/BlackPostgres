@@ -11,89 +11,57 @@ abstract class ModelContext extends Model
     protected ?array $relationShema = array (
   'users' => 
   array (
-    'OrdersModel' => 
+    'orders' => 
     array (
-      'joinTableName' => 'orders',
-      'joinColls' => 
-      array (
-        'coll' => 'id',
-        'referenced' => 'user_id',
-      ),
+      'coll' => 'id',
+      'referenced' => 'user_id',
     ),
-    'PromocodeModel' => 
+    'promocode' => 
     array (
-      'joinTableName' => 'promocode',
-      'joinColls' => 
-      array (
-        'coll' => 'id',
-        'referenced' => 'user_id',
-      ),
+      'coll' => 'id',
+      'referenced' => 'user_id',
     ),
   ),
   'orders' => 
   array (
-    'UsersModel' => 
+    'users' => 
     array (
-      'joinTableName' => 'users',
-      'joinColls' => 
-      array (
-        'coll' => 'user_id',
-        'referenced' => 'id',
-      ),
+      'coll' => 'user_id',
+      'referenced' => 'id',
     ),
-    'OrderDetailsModel' => 
+    'order_details' => 
     array (
-      'joinTableName' => 'order_details',
-      'joinColls' => 
-      array (
-        'coll' => 'id',
-        'referenced' => 'order_id',
-      ),
+      'coll' => 'id',
+      'referenced' => 'order_id',
     ),
   ),
   'order_details' => 
   array (
-    'OrdersModel' => 
+    'orders' => 
     array (
-      'joinTableName' => 'orders',
-      'joinColls' => 
-      array (
-        'coll' => 'order_id',
-        'referenced' => 'id',
-      ),
+      'coll' => 'order_id',
+      'referenced' => 'id',
     ),
-    'ProductsModel' => 
+    'products' => 
     array (
-      'joinTableName' => 'products',
-      'joinColls' => 
-      array (
-        'coll' => 'product_id',
-        'referenced' => 'id',
-      ),
+      'coll' => 'product_id',
+      'referenced' => 'id',
     ),
   ),
   'products' => 
   array (
-    'OrderDetailsModel' => 
+    'order_details' => 
     array (
-      'joinTableName' => 'order_details',
-      'joinColls' => 
-      array (
-        'coll' => 'id',
-        'referenced' => 'product_id',
-      ),
+      'coll' => 'id',
+      'referenced' => 'product_id',
     ),
   ),
   'promocode' => 
   array (
-    'UsersModel' => 
+    'users' => 
     array (
-      'joinTableName' => 'users',
-      'joinColls' => 
-      array (
-        'coll' => 'user_id',
-        'referenced' => 'id',
-      ),
+      'coll' => 'user_id',
+      'referenced' => 'id',
     ),
   ),
 );

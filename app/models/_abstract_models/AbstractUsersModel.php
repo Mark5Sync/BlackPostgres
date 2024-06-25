@@ -7,28 +7,7 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 
 
-/**
-* orders 
-* @property-read \testapp\models\OrdersModel $otherJoinOrdersModel
-* @method \testapp\models\OrdersModel otherJoinOrdersModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\OrdersModel $leftJoinOrdersModel
-* @method \testapp\models\OrdersModel leftJoinOrdersModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\OrdersModel $rightJoinOrdersModel
-* @method \testapp\models\OrdersModel rightJoinOrdersModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\OrdersModel $innerJoinOrdersModel
-* @method \testapp\models\OrdersModel innerJoinOrdersModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* ------- 
-* promocode 
-* @property-read \testapp\models\PromocodeModel $otherJoinPromocodeModel
-* @method \testapp\models\PromocodeModel otherJoinPromocodeModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\PromocodeModel $leftJoinPromocodeModel
-* @method \testapp\models\PromocodeModel leftJoinPromocodeModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\PromocodeModel $rightJoinPromocodeModel
-* @method \testapp\models\PromocodeModel rightJoinPromocodeModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\PromocodeModel $innerJoinPromocodeModel
-* @method \testapp\models\PromocodeModel innerJoinPromocodeModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* ------- 
-* */
+
 abstract class AbstractUsersModel extends ModelContext
 {
     protected string $currentShort = 'UsersModel';
@@ -66,14 +45,14 @@ abstract class AbstractUsersModel extends ModelContext
 			bool $username = false,
 			bool $email = false,
 			bool $password = false,
-			bool $created_at = false, ...$anyProps)
+			bool $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___sel($_, $props);
         return $this;
     }
@@ -83,14 +62,14 @@ abstract class AbstractUsersModel extends ModelContext
 			false | string $username = false,
 			false | string $email = false,
 			false | string $password = false,
-			false | string $created_at = false, ...$anyProps)
+			false | string $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___selectAs($props);
         return $this;
     }
@@ -110,14 +89,14 @@ abstract class AbstractUsersModel extends ModelContext
 			false | string $username = false,
 			false | string $email = false,
 			false | string $password = false,
-			false | string $created_at = false, ...$anyProps)
+			false | string $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___where('like', $props);
         return $this;
     }
@@ -127,14 +106,14 @@ abstract class AbstractUsersModel extends ModelContext
 			false | string $username = false,
 			false | string $email = false,
 			false | string $password = false,
-			false | string $created_at = false, ...$anyProps)
+			false | string $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___where('regexp', $props);
         return $this;
     }
@@ -144,14 +123,14 @@ abstract class AbstractUsersModel extends ModelContext
 			false | array $username = false,
 			false | array $email = false,
 			false | array $password = false,
-			false | array $created_at = false, ...$anyProps)
+			false | array $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___in($props);
         return $this;
     }
@@ -161,14 +140,14 @@ abstract class AbstractUsersModel extends ModelContext
 			false | array $username = false,
 			false | array $email = false,
 			false | array $password = false,
-			false | array $created_at = false, ...$anyProps)
+			false | array $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___in($props, true);
         return $this;
     }
@@ -180,14 +159,14 @@ abstract class AbstractUsersModel extends ModelContext
 			bool $username = false,
 			bool $email = false,
 			bool $password = false,
-			bool $created_at = false, ...$anyProps)
+			bool $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___where('IS', $props);
         return $this;
     }
@@ -197,14 +176,14 @@ abstract class AbstractUsersModel extends ModelContext
 			bool $username = false,
 			bool $email = false,
 			bool $password = false,
-			bool $created_at = false, ...$anyProps)
+			bool $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___where('IS NOT', $props);
         return $this;
     }
@@ -220,14 +199,14 @@ abstract class AbstractUsersModel extends ModelContext
 			 false | string $username = false,
 			 false | string $email = false,
 			 false | string $password = false,
-			 false | null | string $created_at = false, ...$anyProps)
+			 false | null | string $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___where($_, $props);
         return $this;
     }
@@ -237,14 +216,14 @@ abstract class AbstractUsersModel extends ModelContext
 			false | string $username = false,
 			false | string $email = false,
 			false | string $password = false,
-			false | string $created_at = false, ...$anyProps)
+			false | string $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___where($_, $props);
         return $this;
     }
@@ -257,14 +236,14 @@ abstract class AbstractUsersModel extends ModelContext
 			 false | string $username = false,
 			 false | string $email = false,
 			 false | string $password = false,
-			 false | null | string $created_at = false, ...$anyProps)
+			 false | null | string $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         return $this->___update($props);
     }
 
@@ -273,14 +252,14 @@ abstract class AbstractUsersModel extends ModelContext
 			 false | string $username = false,
 			 false | string $email = false,
 			 false | string $password = false,
-			 false | null | string $created_at = false, ...$anyProps)
+			 false | null | string $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         return $this->___insert($props);
     }
 
@@ -289,14 +268,14 @@ abstract class AbstractUsersModel extends ModelContext
 			 false | string $username = false,
 			 false | string $email = false,
 			 false | string $password = false,
-			 false | null | string $created_at = false, ...$anyProps)
+			 false | null | string $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         return $this->___insertOrIgnore($props);
     }
 
@@ -305,35 +284,100 @@ abstract class AbstractUsersModel extends ModelContext
 			 false | string $username = false,
 			 false | string $email = false,
 			 false | string $password = false,
-			 false | null | string $created_at = false, ...$anyProps)
+			 false | null | string $created_at = false)
     {
         $insertProps = $this->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
 
         return function (
 			 false | int $id = false,
 			 false | string $username = false,
 			 false | string $email = false,
 			 false | string $password = false,
-			 false | null | string $created_at = false, ...$anyProps) use ($insertProps) {
+			 false | null | string $created_at = false) use ($insertProps) {
             $keysProps = $this->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
             return $this->___updateOrInsert($insertProps, $keysProps);
         };
     }
 
+    
 
+    private function joins($joinMethod, $models)
+    {
+        $table = $this();
+
+        foreach ($models as $joinTable => $model) {
+            if (!isset($this->relationShema[$table][$joinTable]))
+                throw new \Exception("Нет отношений ($table - $joinTable)", 1);
+
+            ['coll' => $coll, 'referenced' => $referenced] = $this->relationShema[$table][$joinTable];
+
+            $this->___join([
+                'model' => $model,
+                'joinMethod' => $joinMethod,
+                'props' => [
+                    'coll' => $this($coll),
+                    'referenced' => $model($referenced),
+                ]
+            ]);
+        }
+    }
+
+
+    function join(?Model $orders = null, ?Model $promocode = null)
+    {
+        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $this->joins('leftJoin', $models);
+
+        return $this;
+    }
+
+    function leftJoin(?Model $orders = null, ?Model $promocode = null)
+    {
+        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $this->joins('leftJoin', $models);
+
+        return $this;
+    }
+
+    function rightJoin(?Model $orders = null, ?Model $promocode = null)
+    {
+        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $this->joins('rightJoin', $models);
+
+        return $this;
+    }
+
+    function innerJoin(?Model $orders = null, ?Model $promocode = null)
+    {
+        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $this->joins('innerJoin', $models);
+
+        return $this;
+    }
+
+    function otherJoin(?Model $orders = null, ?Model $promocode = null)
+    {
+        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $this->joins('otherJoin', $models);
+
+        return $this;
+    }
 
 
     
+
+
+
 
 
     function page(int $index, int $size, int | false | null &$pages = false)
@@ -416,32 +460,31 @@ abstract class AbstractUsersModel extends ModelContext
 			&$username = false,
 			&$email = false,
 			&$password = false,
-			&$created_at = false, &...$anyProps)
+			&$created_at = false)
     {
         $this->___row(...[
 			'id' => &$id,
 			'username' => &$username,
 			'email' => &$email,
 			'password' => &$password,
-			'created_at' => &$created_at, ...$anyProps]);
+			'created_at' => &$created_at]);
 
         return $this;
     }
-
 
     function fetchRow(
 			&$id = false,
 			&$username = false,
 			&$email = false,
 			&$password = false,
-			&$created_at = false, &...$anyProps)
+			&$created_at = false)
     {
         $this->___row(...[
 			'id' => &$id,
 			'username' => &$username,
 			'email' => &$email,
 			'password' => &$password,
-			'created_at' => &$created_at, ...$anyProps]);
+			'created_at' => &$created_at]);
         return $this->___fetchRow();
     }
 }

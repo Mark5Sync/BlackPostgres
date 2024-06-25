@@ -23,6 +23,21 @@ class GenerateJoins
     }
 
 
+
+    function getMethods(?array $rel)
+    {
+        if (!$rel)
+            return '';
+
+        $props = array_keys($rel);
+        $propsStr = implode(', ', array_map(fn ($tableName) => "?Model \${$tableName} = null", $props));
+        $clearPropsStr = implode(', ', array_map(fn ($tableName) => "'$tableName' => \${$tableName}", $props));
+
+
+        return $this->template->get('Join', ['$____clearPropsStr_____' => $clearPropsStr, '$_____propsStr_____' => $propsStr]);
+    }
+
+
     function getCode()
     {
         $config = $this->parent->modelConfig;

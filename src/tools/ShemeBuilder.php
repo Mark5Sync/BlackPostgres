@@ -88,8 +88,8 @@ class ShemeBuilder
             '__rel__' => $this->getRelationship(),
             '__table__' => $this->modelConfig->table,
             '__connection_config__' => $this->modelConfig->connectionConfigClass,
-            '//JOIN_SWITCHES' => $this->generateJoins->getSwitches(),
-            '//JOIN' => $this->generateJoins->getCode(),
+            '//JOIN_SWITCHES' => '',//$this->generateJoins->getSwitches(),
+            '//JOIN' => $this->generateJoins->getMethods($this->modelConfig->relations), //$this->generateJoins->getCode(),
             'Model //class' => 'ModelContext',
         ];
 

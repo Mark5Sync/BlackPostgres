@@ -7,18 +7,7 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 
 
-/**
-* users 
-* @property-read \testapp\models\UsersModel $otherJoinUsersModel
-* @method \testapp\models\UsersModel otherJoinUsersModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\UsersModel $leftJoinUsersModel
-* @method \testapp\models\UsersModel leftJoinUsersModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\UsersModel $rightJoinUsersModel
-* @method \testapp\models\UsersModel rightJoinUsersModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\UsersModel $innerJoinUsersModel
-* @method \testapp\models\UsersModel innerJoinUsersModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* ------- 
-* */
+
 abstract class AbstractPromocodeModel extends ModelContext
 {
     protected string $currentShort = 'PromocodeModel';
@@ -50,13 +39,13 @@ abstract class AbstractPromocodeModel extends ModelContext
 			bool $id = false,
 			bool $user_id = false,
 			bool $url = false,
-			bool $sale = false, ...$anyProps)
+			bool $sale = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'url' => $url,
-			'sale' => $sale, ...$anyProps], false);
+			'sale' => $sale], false);
         $this->___sel($_, $props);
         return $this;
     }
@@ -65,13 +54,13 @@ abstract class AbstractPromocodeModel extends ModelContext
 			false | string $id = false,
 			false | string $user_id = false,
 			false | string $url = false,
-			false | string $sale = false, ...$anyProps)
+			false | string $sale = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'url' => $url,
-			'sale' => $sale, ...$anyProps], false);
+			'sale' => $sale], false);
         $this->___selectAs($props);
         return $this;
     }
@@ -90,13 +79,13 @@ abstract class AbstractPromocodeModel extends ModelContext
 			false | string $id = false,
 			false | string $user_id = false,
 			false | string $url = false,
-			false | string $sale = false, ...$anyProps)
+			false | string $sale = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'url' => $url,
-			'sale' => $sale, ...$anyProps], false);
+			'sale' => $sale], false);
         $this->___where('like', $props);
         return $this;
     }
@@ -105,13 +94,13 @@ abstract class AbstractPromocodeModel extends ModelContext
 			false | string $id = false,
 			false | string $user_id = false,
 			false | string $url = false,
-			false | string $sale = false, ...$anyProps)
+			false | string $sale = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'url' => $url,
-			'sale' => $sale, ...$anyProps], false);
+			'sale' => $sale], false);
         $this->___where('regexp', $props);
         return $this;
     }
@@ -120,13 +109,13 @@ abstract class AbstractPromocodeModel extends ModelContext
 			false | array $id = false,
 			false | array $user_id = false,
 			false | array $url = false,
-			false | array $sale = false, ...$anyProps)
+			false | array $sale = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'url' => $url,
-			'sale' => $sale, ...$anyProps], false);
+			'sale' => $sale], false);
         $this->___in($props);
         return $this;
     }
@@ -135,13 +124,13 @@ abstract class AbstractPromocodeModel extends ModelContext
 			false | array $id = false,
 			false | array $user_id = false,
 			false | array $url = false,
-			false | array $sale = false, ...$anyProps)
+			false | array $sale = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'url' => $url,
-			'sale' => $sale, ...$anyProps], false);
+			'sale' => $sale], false);
         $this->___in($props, true);
         return $this;
     }
@@ -152,13 +141,13 @@ abstract class AbstractPromocodeModel extends ModelContext
 			bool $id = false,
 			bool $user_id = false,
 			bool $url = false,
-			bool $sale = false, ...$anyProps)
+			bool $sale = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'url' => $url,
-			'sale' => $sale, ...$anyProps], false);
+			'sale' => $sale], false);
         $this->___where('IS', $props);
         return $this;
     }
@@ -167,13 +156,13 @@ abstract class AbstractPromocodeModel extends ModelContext
 			bool $id = false,
 			bool $user_id = false,
 			bool $url = false,
-			bool $sale = false, ...$anyProps)
+			bool $sale = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'url' => $url,
-			'sale' => $sale, ...$anyProps], false);
+			'sale' => $sale], false);
         $this->___where('IS NOT', $props);
         return $this;
     }
@@ -188,13 +177,13 @@ abstract class AbstractPromocodeModel extends ModelContext
 			 false | int $id = false,
 			 false | int $user_id = false,
 			 false | string $url = false,
-			 false | int $sale = false, ...$anyProps)
+			 false | int $sale = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'url' => $url,
-			'sale' => $sale, ...$anyProps], false);
+			'sale' => $sale], false);
         $this->___where($_, $props);
         return $this;
     }
@@ -203,13 +192,13 @@ abstract class AbstractPromocodeModel extends ModelContext
 			false | string $id = false,
 			false | string $user_id = false,
 			false | string $url = false,
-			false | string $sale = false, ...$anyProps)
+			false | string $sale = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'url' => $url,
-			'sale' => $sale, ...$anyProps], false);
+			'sale' => $sale], false);
         $this->___where($_, $props);
         return $this;
     }
@@ -221,13 +210,13 @@ abstract class AbstractPromocodeModel extends ModelContext
 			 false | int $id = false,
 			 false | int $user_id = false,
 			 false | string $url = false,
-			 false | int $sale = false, ...$anyProps)
+			 false | int $sale = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'url' => $url,
-			'sale' => $sale, ...$anyProps], false);
+			'sale' => $sale], false);
         return $this->___update($props);
     }
 
@@ -235,13 +224,13 @@ abstract class AbstractPromocodeModel extends ModelContext
 			 false | int $id = false,
 			 false | int $user_id = false,
 			 false | string $url = false,
-			 false | int $sale = false, ...$anyProps)
+			 false | int $sale = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'url' => $url,
-			'sale' => $sale, ...$anyProps], false);
+			'sale' => $sale], false);
         return $this->___insert($props);
     }
 
@@ -249,13 +238,13 @@ abstract class AbstractPromocodeModel extends ModelContext
 			 false | int $id = false,
 			 false | int $user_id = false,
 			 false | string $url = false,
-			 false | int $sale = false, ...$anyProps)
+			 false | int $sale = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'url' => $url,
-			'sale' => $sale, ...$anyProps], false);
+			'sale' => $sale], false);
         return $this->___insertOrIgnore($props);
     }
 
@@ -263,32 +252,97 @@ abstract class AbstractPromocodeModel extends ModelContext
 			 false | int $id = false,
 			 false | int $user_id = false,
 			 false | string $url = false,
-			 false | int $sale = false, ...$anyProps)
+			 false | int $sale = false)
     {
         $insertProps = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'url' => $url,
-			'sale' => $sale, ...$anyProps], false);
+			'sale' => $sale], false);
 
         return function (
 			 false | int $id = false,
 			 false | int $user_id = false,
 			 false | string $url = false,
-			 false | int $sale = false, ...$anyProps) use ($insertProps) {
+			 false | int $sale = false) use ($insertProps) {
             $keysProps = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'url' => $url,
-			'sale' => $sale, ...$anyProps], false);
+			'sale' => $sale], false);
             return $this->___updateOrInsert($insertProps, $keysProps);
         };
     }
 
+    
 
+    private function joins($joinMethod, $models)
+    {
+        $table = $this();
+
+        foreach ($models as $joinTable => $model) {
+            if (!isset($this->relationShema[$table][$joinTable]))
+                throw new \Exception("Нет отношений ($table - $joinTable)", 1);
+
+            ['coll' => $coll, 'referenced' => $referenced] = $this->relationShema[$table][$joinTable];
+
+            $this->___join([
+                'model' => $model,
+                'joinMethod' => $joinMethod,
+                'props' => [
+                    'coll' => $this($coll),
+                    'referenced' => $model($referenced),
+                ]
+            ]);
+        }
+    }
+
+
+    function join(?Model $users = null)
+    {
+        $models = $this->requestFilter->filter(['users' => $users], null);
+        $this->joins('leftJoin', $models);
+
+        return $this;
+    }
+
+    function leftJoin(?Model $users = null)
+    {
+        $models = $this->requestFilter->filter(['users' => $users], null);
+        $this->joins('leftJoin', $models);
+
+        return $this;
+    }
+
+    function rightJoin(?Model $users = null)
+    {
+        $models = $this->requestFilter->filter(['users' => $users], null);
+        $this->joins('rightJoin', $models);
+
+        return $this;
+    }
+
+    function innerJoin(?Model $users = null)
+    {
+        $models = $this->requestFilter->filter(['users' => $users], null);
+        $this->joins('innerJoin', $models);
+
+        return $this;
+    }
+
+    function otherJoin(?Model $users = null)
+    {
+        $models = $this->requestFilter->filter(['users' => $users], null);
+        $this->joins('otherJoin', $models);
+
+        return $this;
+    }
 
 
     
+
+
+
 
 
     function page(int $index, int $size, int | false | null &$pages = false)
@@ -364,29 +418,28 @@ abstract class AbstractPromocodeModel extends ModelContext
 			&$id = false,
 			&$user_id = false,
 			&$url = false,
-			&$sale = false, &...$anyProps)
+			&$sale = false)
     {
         $this->___row(...[
 			'id' => &$id,
 			'user_id' => &$user_id,
 			'url' => &$url,
-			'sale' => &$sale, ...$anyProps]);
+			'sale' => &$sale]);
 
         return $this;
     }
-
 
     function fetchRow(
 			&$id = false,
 			&$user_id = false,
 			&$url = false,
-			&$sale = false, &...$anyProps)
+			&$sale = false)
     {
         $this->___row(...[
 			'id' => &$id,
 			'user_id' => &$user_id,
 			'url' => &$url,
-			'sale' => &$sale, ...$anyProps]);
+			'sale' => &$sale]);
         return $this->___fetchRow();
     }
 }

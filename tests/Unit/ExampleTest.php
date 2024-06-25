@@ -100,9 +100,9 @@ test('выбор максимальной цены продукта', function (
 //     expect($sql)->strLow('SELECT o.status, AVG(p.price) FROM orders o JOIN order_details od ON o.id = od.order_id JOIN products p ON od.product_id = p.id GROUP BY o.status');
 // });
 
-test('соединение таблиц пользователей и заказов', function () use ($users) {
+test('соединение таблиц пользователей и заказов', function () use ($users, $orders) {
     $sql = $users->sel(username: 1)
-        ->leftJoinOrdersModel->sel(id: 1, status: 1)
+        ->join(orders: $orders->sel(id: 1, status: 1))
         ->toSql();
 
     expect($sql)->strLow('SELECT "users"."username", "orders"."id", "orders"."status" from "users" left join "orders" on "users"."id" = "orders"."user_id"');

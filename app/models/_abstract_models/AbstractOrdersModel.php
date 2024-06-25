@@ -7,28 +7,7 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 
 
-/**
-* users 
-* @property-read \testapp\models\UsersModel $otherJoinUsersModel
-* @method \testapp\models\UsersModel otherJoinUsersModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\UsersModel $leftJoinUsersModel
-* @method \testapp\models\UsersModel leftJoinUsersModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\UsersModel $rightJoinUsersModel
-* @method \testapp\models\UsersModel rightJoinUsersModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\UsersModel $innerJoinUsersModel
-* @method \testapp\models\UsersModel innerJoinUsersModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* ------- 
-* order_details 
-* @property-read \testapp\models\OrderDetailsModel $otherJoinOrderDetailsModel
-* @method \testapp\models\OrderDetailsModel otherJoinOrderDetailsModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\OrderDetailsModel $leftJoinOrderDetailsModel
-* @method \testapp\models\OrderDetailsModel leftJoinOrderDetailsModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\OrderDetailsModel $rightJoinOrderDetailsModel
-* @method \testapp\models\OrderDetailsModel rightJoinOrderDetailsModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\OrderDetailsModel $innerJoinOrderDetailsModel
-* @method \testapp\models\OrderDetailsModel innerJoinOrderDetailsModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* ------- 
-* */
+
 abstract class AbstractOrdersModel extends ModelContext
 {
     protected string $currentShort = 'OrdersModel';
@@ -65,13 +44,13 @@ abstract class AbstractOrdersModel extends ModelContext
 			bool $id = false,
 			bool $user_id = false,
 			bool $created_at = false,
-			bool $status = false, ...$anyProps)
+			bool $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
-			'status' => $status, ...$anyProps], false);
+			'status' => $status], false);
         $this->___sel($_, $props);
         return $this;
     }
@@ -80,13 +59,13 @@ abstract class AbstractOrdersModel extends ModelContext
 			false | string $id = false,
 			false | string $user_id = false,
 			false | string $created_at = false,
-			false | string $status = false, ...$anyProps)
+			false | string $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
-			'status' => $status, ...$anyProps], false);
+			'status' => $status], false);
         $this->___selectAs($props);
         return $this;
     }
@@ -105,13 +84,13 @@ abstract class AbstractOrdersModel extends ModelContext
 			false | string $id = false,
 			false | string $user_id = false,
 			false | string $created_at = false,
-			false | string $status = false, ...$anyProps)
+			false | string $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
-			'status' => $status, ...$anyProps], false);
+			'status' => $status], false);
         $this->___where('like', $props);
         return $this;
     }
@@ -120,13 +99,13 @@ abstract class AbstractOrdersModel extends ModelContext
 			false | string $id = false,
 			false | string $user_id = false,
 			false | string $created_at = false,
-			false | string $status = false, ...$anyProps)
+			false | string $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
-			'status' => $status, ...$anyProps], false);
+			'status' => $status], false);
         $this->___where('regexp', $props);
         return $this;
     }
@@ -135,13 +114,13 @@ abstract class AbstractOrdersModel extends ModelContext
 			false | array $id = false,
 			false | array $user_id = false,
 			false | array $created_at = false,
-			false | array $status = false, ...$anyProps)
+			false | array $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
-			'status' => $status, ...$anyProps], false);
+			'status' => $status], false);
         $this->___in($props);
         return $this;
     }
@@ -150,13 +129,13 @@ abstract class AbstractOrdersModel extends ModelContext
 			false | array $id = false,
 			false | array $user_id = false,
 			false | array $created_at = false,
-			false | array $status = false, ...$anyProps)
+			false | array $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
-			'status' => $status, ...$anyProps], false);
+			'status' => $status], false);
         $this->___in($props, true);
         return $this;
     }
@@ -167,13 +146,13 @@ abstract class AbstractOrdersModel extends ModelContext
 			bool $id = false,
 			bool $user_id = false,
 			bool $created_at = false,
-			bool $status = false, ...$anyProps)
+			bool $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
-			'status' => $status, ...$anyProps], false);
+			'status' => $status], false);
         $this->___where('IS', $props);
         return $this;
     }
@@ -182,13 +161,13 @@ abstract class AbstractOrdersModel extends ModelContext
 			bool $id = false,
 			bool $user_id = false,
 			bool $created_at = false,
-			bool $status = false, ...$anyProps)
+			bool $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
-			'status' => $status, ...$anyProps], false);
+			'status' => $status], false);
         $this->___where('IS NOT', $props);
         return $this;
     }
@@ -203,13 +182,13 @@ abstract class AbstractOrdersModel extends ModelContext
 			 false | int $id = false,
 			 false | int $user_id = false,
 			 false | null | string $created_at = false,
-			 false | string $status = false, ...$anyProps)
+			 false | string $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
-			'status' => $status, ...$anyProps], false);
+			'status' => $status], false);
         $this->___where($_, $props);
         return $this;
     }
@@ -218,13 +197,13 @@ abstract class AbstractOrdersModel extends ModelContext
 			false | string $id = false,
 			false | string $user_id = false,
 			false | string $created_at = false,
-			false | string $status = false, ...$anyProps)
+			false | string $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
-			'status' => $status, ...$anyProps], false);
+			'status' => $status], false);
         $this->___where($_, $props);
         return $this;
     }
@@ -236,13 +215,13 @@ abstract class AbstractOrdersModel extends ModelContext
 			 false | int $id = false,
 			 false | int $user_id = false,
 			 false | null | string $created_at = false,
-			 false | string $status = false, ...$anyProps)
+			 false | string $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
-			'status' => $status, ...$anyProps], false);
+			'status' => $status], false);
         return $this->___update($props);
     }
 
@@ -250,13 +229,13 @@ abstract class AbstractOrdersModel extends ModelContext
 			 false | int $id = false,
 			 false | int $user_id = false,
 			 false | null | string $created_at = false,
-			 false | string $status = false, ...$anyProps)
+			 false | string $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
-			'status' => $status, ...$anyProps], false);
+			'status' => $status], false);
         return $this->___insert($props);
     }
 
@@ -264,13 +243,13 @@ abstract class AbstractOrdersModel extends ModelContext
 			 false | int $id = false,
 			 false | int $user_id = false,
 			 false | null | string $created_at = false,
-			 false | string $status = false, ...$anyProps)
+			 false | string $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
-			'status' => $status, ...$anyProps], false);
+			'status' => $status], false);
         return $this->___insertOrIgnore($props);
     }
 
@@ -278,32 +257,97 @@ abstract class AbstractOrdersModel extends ModelContext
 			 false | int $id = false,
 			 false | int $user_id = false,
 			 false | null | string $created_at = false,
-			 false | string $status = false, ...$anyProps)
+			 false | string $status = false)
     {
         $insertProps = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
-			'status' => $status, ...$anyProps], false);
+			'status' => $status], false);
 
         return function (
 			 false | int $id = false,
 			 false | int $user_id = false,
 			 false | null | string $created_at = false,
-			 false | string $status = false, ...$anyProps) use ($insertProps) {
+			 false | string $status = false) use ($insertProps) {
             $keysProps = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
-			'status' => $status, ...$anyProps], false);
+			'status' => $status], false);
             return $this->___updateOrInsert($insertProps, $keysProps);
         };
     }
 
+    
 
+    private function joins($joinMethod, $models)
+    {
+        $table = $this();
+
+        foreach ($models as $joinTable => $model) {
+            if (!isset($this->relationShema[$table][$joinTable]))
+                throw new \Exception("Нет отношений ($table - $joinTable)", 1);
+
+            ['coll' => $coll, 'referenced' => $referenced] = $this->relationShema[$table][$joinTable];
+
+            $this->___join([
+                'model' => $model,
+                'joinMethod' => $joinMethod,
+                'props' => [
+                    'coll' => $this($coll),
+                    'referenced' => $model($referenced),
+                ]
+            ]);
+        }
+    }
+
+
+    function join(?Model $users = null, ?Model $order_details = null)
+    {
+        $models = $this->requestFilter->filter(['users' => $users, 'order_details' => $order_details], null);
+        $this->joins('leftJoin', $models);
+
+        return $this;
+    }
+
+    function leftJoin(?Model $users = null, ?Model $order_details = null)
+    {
+        $models = $this->requestFilter->filter(['users' => $users, 'order_details' => $order_details], null);
+        $this->joins('leftJoin', $models);
+
+        return $this;
+    }
+
+    function rightJoin(?Model $users = null, ?Model $order_details = null)
+    {
+        $models = $this->requestFilter->filter(['users' => $users, 'order_details' => $order_details], null);
+        $this->joins('rightJoin', $models);
+
+        return $this;
+    }
+
+    function innerJoin(?Model $users = null, ?Model $order_details = null)
+    {
+        $models = $this->requestFilter->filter(['users' => $users, 'order_details' => $order_details], null);
+        $this->joins('innerJoin', $models);
+
+        return $this;
+    }
+
+    function otherJoin(?Model $users = null, ?Model $order_details = null)
+    {
+        $models = $this->requestFilter->filter(['users' => $users, 'order_details' => $order_details], null);
+        $this->joins('otherJoin', $models);
+
+        return $this;
+    }
 
 
     
+
+
+
 
 
     function page(int $index, int $size, int | false | null &$pages = false)
@@ -379,29 +423,28 @@ abstract class AbstractOrdersModel extends ModelContext
 			&$id = false,
 			&$user_id = false,
 			&$created_at = false,
-			&$status = false, &...$anyProps)
+			&$status = false)
     {
         $this->___row(...[
 			'id' => &$id,
 			'user_id' => &$user_id,
 			'created_at' => &$created_at,
-			'status' => &$status, ...$anyProps]);
+			'status' => &$status]);
 
         return $this;
     }
-
 
     function fetchRow(
 			&$id = false,
 			&$user_id = false,
 			&$created_at = false,
-			&$status = false, &...$anyProps)
+			&$status = false)
     {
         $this->___row(...[
 			'id' => &$id,
 			'user_id' => &$user_id,
 			'created_at' => &$created_at,
-			'status' => &$status, ...$anyProps]);
+			'status' => &$status]);
         return $this->___fetchRow();
     }
 }

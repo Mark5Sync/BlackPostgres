@@ -66,10 +66,11 @@ class ModelConfig
         $result = [];
 
         foreach ($this->relations as $joinTable => $colls) {
-            $result[$this->getClassName($joinTable)] = [
-                'joinTableName' => $joinTable,
-                'joinColls' => $colls
-            ];
+            $result[$joinTable] = $colls;
+            // $result[$this->getClassName($joinTable)] = [
+            //     'joinTableName' => $joinTable,
+            //     'joinColls' => $colls
+            // ];
         }
 
 

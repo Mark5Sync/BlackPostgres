@@ -82,7 +82,7 @@ abstract class Model extends Connection
     {
         if ($schema) {
             $schema = str_replace('@', $this() . '.', $schema);
-            $this->querySchema->add('selectRow', $schema);
+            $this->querySchema->add('selectRaw', [$schema, array_values($props)]);
 
             // $this->getModel()->selectRaw($schema, array_values($props));
         } else {
@@ -168,48 +168,54 @@ abstract class Model extends Connection
 
 
 
-    protected function ___join(string $joinShortClassName, string $joinMethod, ?array $props = null)
+    // protected function ___join(string $joinShortClassName, string $joinMethod, ?array $props = null)
+    protected function ___join(array $props)
     {
-        if ($this->currentShort == $joinShortClassName) {
-            $this->joinTableName = null;
-            $this->cascade = array_slice($this->cascade, 0, -1);
-            return;
-        }
+        // $this->getModel()->{$joinMethod}($joinTableName, function ($join) use ($joinColl, $joinReference) {
+        //     $join->on($joinColl, '=', $joinReference);
+        // });
+        $this->querySchema->add('join', $props);
+
+        // if ($this->currentShort == $joinShortClassName) {
+        //     $this->joinTableName = null;
+        //     $this->cascade = array_slice($this->cascade, 0, -1);
+        //     return;
+        // }
 
 
-        if ($props) {
-            ['0' => $cascade, 'limit' => $limit, 'groupBy' => $groupBy] = ['limit' => null, 'groupBy' => null, ...$props];
-            $this->cascade[] = $cascade;
-            $this->cascadeProps[implode('/', $this->cascade)] = [
-                'limit' => $limit,
-                'groupBy' => $groupBy,
-            ];
-        }
-
-
-
-
-        [
-            'joinTableName' => $joinTableName,
-            'joinColls' => ['coll' => $coll, 'referenced' => $referenced],
-        ] = $this->relationShema[$this()][$joinShortClassName];
+        // if ($props) {
+        //     ['0' => $cascade, 'limit' => $limit, 'groupBy' => $groupBy] = ['limit' => null, 'groupBy' => null, ...$props];
+        //     $this->cascade[] = $cascade;
+        //     $this->cascadeProps[implode('/', $this->cascade)] = [
+        //         'limit' => $limit,
+        //         'groupBy' => $groupBy,
+        //     ];
+        // }
 
 
 
 
-        if (!isset($this->applyJoin[$joinShortClassName])) {
-            $joinColl = $this($coll, false);
-            $joinReference = "$joinTableName.{$referenced}";
-
-            $this->getModel()->{$joinMethod}($joinTableName, function ($join) use ($joinColl, $joinReference) {
-                $join->on($joinColl, '=', $joinReference);
-            });
-
-            $this->applyJoin[$joinShortClassName] = true;
-        }
+        // [
+        //     'joinTableName' => $joinTableName,
+        //     'joinColls' => ['coll' => $coll, 'referenced' => $referenced],
+        // ] = $this->relationShema[$this()][$joinShortClassName];
 
 
-        $this->joinTableName = $joinTableName;
+
+
+        // if (!isset($this->applyJoin[$joinShortClassName])) {
+        //     $joinColl = $this($coll, false);
+        //     $joinReference = "$joinTableName.{$referenced}";
+
+        //     $this->getModel()->{$joinMethod}($joinTableName, function ($join) use ($joinColl, $joinReference) {
+        //         $join->on($joinColl, '=', $joinReference);
+        //     });
+
+        //     $this->applyJoin[$joinShortClassName] = true;
+        // }
+
+
+        // $this->joinTableName = $joinTableName;
     }
 
 

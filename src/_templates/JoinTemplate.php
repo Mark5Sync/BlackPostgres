@@ -25,39 +25,68 @@ abstract class JOIN extends Model
     ###########################################################################
     //TEMPLATE-START
 
-
-    function join($_____propsStr_____, ...$props)
+    private function joins($joinMethod, $models)
     {
-        $props = $this->requestFilter->filter([$____clearPropsStr_____, ...$props], null);
+        $table = $this();
 
-        foreach ($props as $model) {
-            $this->___join($model);
+        foreach ($models as $joinTable => $model) {
+            if (!isset($this->relationShema[$table][$joinTable]))
+                throw new \Exception("Нет отношений ($table - $joinTable)", 1);
+
+            ['coll' => $coll, 'referenced' => $referenced] = $this->relationShema[$table][$joinTable];
+
+            $this->___join([
+                'model' => $model,
+                'joinMethod' => $joinMethod,
+                'props' => [
+                    'coll' => $this($coll),
+                    'referenced' => $model($referenced),
+                ]
+            ]);
         }
+    }
+
+
+    function join($_____propsStr_____)
+    {
+        $models = $this->requestFilter->filter([$____clearPropsStr_____], null);
+        $this->joins('leftJoin', $models);
 
         return $this;
     }
 
-    function joinCascade($_____propsStr_____, ...$props)
+    function leftJoin($_____propsStr_____)
     {
-        $props = $this->requestFilter->filter([$____clearPropsStr_____, ...$props], null);
-
-        foreach ($props as $modelName => $model) {
-            $this->___join($model, cascadeName: $modelName);
-        }
+        $models = $this->requestFilter->filter([$____clearPropsStr_____], null);
+        $this->joins('leftJoin', $models);
 
         return $this;
     }
 
-    function joinCascadeArray($_____propsStr_____, ...$props)
+    function rightJoin($_____propsStr_____)
     {
-        $props = $this->requestFilter->filter([$____clearPropsStr_____, ...$props], null);
-
-        foreach ($props as $modelName => $model) {
-            $this->___joinCascadeArray($model, cascadeName: $modelName);
-        }
+        $models = $this->requestFilter->filter([$____clearPropsStr_____], null);
+        $this->joins('rightJoin', $models);
 
         return $this;
     }
+
+    function innerJoin($_____propsStr_____)
+    {
+        $models = $this->requestFilter->filter([$____clearPropsStr_____], null);
+        $this->joins('innerJoin', $models);
+
+        return $this;
+    }
+
+    function otherJoin($_____propsStr_____)
+    {
+        $models = $this->requestFilter->filter([$____clearPropsStr_____], null);
+        $this->joins('otherJoin', $models);
+
+        return $this;
+    }
+
 
     //TEMPLATE-END
     ###########################################################################

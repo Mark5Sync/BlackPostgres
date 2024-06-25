@@ -19,8 +19,8 @@ abstract class Connection
 
     function getModel(): Builder
     {
-        if ($this->activeModel)
-            return $this->activeModel;
+        // if ($this->activeModel)
+        //     return $this->activeModel;
 
         $this->capsule->addConnection($this->connectionConfig);
 

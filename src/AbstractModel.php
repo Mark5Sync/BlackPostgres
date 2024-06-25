@@ -29,16 +29,16 @@ abstract class ___abstract_class___ extends Model //class
 
 
 
-    function sel(?string $_ = null, &$___bool___, ...$anyProps)
+    function sel(?string $_ = null, &$___bool___)
     {
-        $props = $this->requestFilter->filter([$___restruct_bool___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_bool___], false);
         $this->___sel($_, $props);
         return $this;
     }
 
-    function selectAs(&$___string___, ...$anyProps)
+    function selectAs(&$___string___)
     {
-        $props = $this->requestFilter->filter([$___restruct_string___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_string___], false);
         $this->___selectAs($props);
         return $this;
     }
@@ -53,46 +53,46 @@ abstract class ___abstract_class___ extends Model //class
 
 
 
-    function like(&$___string___, ...$anyProps)
+    function like(&$___string___)
     {
-        $props = $this->requestFilter->filter([$___restruct_string___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_string___], false);
         $this->___where('like', $props);
         return $this;
     }
 
-    function regexp(&$___string___, ...$anyProps)
+    function regexp(&$___string___)
     {
-        $props = $this->requestFilter->filter([$___restruct_string___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_string___], false);
         $this->___where('regexp', $props);
         return $this;
     }
 
-    function in(&$___array___, ...$anyProps)
+    function in(&$___array___)
     {
-        $props = $this->requestFilter->filter([$___restruct_array___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_array___], false);
         $this->___in($props);
         return $this;
     }
 
-    function notIn(&$___array___, ...$anyProps)
+    function notIn(&$___array___)
     {
-        $props = $this->requestFilter->filter([$___restruct_array___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_array___], false);
         $this->___in($props, true);
         return $this;
     }
 
 
 
-    function isNull(&$___bool___, ...$anyProps)
+    function isNull(&$___bool___)
     {
-        $props = $this->requestFilter->filter([$___restruct_bool___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_bool___], false);
         $this->___where('IS', $props);
         return $this;
     }
 
-    function isNotNull(&$___bool___, ...$anyProps)
+    function isNotNull(&$___bool___)
     {
-        $props = $this->requestFilter->filter([$___restruct_bool___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_bool___], false);
         $this->___where('IS NOT', $props);
         return $this;
     }
@@ -103,16 +103,16 @@ abstract class ___abstract_class___ extends Model //class
 
 
 
-    function where(?string $_ = null, &$___auto___, ...$anyProps)
+    function where(?string $_ = null, &$___auto___)
     {
-        $props = $this->requestFilter->filter([$___restruct_auto___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_auto___], false);
         $this->___where($_, $props);
         return $this;
     }
 
-    function fwhere(?string $_ = null, &$___string___, ...$anyProps)
+    function fwhere(?string $_ = null, &$___string___)
     {
-        $props = $this->requestFilter->filter([$___restruct_string___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_string___], false);
         $this->___where($_, $props);
         return $this;
     }
@@ -120,38 +120,38 @@ abstract class ___abstract_class___ extends Model //class
 
 
 
-    function update(&$___auto___, ...$anyProps)
+    function update(&$___auto___)
     {
-        $props = $this->requestFilter->filter([$___restruct_auto___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_auto___], false);
         return $this->___update($props);
     }
 
-    function insert(&$___auto___, ...$anyProps)
+    function insert(&$___auto___)
     {
-        $props = $this->requestFilter->filter([$___restruct_auto___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_auto___], false);
         return $this->___insert($props);
     }
 
-    function insertOrIgnore(&$___auto___, ...$anyProps)
+    function insertOrIgnore(&$___auto___)
     {
-        $props = $this->requestFilter->filter([$___restruct_auto___, ...$anyProps], false);
+        $props = $this->requestFilter->filter([$___restruct_auto___], false);
         return $this->___insertOrIgnore($props);
     }
 
-    function updateOrInsert(&$___auto___, ...$anyProps)
+    function updateOrInsert(&$___auto___)
     {
-        $insertProps = $this->requestFilter->filter([$___restruct_auto___, ...$anyProps], false);
+        $insertProps = $this->requestFilter->filter([$___restruct_auto___], false);
 
-        return function (&$___auto___, ...$anyProps) use ($insertProps) {
-            $keysProps = $this->requestFilter->filter([$___restruct_auto___, ...$anyProps], false);
+        return function (&$___auto___) use ($insertProps) {
+            $keysProps = $this->requestFilter->filter([$___restruct_auto___], false);
             return $this->___updateOrInsert($insertProps, $keysProps);
         };
     }
 
-
-
-
     //JOIN
+
+
+
 
 
     function page(int $index, int $size, int | false | null &$pages = false)
@@ -199,17 +199,16 @@ abstract class ___abstract_class___ extends Model //class
 
 
 
-    function row(&$___bind___, &...$anyProps)
+    function row(&$___bind___)
     {
-        $this->___row(...[$___restruct_bind___, ...$anyProps]);
+        $this->___row(...[$___restruct_bind___]);
 
         return $this;
     }
 
-
-    function fetchRow(&$___bind___, &...$anyProps)
+    function fetchRow(&$___bind___)
     {
-        $this->___row(...[$___restruct_bind___, ...$anyProps]);
+        $this->___row(...[$___restruct_bind___]);
         return $this->___fetchRow();
     }
 }

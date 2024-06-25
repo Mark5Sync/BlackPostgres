@@ -7,18 +7,7 @@ use Illuminate\Database\Eloquent\Model as EloquentModel;
 
 
 
-/**
-* order_details 
-* @property-read \testapp\models\OrderDetailsModel $otherJoinOrderDetailsModel
-* @method \testapp\models\OrderDetailsModel otherJoinOrderDetailsModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\OrderDetailsModel $leftJoinOrderDetailsModel
-* @method \testapp\models\OrderDetailsModel leftJoinOrderDetailsModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\OrderDetailsModel $rightJoinOrderDetailsModel
-* @method \testapp\models\OrderDetailsModel rightJoinOrderDetailsModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* @property-read \testapp\models\OrderDetailsModel $innerJoinOrderDetailsModel
-* @method \testapp\models\OrderDetailsModel innerJoinOrderDetailsModel(string $name, ?string $groupBy = null, ?int $limit = null)
-* ------- 
-* */
+
 abstract class AbstractProductsModel extends ModelContext
 {
     protected string $currentShort = 'ProductsModel';
@@ -51,14 +40,14 @@ abstract class AbstractProductsModel extends ModelContext
 			bool $name = false,
 			bool $description = false,
 			bool $price = false,
-			bool $created_at = false, ...$anyProps)
+			bool $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___sel($_, $props);
         return $this;
     }
@@ -68,14 +57,14 @@ abstract class AbstractProductsModel extends ModelContext
 			false | string $name = false,
 			false | string $description = false,
 			false | string $price = false,
-			false | string $created_at = false, ...$anyProps)
+			false | string $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___selectAs($props);
         return $this;
     }
@@ -95,14 +84,14 @@ abstract class AbstractProductsModel extends ModelContext
 			false | string $name = false,
 			false | string $description = false,
 			false | string $price = false,
-			false | string $created_at = false, ...$anyProps)
+			false | string $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___where('like', $props);
         return $this;
     }
@@ -112,14 +101,14 @@ abstract class AbstractProductsModel extends ModelContext
 			false | string $name = false,
 			false | string $description = false,
 			false | string $price = false,
-			false | string $created_at = false, ...$anyProps)
+			false | string $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___where('regexp', $props);
         return $this;
     }
@@ -129,14 +118,14 @@ abstract class AbstractProductsModel extends ModelContext
 			false | array $name = false,
 			false | array $description = false,
 			false | array $price = false,
-			false | array $created_at = false, ...$anyProps)
+			false | array $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___in($props);
         return $this;
     }
@@ -146,14 +135,14 @@ abstract class AbstractProductsModel extends ModelContext
 			false | array $name = false,
 			false | array $description = false,
 			false | array $price = false,
-			false | array $created_at = false, ...$anyProps)
+			false | array $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___in($props, true);
         return $this;
     }
@@ -165,14 +154,14 @@ abstract class AbstractProductsModel extends ModelContext
 			bool $name = false,
 			bool $description = false,
 			bool $price = false,
-			bool $created_at = false, ...$anyProps)
+			bool $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___where('IS', $props);
         return $this;
     }
@@ -182,14 +171,14 @@ abstract class AbstractProductsModel extends ModelContext
 			bool $name = false,
 			bool $description = false,
 			bool $price = false,
-			bool $created_at = false, ...$anyProps)
+			bool $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___where('IS NOT', $props);
         return $this;
     }
@@ -205,14 +194,14 @@ abstract class AbstractProductsModel extends ModelContext
 			 false | string $name = false,
 			 false | null | string $description = false,
 			 false | int $price = false,
-			 false | null | string $created_at = false, ...$anyProps)
+			 false | null | string $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___where($_, $props);
         return $this;
     }
@@ -222,14 +211,14 @@ abstract class AbstractProductsModel extends ModelContext
 			false | string $name = false,
 			false | string $description = false,
 			false | string $price = false,
-			false | string $created_at = false, ...$anyProps)
+			false | string $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         $this->___where($_, $props);
         return $this;
     }
@@ -242,14 +231,14 @@ abstract class AbstractProductsModel extends ModelContext
 			 false | string $name = false,
 			 false | null | string $description = false,
 			 false | int $price = false,
-			 false | null | string $created_at = false, ...$anyProps)
+			 false | null | string $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         return $this->___update($props);
     }
 
@@ -258,14 +247,14 @@ abstract class AbstractProductsModel extends ModelContext
 			 false | string $name = false,
 			 false | null | string $description = false,
 			 false | int $price = false,
-			 false | null | string $created_at = false, ...$anyProps)
+			 false | null | string $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         return $this->___insert($props);
     }
 
@@ -274,14 +263,14 @@ abstract class AbstractProductsModel extends ModelContext
 			 false | string $name = false,
 			 false | null | string $description = false,
 			 false | int $price = false,
-			 false | null | string $created_at = false, ...$anyProps)
+			 false | null | string $created_at = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
         return $this->___insertOrIgnore($props);
     }
 
@@ -290,35 +279,100 @@ abstract class AbstractProductsModel extends ModelContext
 			 false | string $name = false,
 			 false | null | string $description = false,
 			 false | int $price = false,
-			 false | null | string $created_at = false, ...$anyProps)
+			 false | null | string $created_at = false)
     {
         $insertProps = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
 
         return function (
 			 false | int $id = false,
 			 false | string $name = false,
 			 false | null | string $description = false,
 			 false | int $price = false,
-			 false | null | string $created_at = false, ...$anyProps) use ($insertProps) {
+			 false | null | string $created_at = false) use ($insertProps) {
             $keysProps = $this->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
-			'created_at' => $created_at, ...$anyProps], false);
+			'created_at' => $created_at], false);
             return $this->___updateOrInsert($insertProps, $keysProps);
         };
     }
 
+    
 
+    private function joins($joinMethod, $models)
+    {
+        $table = $this();
+
+        foreach ($models as $joinTable => $model) {
+            if (!isset($this->relationShema[$table][$joinTable]))
+                throw new \Exception("Нет отношений ($table - $joinTable)", 1);
+
+            ['coll' => $coll, 'referenced' => $referenced] = $this->relationShema[$table][$joinTable];
+
+            $this->___join([
+                'model' => $model,
+                'joinMethod' => $joinMethod,
+                'props' => [
+                    'coll' => $this($coll),
+                    'referenced' => $model($referenced),
+                ]
+            ]);
+        }
+    }
+
+
+    function join(?Model $order_details = null)
+    {
+        $models = $this->requestFilter->filter(['order_details' => $order_details], null);
+        $this->joins('leftJoin', $models);
+
+        return $this;
+    }
+
+    function leftJoin(?Model $order_details = null)
+    {
+        $models = $this->requestFilter->filter(['order_details' => $order_details], null);
+        $this->joins('leftJoin', $models);
+
+        return $this;
+    }
+
+    function rightJoin(?Model $order_details = null)
+    {
+        $models = $this->requestFilter->filter(['order_details' => $order_details], null);
+        $this->joins('rightJoin', $models);
+
+        return $this;
+    }
+
+    function innerJoin(?Model $order_details = null)
+    {
+        $models = $this->requestFilter->filter(['order_details' => $order_details], null);
+        $this->joins('innerJoin', $models);
+
+        return $this;
+    }
+
+    function otherJoin(?Model $order_details = null)
+    {
+        $models = $this->requestFilter->filter(['order_details' => $order_details], null);
+        $this->joins('otherJoin', $models);
+
+        return $this;
+    }
 
 
     
+
+
+
 
 
     function page(int $index, int $size, int | false | null &$pages = false)
@@ -401,32 +455,31 @@ abstract class AbstractProductsModel extends ModelContext
 			&$name = false,
 			&$description = false,
 			&$price = false,
-			&$created_at = false, &...$anyProps)
+			&$created_at = false)
     {
         $this->___row(...[
 			'id' => &$id,
 			'name' => &$name,
 			'description' => &$description,
 			'price' => &$price,
-			'created_at' => &$created_at, ...$anyProps]);
+			'created_at' => &$created_at]);
 
         return $this;
     }
-
 
     function fetchRow(
 			&$id = false,
 			&$name = false,
 			&$description = false,
 			&$price = false,
-			&$created_at = false, &...$anyProps)
+			&$created_at = false)
     {
         $this->___row(...[
 			'id' => &$id,
 			'name' => &$name,
 			'description' => &$description,
 			'price' => &$price,
-			'created_at' => &$created_at, ...$anyProps]);
+			'created_at' => &$created_at]);
         return $this->___fetchRow();
     }
 }
