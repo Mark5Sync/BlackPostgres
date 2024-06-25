@@ -77,7 +77,7 @@ class CascadeController
                     continue;
                 }
 
-                
+
 
 
 
@@ -100,6 +100,10 @@ class CascadeController
             }
         }
 
+
+
+        $this->config = [];
+        $this->breadcrumbs = [];
 
         return $isTable ? $result : $result[0];
     }
