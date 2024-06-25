@@ -12,6 +12,7 @@ abstract class Model extends Connection
     use _markersModel;
     use request;
 
+
     protected string $currentShort = 'no_class';
     public string $tableName;
     private ?string $joinTableName = null;
@@ -388,35 +389,30 @@ abstract class Model extends Connection
     }
 
 
-    private $row = [];
     protected function ___row(&...$props)
     {
+
         foreach ($props as $coll => &$bind) {
             if (!is_null($bind))
                 continue;
 
-
-            $key = 'val' . count($this->row);
-            $raw = $this($coll) . " as " . $key;
-            $this->row[$key] = [
-                'raw' => $raw,
-                'bind' => &$bind,
-            ];
+            $this->rowSelect->add($this($coll), $bind);
         }
     }
 
     protected function ___fetchRow()
     {
-        $colls = array_column($this->row, 'raw');
-        $this->___sel(implode(', ', $colls), []);
+        $colls = $this->rowSelect->getRows();
+        $this->querySchema->add('select', $colls);
 
         $data = $this->fetch();
 
-        foreach ($this->row as $coll => ['bind' => &$prop]) {
+        foreach ($this->rowSelect->getBinds() as $coll => &$prop) {
+        // foreach ($this->row as $coll => ['bind' => &$prop]) {
             $prop = $data[$coll];
         }
 
-        $this->row = [];
+        $this->rowSelect->clear();
     }
 
 

@@ -17,11 +17,13 @@ new class
     {
 
 
-        $this->usersModel->fetchRow(username: $user);
+        $this->usersModel
+            ->join(promocode: $this->promocodeModel->row(url: $url))
+            ->fetchRow();
 
 
 
-        print_r($user);
+        print_r("url: $url");
         echo "\n\n";
     }
 };
