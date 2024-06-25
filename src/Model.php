@@ -4,11 +4,13 @@
 namespace blackpostgres;
 
 use blackpostgres\_markers\model as _markersModel;
+use blackpostgres\_markers\request;
 use blackpostgres\model\Connection;
 
 abstract class Model extends Connection
 {
     use _markersModel;
+    use request;
 
     protected string $currentShort = 'no_class';
     public string $tableName;
@@ -65,7 +67,6 @@ abstract class Model extends Connection
 
     protected function ___applyOperator(string $name, ?array $props = null)
     {
-
         [$joinMethod, $className] = explode('Join', $name);
         $table = $this();
 
@@ -81,13 +82,16 @@ abstract class Model extends Connection
     {
         if ($schema) {
             $schema = str_replace('@', $this() . '.', $schema);
-            $this->getModel()->selectRaw($schema, array_values($props));
+            $this->querySchema->add('selectRow', $schema);
+
+            // $this->getModel()->selectRaw($schema, array_values($props));
         } else {
             $colls = array_map(fn ($coll) => $this($coll), array_keys($props));
+            $this->querySchema->add('select', $colls);
 
-            $this->getModel()->addSelect(
-                ...$colls
-            );
+            // $this->getModel()->addSelect(
+            //     ...$colls
+            // );
         }
     }
 
@@ -101,9 +105,11 @@ abstract class Model extends Connection
             $colls[] = $this($select) . ' AS ' . $selectAs;
         }
 
-        $this->getModel()->addSelect(
-            ...$colls
-        );
+        $this->querySchema->add('select', $colls);
+
+        // $this->getModel()->addSelect(
+        //     ...$colls
+        // );
     }
 
 
@@ -117,15 +123,21 @@ abstract class Model extends Connection
         }
 
 
-        $model = $this->getModel();
+        // $model = $this->getModel();
         $raw = [];
         foreach (array_keys($props) as $index => $coll) {
             if (!$schema)
-                $model->where(
+                $this->querySchema->add('where', [
                     $this($coll),
                     $comparisonOperator,
                     $props[$coll]
-                );
+                ]);
+
+            // $model->where(
+            //     $this($coll),
+            //     $comparisonOperator,
+            //     $props[$coll]
+            // );
 
 
             $raw[] = $props[$coll];
@@ -133,20 +145,23 @@ abstract class Model extends Connection
 
         if ($schema) {
             $schema = str_replace('@', $this() . '.', $schema);
-            $model->whereRaw($schema, $raw);
+            // $model->whereRaw($schema, $raw);
+            $this->querySchema->add('whereRaw', $raw);
         }
     }
 
 
     protected function ___in(array $props, bool $notIn = false)
     {
-        $model = $this->getModel();
+        // $model = $this->getModel();
 
         foreach ($props as $coll => $value) {
-            if ($notIn)
-                $model->wheteNotIn($coll, $value);
-            else
-                $model->wheteIn($coll, $value);
+            $this->querySchema->add($notIn ? 'wheteNotIn' : 'wheteIn', [$coll, $value]);
+
+            // if ($notIn)
+            //     $model->wheteNotIn($coll, $value);
+            // else
+            //     $model->wheteIn($coll, $value);
         }
     }
 
@@ -204,38 +219,42 @@ abstract class Model extends Connection
 
     protected function ___limit(int $limit)
     {
-        $this->getModel()->limit($limit);
+        // $this->getModel()->limit($limit);
+        $this->querySchema->add('limit', $limit);
     }
 
 
     protected function ___offset(int $offset)
     {
-        $this->getModel()->offset($offset);
+        // $this->getModel()->offset($offset);
+        $this->querySchema->add('offset', $offset);
     }
 
 
     protected function ___orderBy(string $orderType, array $colls)
     {
         $props = array_map(fn ($coll) => $this($coll), array_keys($colls));
+        $this->querySchema->add("orderBy$orderType", $props);
 
-        switch ($orderType) {
-            case 'ASC':
-                $this->getModel()->orderByAsc(...$props);
-                break;
+        // switch ($orderType) {
+        //     case 'ASC':
+        //         $this->getModel()->orderByAsc(...$props);
+        //         break;
 
-            case 'DESC':
-                $this->getModel()->orderByDesc(...$props);
-                break;
+        //     case 'DESC':
+        //         $this->getModel()->orderByDesc(...$props);
+        //         break;
 
-            default:
-                throw new \Exception("Неизвестный тип orderBy [$orderType]", 1);
-        }
+        //     default:
+        //         throw new \Exception("Неизвестный тип orderBy [$orderType]", 1);
+        // }
     }
 
     protected function ___groupBy(array $props)
     {
         $row = array_map(fn ($coll) => $this($coll), array_keys($props));
-        $this->getModel()->groupByRaw(implode(',', $row));
+        $this->querySchema->add("groupByRaw", $props);
+        // $this->getModel()->groupByRaw(implode(',', $row));
     }
 
     // protected function ___in()
@@ -249,16 +268,6 @@ abstract class Model extends Connection
         return $this;
     }
 
-    private function bindQuery()
-    {
-        if (!is_null($this->query))
-            return;
-
-        // $cloneModel = clone $this->getModel();
-
-        $this->query = $this->getModel()->toSql();
-    }
-
 
 
 
@@ -268,7 +277,9 @@ abstract class Model extends Connection
     /** RESET MODEL WRAPPER */
     private function RMW($result)
     {
-        $this->resetModel();
+        $this->querySchema->reset();
+
+        // $this->resetModel();
         return $result;
     }
 
@@ -325,10 +336,23 @@ abstract class Model extends Connection
     }
 
 
+    private function buildModel()
+    {
+        $model = $this->getModel();
+        $this->querySchema->build($model);
+
+
+        if (is_null($this->query))
+            $this->query = $model->toSql();
+            
+
+        return $model;
+    }
+
+
     function fetch()
     {
-        $this->bindQuery();
-        $result = $this->getModel()->first();
+        $result = $this->buildModel()->first();
         if (!$result)
             return null;
 
@@ -338,20 +362,18 @@ abstract class Model extends Connection
 
     function fetchAll()
     {
-        $this->bindQuery();
-        return $this->RMW($this->cascadeHandleResult($this->getModel()->get()->toArray(), true));
+        return $this->RMW($this->cascadeHandleResult($this->buildModel()->get()->toArray(), true));
     }
 
     function toSql()
     {
-        return $this->RMW($this->getModel()->toSql());
+        return $this->RMW($this->buildModel()->toSql());
     }
 
 
     function getCount()
     {
-        $this->bindQuery();
-        return $this->RMW($this->getModel()->get()->count());
+        return $this->RMW($this->buildModel()->get()->count());
     }
 
 
@@ -394,31 +416,31 @@ abstract class Model extends Connection
 
     function ___insert(array $props)
     {
-        return $this->RMW($this->getModel()->insertGetId($props));
+        return $this->RMW($this->buildModel()->insertGetId($props));
     }
 
 
     function ___insertOrIgnore(array $props)
     {
-        return $this->RMW($this->getModel()->insertOrIgnore($props));
+        return $this->RMW($this->buildModel()->insertOrIgnore($props));
     }
 
 
     function ___updateOrInsert(array $updateProps, array $keysProps)
     {
-        return $this->RMW($this->getModel()->updateOrInsert($updateProps, $keysProps));
+        return $this->RMW($this->buildModel()->updateOrInsert($updateProps, $keysProps));
     }
 
 
     function ___update(array $props)
     {
-        return $this->RMW($this->getModel()->update($props));
+        return $this->RMW($this->buildModel()->update($props));
     }
 
 
 
     function delete()
     {
-        return $this->RMW($this->getModel()->delete());
+        return $this->RMW($this->buildModel()->delete());
     }
 }

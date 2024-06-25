@@ -19,13 +19,10 @@ new class
 
 
         $result = $this->usersModel
-                ->sel(username: 1, email: 1)
-            ->leftJoinOrdersModel('order', groupBy: 'email')
-                ->sel(id: 1, status: 1)
-            ->leftJoinOrderDetailsModel('detail')
-                ->sel(product_id: 1, quantity: 1, price: 1)
-            ->fetchAll();
-        
+            ->sel(username: 1, email: 1)
+            ->sel(password: 1)
+            ->fetch();
+
 
         print_r($result);
         echo "\n\n";
