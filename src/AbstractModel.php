@@ -148,9 +148,15 @@ abstract class ___abstract_class___ extends Model //class
         };
     }
 
+
+    function upsert(&$___auto___, array $unique, array $update)
+    {
+        $insertProps = $this->requestFilter->filter([$___restruct_auto___], false);
+        return $this->___upsert($insertProps, $unique, $update);
+    }
+
+
     //JOIN
-
-
 
 
 
