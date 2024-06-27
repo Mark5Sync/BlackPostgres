@@ -67,6 +67,9 @@ class QuerySchema
                     $model->limit($data);
                     break;
 
+                case 'offset':
+                    $model->offset($data);
+                    break;
 
 
                 case 'join':
@@ -93,7 +96,6 @@ class QuerySchema
 
     private function join($model, string $method, string $joinTableName, $props)
     {
-
         $model->{$method}($joinTableName, function ($join) use ($props) {
             $join->on($props['coll'], '=', $props['referenced']);
         });
