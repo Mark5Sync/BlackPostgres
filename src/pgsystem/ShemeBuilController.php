@@ -37,7 +37,8 @@ class ShemeBuilController
 
         foreach ($tables as $table => $tableProps) {
             try {
-                $modelConfig->activeTable($table, $tableProps, $relationship[$table]);
+                $relation = isset($relationship[$table]) ? $relationship[$table] : [];
+                $modelConfig->activeTable($table, $tableProps, $relation);
                 $this->createShemeBuilder($modelConfig)->generateAbstractModel();
 
                 $context[$table] = $modelConfig->getContext();

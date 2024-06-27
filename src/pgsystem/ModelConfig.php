@@ -30,7 +30,7 @@ class ModelConfig
     }
 
 
-    function activeTable(string $table, array $tableProps, ?array $relations = null)
+    function activeTable(string $table, array $tableProps, array $relations = [])
     {
         $this->table = $table;
         $this->tableProps = $tableProps;
