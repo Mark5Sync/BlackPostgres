@@ -16,11 +16,6 @@ abstract class ModelContext extends Model
       'coll' => 'id',
       'referenced' => 'user_id',
     ),
-    'promocode' => 
-    array (
-      'coll' => 'id',
-      'referenced' => 'user_id',
-    ),
   ),
   'orders' => 
   array (
@@ -54,14 +49,6 @@ abstract class ModelContext extends Model
     array (
       'coll' => 'id',
       'referenced' => 'product_id',
-    ),
-  ),
-  'promocode' => 
-  array (
-    'users' => 
-    array (
-      'coll' => 'user_id',
-      'referenced' => 'id',
     ),
   ),
 );

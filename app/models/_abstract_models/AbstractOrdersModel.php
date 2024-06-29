@@ -279,6 +279,68 @@ abstract class AbstractOrdersModel extends ModelContext
         };
     }
 
+
+    function upsert(
+			 false | int $id = false,
+			 false | int $user_id = false,
+			 false | null | string $created_at = false,
+			 false | string $status = false)
+    {
+        return new class ($this->requestFilter->filter([
+			'id' => $id,
+			'user_id' => $user_id,
+			'created_at' => $created_at,
+			'status' => $status], false), $this) {
+            private $unique = null;
+            private $update = null;
+            private $runFetch = false;
+
+            function __construct(private $insertProps, private Model $model){
+            }
+
+            function __destruct()
+            {
+                if (!$this->runFetch)
+                    throw new \Exception("нужно вызвать fetch", 777);
+            }
+
+            function unique(
+			bool $id = false,
+			bool $user_id = false,
+			bool $created_at = false,
+			bool $status = false){
+                $this->unique = array_keys($this->model->requestFilter->filter([
+			'id' => $id,
+			'user_id' => $user_id,
+			'created_at' => $created_at,
+			'status' => $status], false));
+                return $this;
+            }
+
+            function update(
+			 false | int $id = false,
+			 false | int $user_id = false,
+			 false | null | string $created_at = false,
+			 false | string $status = false){
+                $this->update = array_keys($this->model->requestFilter->filter([
+			'id' => $id,
+			'user_id' => $user_id,
+			'created_at' => $created_at,
+			'status' => $status], false));
+                return $this;
+            }
+
+            function fetch(){
+                $this->runFetch = true;
+                if (is_null($this->unique))
+                    throw new \Exception("unique не задан", 778);
+
+                return $this->model->___upsert($this->insertProps, $this->unique, $this->update);
+            }
+        };
+    }
+
+
     
 
     private function joins($joinMethod, $models)
@@ -348,8 +410,6 @@ abstract class AbstractOrdersModel extends ModelContext
 
 
     
-
-
 
 
 

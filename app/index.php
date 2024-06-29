@@ -18,11 +18,8 @@ new class
 
 
         $result = $this->usersModel
-            ->sel(id: 1, username: 1, email: 1)
-            ->page(1, 1)
-            ->fetchAll();
+            ->upsert(email: 'hee@mail.ru', username: 'User', password: '123')->unique(id: 1)->fetch();
 
-        print_r($result);
         echo "\n\n";
     }
 };

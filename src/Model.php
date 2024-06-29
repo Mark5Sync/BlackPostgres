@@ -317,7 +317,7 @@ abstract class Model extends Connection
         return $this->RMW($this->buildModel()->update($props));
     }
 
-    function ___upsert(array $props, array $unique, array $update)
+    function ___upsert(array $props, array $unique, ?array $update)
     {
         return $this->RMW($this->buildModel()->upsert($props, $unique, $update));
     }

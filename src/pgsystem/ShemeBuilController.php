@@ -110,7 +110,7 @@ class ShemeBuilController
             $this->pdo = $this->connectionResolver->configToPDO($this->config);
         } catch (\Throwable $th) {
             cli::print("<red>не  удается подключиться к postgres</red>: {$this->config->host}:{$this->config->port} ({$this->config->database})\n");
-            die();
+            throw new \Exception("Не удалось выполнить подключение из конфига " . get_class($this->config), 33);
         }
     }
 

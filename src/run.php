@@ -45,7 +45,14 @@ class run
         $configs = UseConfig::find(Config::class, $root);
 
         foreach ($configs as $configClass) {
-            new ShemeBuilController($root, new $configClass);
+            cli::print(<<<HTML
+            <bg-green>$configClass</bg-green>\n
+            HTML);
+            try {
+                new ShemeBuilController($root, new $configClass);
+            } catch (\Throwable $th) {
+                
+            }
         }
     }
 }

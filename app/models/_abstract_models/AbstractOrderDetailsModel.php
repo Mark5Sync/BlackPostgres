@@ -309,6 +309,74 @@ abstract class AbstractOrderDetailsModel extends ModelContext
         };
     }
 
+
+    function upsert(
+			 false | int $id = false,
+			 false | int $order_id = false,
+			 false | int $product_id = false,
+			 false | int $quantity = false,
+			 false | int $price = false)
+    {
+        return new class ($this->requestFilter->filter([
+			'id' => $id,
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false), $this) {
+            private $unique = null;
+            private $update = null;
+            private $runFetch = false;
+
+            function __construct(private $insertProps, private Model $model){
+            }
+
+            function __destruct()
+            {
+                if (!$this->runFetch)
+                    throw new \Exception("нужно вызвать fetch", 777);
+            }
+
+            function unique(
+			bool $id = false,
+			bool $order_id = false,
+			bool $product_id = false,
+			bool $quantity = false,
+			bool $price = false){
+                $this->unique = array_keys($this->model->requestFilter->filter([
+			'id' => $id,
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false));
+                return $this;
+            }
+
+            function update(
+			 false | int $id = false,
+			 false | int $order_id = false,
+			 false | int $product_id = false,
+			 false | int $quantity = false,
+			 false | int $price = false){
+                $this->update = array_keys($this->model->requestFilter->filter([
+			'id' => $id,
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false));
+                return $this;
+            }
+
+            function fetch(){
+                $this->runFetch = true;
+                if (is_null($this->unique))
+                    throw new \Exception("unique не задан", 778);
+
+                return $this->model->___upsert($this->insertProps, $this->unique, $this->update);
+            }
+        };
+    }
+
+
     
 
     private function joins($joinMethod, $models)
@@ -378,8 +446,6 @@ abstract class AbstractOrderDetailsModel extends ModelContext
 
 
     
-
-
 
 
 

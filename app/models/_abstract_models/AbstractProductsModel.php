@@ -304,6 +304,74 @@ abstract class AbstractProductsModel extends ModelContext
         };
     }
 
+
+    function upsert(
+			 false | int $id = false,
+			 false | string $name = false,
+			 false | null | string $description = false,
+			 false | int $price = false,
+			 false | null | string $created_at = false)
+    {
+        return new class ($this->requestFilter->filter([
+			'id' => $id,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
+			'created_at' => $created_at], false), $this) {
+            private $unique = null;
+            private $update = null;
+            private $runFetch = false;
+
+            function __construct(private $insertProps, private Model $model){
+            }
+
+            function __destruct()
+            {
+                if (!$this->runFetch)
+                    throw new \Exception("нужно вызвать fetch", 777);
+            }
+
+            function unique(
+			bool $id = false,
+			bool $name = false,
+			bool $description = false,
+			bool $price = false,
+			bool $created_at = false){
+                $this->unique = array_keys($this->model->requestFilter->filter([
+			'id' => $id,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
+			'created_at' => $created_at], false));
+                return $this;
+            }
+
+            function update(
+			 false | int $id = false,
+			 false | string $name = false,
+			 false | null | string $description = false,
+			 false | int $price = false,
+			 false | null | string $created_at = false){
+                $this->update = array_keys($this->model->requestFilter->filter([
+			'id' => $id,
+			'name' => $name,
+			'description' => $description,
+			'price' => $price,
+			'created_at' => $created_at], false));
+                return $this;
+            }
+
+            function fetch(){
+                $this->runFetch = true;
+                if (is_null($this->unique))
+                    throw new \Exception("unique не задан", 778);
+
+                return $this->model->___upsert($this->insertProps, $this->unique, $this->update);
+            }
+        };
+    }
+
+
     
 
     private function joins($joinMethod, $models)
@@ -373,8 +441,6 @@ abstract class AbstractProductsModel extends ModelContext
 
 
     
-
-
 
 
 

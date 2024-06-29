@@ -17,11 +17,6 @@ abstract class AbstractUsersModel extends ModelContext
     'coll' => 'id',
     'referenced' => 'user_id',
   ),
-  'promocode' => 
-  array (
-    'coll' => 'id',
-    'referenced' => 'user_id',
-  ),
 );
 
     public string $tableName = 'users';
@@ -309,6 +304,74 @@ abstract class AbstractUsersModel extends ModelContext
         };
     }
 
+
+    function upsert(
+			 false | int $id = false,
+			 false | string $username = false,
+			 false | string $email = false,
+			 false | string $password = false,
+			 false | null | string $created_at = false)
+    {
+        return new class ($this->requestFilter->filter([
+			'id' => $id,
+			'username' => $username,
+			'email' => $email,
+			'password' => $password,
+			'created_at' => $created_at], false), $this) {
+            private $unique = null;
+            private $update = null;
+            private $runFetch = false;
+
+            function __construct(private $insertProps, private Model $model){
+            }
+
+            function __destruct()
+            {
+                if (!$this->runFetch)
+                    throw new \Exception("нужно вызвать fetch", 777);
+            }
+
+            function unique(
+			bool $id = false,
+			bool $username = false,
+			bool $email = false,
+			bool $password = false,
+			bool $created_at = false){
+                $this->unique = array_keys($this->model->requestFilter->filter([
+			'id' => $id,
+			'username' => $username,
+			'email' => $email,
+			'password' => $password,
+			'created_at' => $created_at], false));
+                return $this;
+            }
+
+            function update(
+			 false | int $id = false,
+			 false | string $username = false,
+			 false | string $email = false,
+			 false | string $password = false,
+			 false | null | string $created_at = false){
+                $this->update = array_keys($this->model->requestFilter->filter([
+			'id' => $id,
+			'username' => $username,
+			'email' => $email,
+			'password' => $password,
+			'created_at' => $created_at], false));
+                return $this;
+            }
+
+            function fetch(){
+                $this->runFetch = true;
+                if (is_null($this->unique))
+                    throw new \Exception("unique не задан", 778);
+
+                return $this->model->___upsert($this->insertProps, $this->unique, $this->update);
+            }
+        };
+    }
+
+
     
 
     private function joins($joinMethod, $models)
@@ -336,41 +399,41 @@ abstract class AbstractUsersModel extends ModelContext
     }
 
 
-    function join(?Model $orders = null, ?Model $promocode = null)
+    function join(?Model $orders = null)
     {
-        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $models = $this->requestFilter->filter(['orders' => $orders], null);
         $this->joins('leftJoin', $models);
 
         return $this;
     }
 
-    function leftJoin(?Model $orders = null, ?Model $promocode = null)
+    function leftJoin(?Model $orders = null)
     {
-        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $models = $this->requestFilter->filter(['orders' => $orders], null);
         $this->joins('leftJoin', $models);
 
         return $this;
     }
 
-    function rightJoin(?Model $orders = null, ?Model $promocode = null)
+    function rightJoin(?Model $orders = null)
     {
-        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $models = $this->requestFilter->filter(['orders' => $orders], null);
         $this->joins('rightJoin', $models);
 
         return $this;
     }
 
-    function innerJoin(?Model $orders = null, ?Model $promocode = null)
+    function innerJoin(?Model $orders = null)
     {
-        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $models = $this->requestFilter->filter(['orders' => $orders], null);
         $this->joins('innerJoin', $models);
 
         return $this;
     }
 
-    function otherJoin(?Model $orders = null, ?Model $promocode = null)
+    function otherJoin(?Model $orders = null)
     {
-        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $models = $this->requestFilter->filter(['orders' => $orders], null);
         $this->joins('otherJoin', $models);
 
         return $this;
@@ -378,8 +441,6 @@ abstract class AbstractUsersModel extends ModelContext
 
 
     
-
-
 
 
 
