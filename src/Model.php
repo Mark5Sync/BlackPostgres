@@ -24,11 +24,15 @@ abstract class Model extends Connection
     protected ?array $relationship;
     private   ?string $query = '';
     private   null | int | false $pages = false;
+    private int $size = 10;
 
 
     private function clear()
     {
         $this->applyJoin = [];
+        $this->size = 10;
+        $this->pages = false;
+        $this->query = null;
     }
 
 
@@ -190,18 +194,6 @@ abstract class Model extends Connection
 
 
 
-    private function fetchPages()
-    {
-        if (!is_null($this->pages))
-            return;
-
-        $model = $this->getModel();
-        $schema = clone $this->querySchema;
-        $schema->build($model);
-        $this->pages = $model->count();
-    }
-
-
 
 
     /** RESET MODEL WRAPPER */
@@ -216,11 +208,15 @@ abstract class Model extends Connection
 
     private function buildModel()
     {
-        $this->fetchPages();
-
         $model = $this->getModel();
-        $this->querySchema->build($model);
+        $this->querySchema->build($model, ['limit', 'offset']);
 
+        if (is_null($this->pages)) {
+            $countRows = $model->count();
+            $this->pages = ceil($countRows / $this->size);
+        }
+
+        $this->querySchema->build($model);
 
         if (is_null($this->query))
             $this->query = $model->toSql();
@@ -259,7 +255,9 @@ abstract class Model extends Connection
 
     function ___page(int $index, int $size, int | false | null &$pages = false)
     {
-        $this->___offset($index);
+        $this->___offset(($index -1) * $size);
+
+        $this->size = $size;
         $this->___limit($size);
 
         if (is_null($pages)) {

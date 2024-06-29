@@ -9,7 +9,6 @@ use marksync\provider\Mark;
 class QuerySchema
 {
     public $config = [];
-    public $idBuild = false;
 
 
     function add(string $method, mixed $data)
@@ -24,16 +23,17 @@ class QuerySchema
     function reset()
     {
         $this->config = [];
-        $this->idBuild = false;
     }
 
 
-    function build($model)
+    function build($model, array $pass = [])
     {
-        if ($this->idBuild)
-            return;
+        foreach ($this->config as $index => ['method' => $method, 'data' => $data]) {
+            if (in_array($method, $pass))
+                continue;
 
-        foreach ($this->config as $key => ['method' => $method, 'data' => $data]) {
+            unset($this->config[$index]);
+
             switch ($method) {
 
                 case 'select':
@@ -87,10 +87,6 @@ class QuerySchema
                     break;
             }
         }
-
-
-        $this->idBuild = true;
-        $this->config = [];
     }
 
 
