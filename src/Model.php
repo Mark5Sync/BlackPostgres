@@ -31,8 +31,9 @@ abstract class Model extends Connection
     {
         $this->applyJoin = [];
         $this->size = 10;
-        $this->pages = false;
         $this->query = null;
+        $this->cascade = null;
+        // $this->cascadeController->
     }
 
 
@@ -213,13 +214,16 @@ abstract class Model extends Connection
 
         if (is_null($this->pages)) {
             $countRows = $model->count();
-            $this->pages = ceil($countRows / $this->size);
+            $pagex = $countRows / $this->size;
+            $this->pages = ceil($pagex); // TODO почему size = null
         }
 
         $this->querySchema->build($model);
 
         if (is_null($this->query))
             $this->query = $model->toSql();
+
+        $this->clear();
 
         return $model;
     }
