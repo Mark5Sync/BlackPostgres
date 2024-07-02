@@ -215,7 +215,7 @@ abstract class Model extends Connection
         if (is_null($this->pages)) {
             $countRows = $model->count();
             $pagex = $countRows / $this->size;
-            $this->pages = ceil($pagex); // TODO почему size = null
+            $this->pages = ceil($pagex);
         }
 
         $this->querySchema->build($model);
