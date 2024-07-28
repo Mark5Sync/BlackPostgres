@@ -2,8 +2,13 @@
 
 namespace blackpostgres\config;
 
+use blackpostgres\_markers\quick_db_tools;
+
 abstract class Config
 {
+    use quick_db_tools;
+
+
 
     public string $modelsPath;
     public string $namespace;
@@ -15,5 +20,4 @@ abstract class Config
     public string $database;
     public string $user;
     public string $password;
-
 }

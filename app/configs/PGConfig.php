@@ -4,7 +4,7 @@ namespace testapp\configs;
 
 use blackpostgres\config\Config;
 
-class PGConfig extends Config
+class PGDb extends Config
 {
     public string $modelsPath = 'app/models';
     public string $namespace = 'testapp\\models';

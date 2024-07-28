@@ -3,25 +3,31 @@
 namespace blackpostgres\pgsystem;
 
 use blackpostgres\_markers\pgsystem;
+use blackpostgres\config\Config;
 use Illuminate\Database\Capsule\Manager;
 
-class Capsule {
+class Capsule
+{
     use pgsystem;
 
     private $connections = [];
 
-    function addConnection(string $connectionConfig){
-        if (isset($this->connections[$connectionConfig]))
+    function getManager(){
+        return new Manager;
+    }
+
+    function addConnection(Config $connectionConfig)
+    {
+        if (isset($this->connections[$connectionConfig->database]))
             return;
 
-        $manager = new Manager;
+        $manager = $this->getManager();
 
-        $manager->addConnection($this->connectionResolver->configToCapsule(new $connectionConfig));
+        $manager->addConnection($this->connectionResolver->configToCapsule($connectionConfig));
 
         $manager->setAsGlobal();
         $manager->bootEloquent();
 
-        $this->connections[$connectionConfig] = true;
+        $this->connections[$connectionConfig->database] = true;
     }
-
 }

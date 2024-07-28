@@ -22,7 +22,7 @@ abstract class Connection
         // if ($this->activeModel)
         //     return $this->activeModel;
 
-        $this->capsule->addConnection($this->connectionConfig);
+        $this->capsule->addConnection(new $this->connectionConfig);
 
         return $this->activeModel = $this->getEloquentModel()->newQuery();
     }
