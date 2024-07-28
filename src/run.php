@@ -44,12 +44,13 @@ class run
         echo "find config - $root\n";
         $configs = UseConfig::find(Config::class, $root);
 
+        /** @var Config $configClass */
         foreach ($configs as $configClass) {
             cli::print(<<<HTML
             <bg-green>$configClass</bg-green>\n
             HTML);
             try {
-                new ShemeBuilController($root, new $configClass);
+                (new $configClass)->generate($root);
             } catch (\Throwable $th) {
                 
             }

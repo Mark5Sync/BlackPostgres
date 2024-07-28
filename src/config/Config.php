@@ -2,16 +2,13 @@
 
 namespace blackpostgres\config;
 
-use blackpostgres\_markers\quick_db_tools;
+use blackpostgres\Table;
 
-abstract class Config
+abstract class Config extends Table
 {
-    use quick_db_tools;
-
-
-
-    public string $modelsPath;
+    public string $modelsPath; // полный путь
     public string $namespace;
+
 
 
     public string $host;
@@ -20,4 +17,10 @@ abstract class Config
     public string $database;
     public string $user;
     public string $password;
+
+
+    function onGenerateFilter(string $tableName): bool
+    {
+        return true;
+    }
 }

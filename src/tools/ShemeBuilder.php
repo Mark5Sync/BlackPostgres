@@ -39,8 +39,8 @@ class ShemeBuilder
     {
         try {
             $code = $this->getAbstractCode();
-            file_put_contents("{$this->modelConfig->abstractFolder}/{$this->modelConfig->abstractClass}.php", $code);
-
+            $abstractFileName = "{$this->modelConfig->abstractFolder}/{$this->modelConfig->abstractClass}.php";
+            file_put_contents($abstractFileName, $code);
 
             $modelFileName = "{$this->modelConfig->modelFolder}/{$this->modelConfig->class}.php";
 
@@ -93,7 +93,7 @@ class ShemeBuilder
             'Model //class' => 'ModelContext',
         ];
 
-        $abstactCode = file_get_contents(__DIR__ . "/../AbstractModel.php");
+        $abstactCode = file_get_contents(__DIR__ . "/../AbstractTable.php");
         foreach ($props as $key => $value) {
             $abstactCode = str_replace($key, $value, $abstactCode);
         }

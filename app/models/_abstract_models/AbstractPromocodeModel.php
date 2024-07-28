@@ -2,14 +2,15 @@
 
 namespace testapp\models\_abstract_models;
 
-use blackpostgres\Model;
-use Illuminate\Database\Eloquent\Model as EloquentModel;
+use blackpostgres\_markers\model;
+use blackpostgres\Table;
+use marksync\provider\Container;
 
 
-
-
-abstract class AbstractPromocodeModel extends ModelContext
+abstract class AbstractPromocodeModel
 {
+    use model;
+
     protected string $currentShort = 'PromocodeModel';
     protected ?array $relationship = array (
   'users' => 
@@ -20,19 +21,24 @@ abstract class AbstractPromocodeModel extends ModelContext
 );
 
     public string $tableName = 'promocode';
-    protected string $connectionConfig = 'testapp\configs\PGConfig';
+    protected string $DB = 'testapp\connection\TestDatabaseConfig';
+    // private ?Config $activeConfig;
 
 
-    protected function getEloquentModel(): EloquentModel
+    // protected function getEloquentModel(): EloquentModel
+    // {
+    //     return new class extends EloquentModel
+    //     {
+    //         protected $table = 'promocode';
+    //         public $timestamps = false;
+    //     };
+    // }
+
+
+    private function useTable(): Table
     {
-        return new class extends EloquentModel
-        {
-            protected $table = 'promocode';
-            public $timestamps = false;
-        };
+        return Container::get($this->DB)->table($this->tableName);
     }
-
-
 
 
     function sel(?string $_ = null, 
@@ -46,7 +52,8 @@ abstract class AbstractPromocodeModel extends ModelContext
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-        $this->___sel($_, $props);
+        // $this->useTable()->sel($_, $props);
+        $this->useTable()->sel($_, $props);
         return $this;
     }
 
@@ -61,7 +68,7 @@ abstract class AbstractPromocodeModel extends ModelContext
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-        $this->___selectAs($props);
+        $this->useTable()->selectAs($props);
         return $this;
     }
 
@@ -69,7 +76,7 @@ abstract class AbstractPromocodeModel extends ModelContext
     // function selectDate(?string $_ = null, &$___string_date___)
     // {
     //     $props = [$___restruct_string_date___];
-    //     $this->___selectDate($props);
+    //     $this->useTable()->selectDate($props);
     //     return $this;
     // }
 
@@ -86,7 +93,7 @@ abstract class AbstractPromocodeModel extends ModelContext
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-        $this->___where('like', $props);
+        $this->useTable()->where('like', $props);
         return $this;
     }
 
@@ -101,7 +108,7 @@ abstract class AbstractPromocodeModel extends ModelContext
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-        $this->___where('regexp', $props);
+        $this->useTable()->where('regexp', $props);
         return $this;
     }
 
@@ -116,7 +123,7 @@ abstract class AbstractPromocodeModel extends ModelContext
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-        $this->___in($props);
+        $this->useTable()->in($props);
         return $this;
     }
 
@@ -131,7 +138,8 @@ abstract class AbstractPromocodeModel extends ModelContext
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-        $this->___in($props, true);
+        $this->useTable()->in($props, true);
+
         return $this;
     }
 
@@ -148,7 +156,8 @@ abstract class AbstractPromocodeModel extends ModelContext
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-        $this->___where('IS', $props);
+        // $this->useTable()->where('IS', $props);
+        $this->useTable()->where($props, 'IS');
         return $this;
     }
 
@@ -163,7 +172,9 @@ abstract class AbstractPromocodeModel extends ModelContext
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-        $this->___where('IS NOT', $props);
+        // $this->useTable()->where('IS NOT', $props);
+        $this->useTable()->where($props, 'IS NOT');
+
         return $this;
     }
 
@@ -184,7 +195,7 @@ abstract class AbstractPromocodeModel extends ModelContext
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-        $this->___where($_, $props);
+        $this->useTable()->where($props, $_);
         return $this;
     }
 
@@ -199,7 +210,7 @@ abstract class AbstractPromocodeModel extends ModelContext
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-        $this->___where($_, $props);
+        $this->useTable()->where($props, $_);
         return $this;
     }
 
@@ -217,7 +228,7 @@ abstract class AbstractPromocodeModel extends ModelContext
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-        return $this->___update($props);
+        return $this->useTable()->update($props);
     }
 
     function insert(
@@ -231,7 +242,7 @@ abstract class AbstractPromocodeModel extends ModelContext
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-        return $this->___insert($props);
+        return $this->useTable()->insert($props);
     }
 
     function insertOrIgnore(
@@ -245,7 +256,7 @@ abstract class AbstractPromocodeModel extends ModelContext
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-        return $this->___insertOrIgnore($props);
+        return $this->useTable()->insertOrIgnore($props);
     }
 
     function updateOrInsert(
@@ -270,9 +281,77 @@ abstract class AbstractPromocodeModel extends ModelContext
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-            return $this->___updateOrInsert($insertProps, $keysProps);
+            return $this->useTable()->updateOrInsert($insertProps, $keysProps);
         };
     }
+
+
+    function upsert(
+			 false | int $id = false,
+			 false | int $user_id = false,
+			 false | string $url = false,
+			 false | int $sale = false)
+    {
+        $upsertProps = $this->requestFilter->filter([
+			'id' => $id,
+			'user_id' => $user_id,
+			'url' => $url,
+			'sale' => $sale], false);
+        return new class($upsertProps, $this)
+        {
+            private $unique = null;
+            private $update = null;
+            private $runFetch = false;
+
+            function __construct(private $insertProps, private Model $model)
+            {
+            }
+
+            function __destruct()
+            {
+                if (!$this->runFetch)
+                    throw new \Exception("нужно вызвать fetch", 777);
+            }
+
+            function unique(
+			bool $id = false,
+			bool $user_id = false,
+			bool $url = false,
+			bool $sale = false)
+            {
+                $this->unique = array_keys($this->model->requestFilter->filter([
+			'id' => $id,
+			'user_id' => $user_id,
+			'url' => $url,
+			'sale' => $sale], false));
+                return $this;
+            }
+
+            function update(
+			 false | int $id = false,
+			 false | int $user_id = false,
+			 false | string $url = false,
+			 false | int $sale = false)
+            {
+                $this->update = array_keys($this->model->requestFilter->filter([
+			'id' => $id,
+			'user_id' => $user_id,
+			'url' => $url,
+			'sale' => $sale], false));
+                return $this;
+            }
+
+            function fetch()
+            {
+                $this->runFetch = true;
+                if (is_null($this->unique))
+                    throw new \Exception("unique не задан", 778);
+
+                return $this->model->___upsert($this->insertProps, $this->unique, $this->update);
+            }
+        };
+    }
+
 
     
 
@@ -346,25 +425,23 @@ abstract class AbstractPromocodeModel extends ModelContext
 
 
 
-
-
     function page(int $index, int $size, int | false | null &$pages = false)
     {
-        $this->___page($index, $size, $pages);
+        $this->useTable()->page($index, $size, $pages);
         return $this;
     }
 
     function limit($limit)
     {
 
-        $this->___limit($limit);
+        $this->useTable()->limit($limit);
         return $this;
     }
 
     function offset($offset)
     {
 
-        $this->___offset($offset);
+        $this->useTable()->offset($offset);
         return $this;
     }
 
@@ -379,7 +456,7 @@ abstract class AbstractPromocodeModel extends ModelContext
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-        $this->___orderBy('ASC', $props);
+        $this->useTable()->orderBy('ASC', $props);
         return $this;
     }
 
@@ -394,7 +471,7 @@ abstract class AbstractPromocodeModel extends ModelContext
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-        $this->___orderBy('DESC', $props);
+        $this->useTable()->orderBy('DESC', $props);
         return $this;
     }
 
@@ -409,7 +486,7 @@ abstract class AbstractPromocodeModel extends ModelContext
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-        $this->___groupBy($props);
+        $this->useTable()->groupBy($props);
         return $this;
     }
 
@@ -423,7 +500,7 @@ abstract class AbstractPromocodeModel extends ModelContext
 			&$url = false,
 			&$sale = false)
     {
-        $this->___row(...[
+        $this->useTable()->row(...[
 			'id' => &$id,
 			'user_id' => &$user_id,
 			'url' => &$url,
@@ -438,12 +515,12 @@ abstract class AbstractPromocodeModel extends ModelContext
 			&$url = false,
 			&$sale = false)
     {
-        $this->___row(...[
+        $this->useTable()->row(...[
 			'id' => &$id,
 			'user_id' => &$user_id,
 			'url' => &$url,
 			'sale' => &$sale]);
-        return $this->___fetchRow();
+        return $this->useTable()->fetchRow();
     }
 
 
@@ -451,7 +528,7 @@ abstract class AbstractPromocodeModel extends ModelContext
     function cascade(string $name)
     {
 
-        $this->___cascade($name);
+        $this->useTable()->cascade($name);
 
         return $this;
     }

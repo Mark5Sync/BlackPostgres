@@ -20,10 +20,15 @@ class ShemeBuilController
 
     function __construct(private string $root, private Config $config)
     {
+    }
+
+
+    function generate()
+    {
         ini_set('display_errors', 0);
 
 
-        $modelConfig = $this->getModelConfig($config);
+        $modelConfig = $this->getModelConfig($this->config);
 
 
 
@@ -36,6 +41,10 @@ class ShemeBuilController
         $context = [];
 
         foreach ($tables as $table => $tableProps) {
+            if (!$this->config->onGenerateFilter($table))
+                continue;
+
+
             try {
                 $relation = isset($relationship[$table]) ? $relationship[$table] : [];
                 $modelConfig->activeTable($table, $tableProps, $relation);
@@ -60,7 +69,7 @@ class ShemeBuilController
 
     private function getModelConfig(Config $config): ModelConfig
     {
-        $projectFolder = $this->realPath('/', $this->root, $config->modelsPath);
+        $projectFolder = $config->modelsPath;
         $projectAbstractFolder = $this->realPath('/', $projectFolder, '_abstract_models');
 
         if (file_exists($projectAbstractFolder))

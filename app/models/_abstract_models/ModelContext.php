@@ -16,31 +16,10 @@ abstract class ModelContext extends Model
       'coll' => 'id',
       'referenced' => 'user_id',
     ),
-  ),
-  'orders' => 
-  array (
-    'users' => 
-    array (
-      'coll' => 'user_id',
-      'referenced' => 'id',
-    ),
-    'order_details' => 
+    'promocode' => 
     array (
       'coll' => 'id',
-      'referenced' => 'order_id',
-    ),
-  ),
-  'order_details' => 
-  array (
-    'orders' => 
-    array (
-      'coll' => 'order_id',
-      'referenced' => 'id',
-    ),
-    'products' => 
-    array (
-      'coll' => 'product_id',
-      'referenced' => 'id',
+      'referenced' => 'user_id',
     ),
   ),
   'products' => 
@@ -49,6 +28,14 @@ abstract class ModelContext extends Model
     array (
       'coll' => 'id',
       'referenced' => 'product_id',
+    ),
+  ),
+  'promocode' => 
+  array (
+    'users' => 
+    array (
+      'coll' => 'user_id',
+      'referenced' => 'id',
     ),
   ),
 );

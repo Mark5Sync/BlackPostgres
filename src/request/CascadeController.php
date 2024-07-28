@@ -2,8 +2,7 @@
 
 namespace blackpostgres\request;
 
-use blackpostgres\Model;
-
+use blackpostgres\Table;
 
 class CascadeController
 {
@@ -22,12 +21,12 @@ class CascadeController
     }
 
 
-    function add(Model $model, string $name)
+    function add(Table $table, string $name)
     {
         $alias = '__cascade__' . count($this->config);
 
         $this->config[$alias] = [
-            'tableName' => $model->tableName,
+            'tableName' => $table->tableName,
             'name' => $name,
             'parent' => null,
             'breadcrumbs' => null,

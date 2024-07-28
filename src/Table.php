@@ -7,10 +7,13 @@ use blackpostgres\_markers\model as _markersModel;
 use blackpostgres\_markers\request;
 use blackpostgres\model\Connection;
 
-abstract class Model extends Connection
+abstract class Table extends Connection
 {
     use _markersModel;
     use request;
+
+
+
 
 
     protected string $currentShort = 'no_class';
@@ -25,6 +28,9 @@ abstract class Model extends Connection
     private   ?string $query = '';
     private   null | int | false $pages = false;
     private int $size = 10;
+
+
+
 
 
     private function clear()
@@ -87,7 +93,7 @@ abstract class Model extends Connection
 
 
 
-    protected function ___sel(?string $schema, array $props)
+    function sel(?string $schema, array $props)
     {
         if ($schema) {
             $schema = str_replace('@', $this(useCascade: true) . '.', $schema);
@@ -100,7 +106,7 @@ abstract class Model extends Connection
 
 
 
-    protected function ___selectAs(array $props)
+    function selectAs(array $props)
     {
         $colls = [];
 
@@ -112,7 +118,7 @@ abstract class Model extends Connection
     }
 
 
-    protected function ___where(?string $schema, array $props)
+    function where(array $props, ?string $schema)
     {
         $comparisonOperator = '=';
 
@@ -142,7 +148,7 @@ abstract class Model extends Connection
     }
 
 
-    protected function ___in(array $props, bool $notIn = false)
+    protected function in(array $props, bool $notIn = false)
     {
         foreach ($props as $coll => $value) {
             $this->querySchema->add($notIn ? 'wheteNotIn' : 'wheteIn', [$coll, $value]);

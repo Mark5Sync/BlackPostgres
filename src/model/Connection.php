@@ -3,6 +3,7 @@
 namespace blackpostgres\model;
 
 use blackpostgres\_markers\pgsystem;
+use blackpostgres\pgsystem\ShemeBuilController;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,7 +25,7 @@ abstract class Connection
 
         $this->capsule->addConnection(new $this->connectionConfig);
 
-        return $this->activeModel = $this->getEloquentModel()->newQuery();
+        return $this->activeModel = (new Model)->newQuery();
     }
 
 
@@ -44,7 +45,7 @@ abstract class Connection
             function __destruct()
             {
                 if ($this->destroyIt)
-                Manager::rollback();
+                    Manager::rollback();
             }
 
             function commit()
@@ -69,8 +70,9 @@ abstract class Connection
     }
 
 
-    protected function getEloquentModel(): Model
+    function generate(?string $root = null)
     {
-        return new Model;
+        $builder = new ShemeBuilController($root ? $root : './', $this);
+        $builder->generate();
     }
 }

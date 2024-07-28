@@ -2,44 +2,51 @@
 
 namespace ___namespace___;
 
-use blackpostgres\Model;
-use Illuminate\Database\Eloquent\Model as EloquentModel;
-
-
+use blackpostgres\_markers\model;
+use blackpostgres\Table;
+use marksync\provider\Container;
 
 //JOIN_SWITCHES
-abstract class ___abstract_class___ extends Model //class
+abstract class ___abstract_class___
 {
+    use model;
+
     protected string $currentShort = '___class___';
     protected ?array $relationship = __rel__;
 
     public string $tableName = '__table__';
-    protected string $connectionConfig = '__connection_config__';
+    protected string $DB = '__connection_config__';
+    // private ?Config $activeConfig;
 
 
-    protected function getEloquentModel(): EloquentModel
+    // protected function getEloquentModel(): EloquentModel
+    // {
+    //     return new class extends EloquentModel
+    //     {
+    //         protected $table = '__table__';
+    //         public $timestamps = false;
+    //     };
+    // }
+
+
+    private function useTable(): Table
     {
-        return new class extends EloquentModel
-        {
-            protected $table = '__table__';
-            public $timestamps = false;
-        };
+        return Container::get($this->DB)->table($this->tableName);
     }
-
-
 
 
     function sel(?string $_ = null, &$___bool___)
     {
         $props = $this->requestFilter->filter([$___restruct_bool___], false);
-        $this->___sel($_, $props);
+        // $this->useTable()->sel($_, $props);
+        $this->useTable()->sel($_, $props);
         return $this;
     }
 
     function selectAs(&$___string___)
     {
         $props = $this->requestFilter->filter([$___restruct_string___], false);
-        $this->___selectAs($props);
+        $this->useTable()->selectAs($props);
         return $this;
     }
 
@@ -47,7 +54,7 @@ abstract class ___abstract_class___ extends Model //class
     // function selectDate(?string $_ = null, &$___string_date___)
     // {
     //     $props = [$___restruct_string_date___];
-    //     $this->___selectDate($props);
+    //     $this->useTable()->selectDate($props);
     //     return $this;
     // }
 
@@ -56,28 +63,29 @@ abstract class ___abstract_class___ extends Model //class
     function like(&$___string___)
     {
         $props = $this->requestFilter->filter([$___restruct_string___], false);
-        $this->___where('like', $props);
+        $this->useTable()->where('like', $props);
         return $this;
     }
 
     function regexp(&$___string___)
     {
         $props = $this->requestFilter->filter([$___restruct_string___], false);
-        $this->___where('regexp', $props);
+        $this->useTable()->where('regexp', $props);
         return $this;
     }
 
     function in(&$___array___)
     {
         $props = $this->requestFilter->filter([$___restruct_array___], false);
-        $this->___in($props);
+        $this->useTable()->in($props);
         return $this;
     }
 
     function notIn(&$___array___)
     {
         $props = $this->requestFilter->filter([$___restruct_array___], false);
-        $this->___in($props, true);
+        $this->useTable()->in($props, true);
+
         return $this;
     }
 
@@ -86,14 +94,17 @@ abstract class ___abstract_class___ extends Model //class
     function isNull(&$___bool___)
     {
         $props = $this->requestFilter->filter([$___restruct_bool___], false);
-        $this->___where('IS', $props);
+        // $this->useTable()->where('IS', $props);
+        $this->useTable()->where($props, 'IS');
         return $this;
     }
 
     function isNotNull(&$___bool___)
     {
         $props = $this->requestFilter->filter([$___restruct_bool___], false);
-        $this->___where('IS NOT', $props);
+        // $this->useTable()->where('IS NOT', $props);
+        $this->useTable()->where($props, 'IS NOT');
+
         return $this;
     }
 
@@ -106,14 +117,14 @@ abstract class ___abstract_class___ extends Model //class
     function where(?string $_ = null, &$___auto___)
     {
         $props = $this->requestFilter->filter([$___restruct_auto___], false);
-        $this->___where($_, $props);
+        $this->useTable()->where($props, $_);
         return $this;
     }
 
     function fwhere(?string $_ = null, &$___string___)
     {
         $props = $this->requestFilter->filter([$___restruct_string___], false);
-        $this->___where($_, $props);
+        $this->useTable()->where($props, $_);
         return $this;
     }
 
@@ -123,19 +134,19 @@ abstract class ___abstract_class___ extends Model //class
     function update(&$___auto___)
     {
         $props = $this->requestFilter->filter([$___restruct_auto___], false);
-        return $this->___update($props);
+        return $this->useTable()->update($props);
     }
 
     function insert(&$___auto___)
     {
         $props = $this->requestFilter->filter([$___restruct_auto___], false);
-        return $this->___insert($props);
+        return $this->useTable()->insert($props);
     }
 
     function insertOrIgnore(&$___auto___)
     {
         $props = $this->requestFilter->filter([$___restruct_auto___], false);
-        return $this->___insertOrIgnore($props);
+        return $this->useTable()->insertOrIgnore($props);
     }
 
     function updateOrInsert(&$___auto___)
@@ -144,19 +155,22 @@ abstract class ___abstract_class___ extends Model //class
 
         return function (&$___auto___) use ($insertProps) {
             $keysProps = $this->requestFilter->filter([$___restruct_auto___], false);
-            return $this->___updateOrInsert($insertProps, $keysProps);
+            return $this->useTable()->updateOrInsert($insertProps, $keysProps);
         };
     }
 
 
     function upsert(&$___auto___)
     {
-        return new class ($this->requestFilter->filter([$___restruct_auto___], false), $this) {
+        $upsertProps = $this->requestFilter->filter([$___restruct_auto___], false);
+        return new class($upsertProps, $this)
+        {
             private $unique = null;
             private $update = null;
             private $runFetch = false;
 
-            function __construct(private $insertProps, private Model $model){
+            function __construct(private $insertProps, private Model $model)
+            {
             }
 
             function __destruct()
@@ -165,17 +179,20 @@ abstract class ___abstract_class___ extends Model //class
                     throw new \Exception("нужно вызвать fetch", 777);
             }
 
-            function unique(&$___bool___){
+            function unique(&$___bool___)
+            {
                 $this->unique = array_keys($this->model->requestFilter->filter([$___restruct_bool___], false));
                 return $this;
             }
 
-            function update(&$___auto___){
+            function update(&$___auto___)
+            {
                 $this->update = array_keys($this->model->requestFilter->filter([$___restruct_auto___], false));
                 return $this;
             }
 
-            function fetch(){
+            function fetch()
+            {
                 $this->runFetch = true;
                 if (is_null($this->unique))
                     throw new \Exception("unique не задан", 778);
@@ -192,42 +209,42 @@ abstract class ___abstract_class___ extends Model //class
 
     function page(int $index, int $size, int | false | null &$pages = false)
     {
-        $this->___page($index, $size, $pages);
+        $this->useTable()->page($index, $size, $pages);
         return $this;
     }
 
     function limit($limit)
     {
 
-        $this->___limit($limit);
+        $this->useTable()->limit($limit);
         return $this;
     }
 
     function offset($offset)
     {
 
-        $this->___offset($offset);
+        $this->useTable()->offset($offset);
         return $this;
     }
 
     function orderByAsc(&$___bool___)
     {
         $props = $this->requestFilter->filter([$___restruct_bool___], false);
-        $this->___orderBy('ASC', $props);
+        $this->useTable()->orderBy('ASC', $props);
         return $this;
     }
 
     function orderByDesc(&$___bool___)
     {
         $props = $this->requestFilter->filter([$___restruct_bool___], false);
-        $this->___orderBy('DESC', $props);
+        $this->useTable()->orderBy('DESC', $props);
         return $this;
     }
 
     function groupBy(&$___bool___)
     {
         $props = $this->requestFilter->filter([$___restruct_bool___], false);
-        $this->___groupBy($props);
+        $this->useTable()->groupBy($props);
         return $this;
     }
 
@@ -237,15 +254,15 @@ abstract class ___abstract_class___ extends Model //class
 
     function row(&$___bind___)
     {
-        $this->___row(...[$___restruct_bind___]);
+        $this->useTable()->row(...[$___restruct_bind___]);
 
         return $this;
     }
 
     function fetchRow(&$___bind___)
     {
-        $this->___row(...[$___restruct_bind___]);
-        return $this->___fetchRow();
+        $this->useTable()->row(...[$___restruct_bind___]);
+        return $this->useTable()->fetchRow();
     }
 
 
@@ -253,7 +270,7 @@ abstract class ___abstract_class___ extends Model //class
     function cascade(string $name)
     {
 
-        $this->___cascade($name);
+        $this->useTable()->cascade($name);
 
         return $this;
     }
