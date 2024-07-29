@@ -4,7 +4,7 @@ namespace blackpostgres\config;
 
 use blackpostgres\Table;
 
-abstract class Config extends Table
+abstract class Config
 {
     public string $modelsPath; // полный путь
     public string $namespace;
@@ -22,5 +22,11 @@ abstract class Config extends Table
     function onGenerateFilter(string $tableName): bool
     {
         return true;
+    }
+
+
+    function table(string $name)
+    {
+        return new Table($name, $this);
     }
 }

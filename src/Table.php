@@ -5,19 +5,16 @@ namespace blackpostgres;
 
 use blackpostgres\_markers\model as _markersModel;
 use blackpostgres\_markers\request;
+use blackpostgres\config\Config;
 use blackpostgres\model\Connection;
 
-abstract class Table extends Connection
+class Table extends Connection
 {
     use _markersModel;
     use request;
 
 
-
-
-
     protected string $currentShort = 'no_class';
-    public string $tableName;
     private ?string $joinTableName = null;
     private ?string $cascade = null;
 
@@ -31,6 +28,9 @@ abstract class Table extends Connection
 
 
 
+    function __construct(protected string $tableName, protected Config $connectionConfig)
+    {
+    }
 
 
     private function clear()
@@ -93,15 +93,17 @@ abstract class Table extends Connection
 
 
 
-    function sel(?string $schema, array $props)
+    function sel(?string $schema = null, bool ...$props)
     {
         if ($schema) {
             $schema = str_replace('@', $this(useCascade: true) . '.', $schema);
             $this->querySchema->add('selectRaw', [$schema, array_values($props)]);
         } else {
             $colls = array_map(fn ($coll) => $this($coll, useCascade: true), array_keys($props));
-            $this->querySchema->add('select', $colls);
+            $this->querySchema->add('select', empty($colls) ? ['*'] : $colls);
         }
+
+        return $this;
     }
 
 
@@ -118,7 +120,7 @@ abstract class Table extends Connection
     }
 
 
-    function where(array $props, ?string $schema)
+    function where(?string $schema = null, string ...$props)
     {
         $comparisonOperator = '=';
 
@@ -145,6 +147,8 @@ abstract class Table extends Connection
             $schema = str_replace('@', "\"{$this->tableName}\"" . '.', $schema);
             $this->querySchema->add('whereRaw', [$schema, $raw]);
         }
+
+        return $this;
     }
 
 
@@ -265,7 +269,7 @@ abstract class Table extends Connection
 
     function ___page(int $index, int $size, int | false | null &$pages = false)
     {
-        $this->___offset(($index -1) * $size);
+        $this->___offset(($index - 1) * $size);
 
         $this->size = $size;
         $this->___limit($size);

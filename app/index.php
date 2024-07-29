@@ -4,9 +4,14 @@
 namespace testapp;
 
 use testapp\_markers\models;
+use testapp\connection\TestDatabaseConfig;
 use twcli\cli;
 
 require '../vendor/autoload.php';
+
+
+$users = (new TestDatabaseConfig)->table('users');
+$content = $users->where(email: 'john@example.com')->fetch();
 
 
 new class

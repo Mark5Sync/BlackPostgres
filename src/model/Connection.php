@@ -3,6 +3,7 @@
 namespace blackpostgres\model;
 
 use blackpostgres\_markers\pgsystem;
+use blackpostgres\config\Config;
 use blackpostgres\pgsystem\ShemeBuilController;
 use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Eloquent\Model;
@@ -14,8 +15,9 @@ abstract class Connection
 {
     use pgsystem;
 
-    protected string $connectionConfig;
+
     private ?Builder $activeModel = null;
+    protected Config $connectionConfig;
 
 
     function getModel(): Builder
@@ -23,9 +25,21 @@ abstract class Connection
         // if ($this->activeModel)
         //     return $this->activeModel;
 
-        $this->capsule->addConnection(new $this->connectionConfig);
+        $this->capsule->addConnection($this->connectionConfig);
 
-        return $this->activeModel = (new Model)->newQuery();
+
+        return $this->activeModel = (new class($this->tableName) extends Model
+        {
+            protected $table;
+            public $timestamps = false;
+
+            final function __construct(?string $name = null)
+            {
+                $this->table = $name;
+                parent::__construct();
+            }
+        })->newQuery();
+
     }
 
 
