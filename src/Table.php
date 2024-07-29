@@ -58,10 +58,12 @@ class Table extends Connection
     }
 
 
-    function ___cascade(string $name)
+    function cascade(string $name)
     {
         $alias = $this->cascadeController->add($this, $name);
         $this->cascade = $alias;
+
+        return $this;
     }
 
     // function ___get($name)
@@ -108,7 +110,7 @@ class Table extends Connection
 
 
 
-    function selectAs(array $props)
+    function selectAs(...$props)
     {
         $colls = [];
 
@@ -117,6 +119,8 @@ class Table extends Connection
         }
 
         $this->querySchema->add('select', $colls);
+
+        return $this;
     }
 
 
@@ -152,19 +156,31 @@ class Table extends Connection
     }
 
 
-    protected function in(array $props, bool $notIn = false)
+    function in(array ...$props)
     {
         foreach ($props as $coll => $value) {
-            $this->querySchema->add($notIn ? 'wheteNotIn' : 'wheteIn', [$coll, $value]);
+            $this->querySchema->add('wheteIn', [$coll, $value]);
         }
+
+        return $this;
     }
 
 
+    function notIn(array ...$props)
+    {
+        foreach ($props as $coll => $value) {
+            $this->querySchema->add('wheteNotIn', [$coll, $value]);
+        }
+
+        return $this;
+    }
 
 
-    protected function ___join(array $props)
+    function join(Table ...$props)
     {
         $this->querySchema->add('join', $props);
+
+        return $this;
     }
 
 
@@ -172,28 +188,44 @@ class Table extends Connection
 
 
 
-    protected function ___limit(int $limit)
+    function limit(int $limit)
     {
         $this->querySchema->add('limit', $limit);
+
+        return $this;
     }
 
 
-    protected function ___offset(int $offset)
+    function offset(int $offset)
     {
         $this->querySchema->add('offset', $offset);
+
+        return $this;
     }
 
 
-    protected function ___orderBy(string $orderType, array $colls)
+    function orderByAsc(bool ...$colls)
     {
         $props = array_map(fn ($coll) => $this($coll), array_keys($colls));
-        $this->querySchema->add("orderBy$orderType", $props);
+        $this->querySchema->add("orderByASC", $props);
+
+        return $this;
     }
 
-    protected function ___groupBy(array $props)
+    function orderByDesc(bool ...$colls)
+    {
+        $props = array_map(fn ($coll) => $this($coll), array_keys($colls));
+        $this->querySchema->add("orderByDESC", $props);
+
+        return $this;
+    }
+
+    function groupBy(array $props)
     {
         $row = array_map(fn ($coll) => $this($coll), array_keys($props));
         $this->querySchema->add("groupByRaw", $props);
+    
+        return $this;
     }
 
 

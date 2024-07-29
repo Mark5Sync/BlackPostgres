@@ -230,21 +230,22 @@ abstract class ___abstract_class___
     function orderByAsc(&$___bool___)
     {
         $props = $this->requestFilter->filter([$___restruct_bool___], false);
-        $this->useTable()->orderBy('ASC', $props);
+        $this->useTable()->orderByAsc(...$props);
         return $this;
     }
 
     function orderByDesc(&$___bool___)
     {
         $props = $this->requestFilter->filter([$___restruct_bool___], false);
-        $this->useTable()->orderBy('DESC', $props);
+        $this->useTable()->orderByDesc(...$props);
         return $this;
     }
 
     function groupBy(&$___bool___)
     {
         $props = $this->requestFilter->filter([$___restruct_bool___], false);
-        $this->useTable()->groupBy($props);
+        $this->useTable()->groupBy(...$props);
+
         return $this;
     }
 
