@@ -3,6 +3,7 @@
 namespace ___namespace___;
 
 use blackpostgres\_markers\model;
+use blackpostgres\queryTools\Upsert;
 use blackpostgres\Table;
 use marksync\provider\Container;
 
@@ -163,41 +164,18 @@ abstract class ___abstract_class___
     function upsert(&$___auto___)
     {
         $upsertProps = $this->requestFilter->filter([$___restruct_auto___], false);
-        return new class($upsertProps, $this)
+        return new class($upsertProps, $this->useTable()) extends Upsert
         {
-            private $unique = null;
-            private $update = null;
-            private $runFetch = false;
-
-            function __construct(private $insertProps, private Model $model)
-            {
-            }
-
-            function __destruct()
-            {
-                if (!$this->runFetch)
-                    throw new \Exception("нужно вызвать fetch", 777);
-            }
-
             function unique(&$___bool___)
             {
-                $this->unique = array_keys($this->model->requestFilter->filter([$___restruct_bool___], false));
+                $this->unique = array_keys($this->table->requestFilter->filter([$___restruct_bool___], false));
                 return $this;
             }
-
+        
             function update(&$___auto___)
             {
-                $this->update = array_keys($this->model->requestFilter->filter([$___restruct_auto___], false));
+                $this->update = array_keys($this->table->requestFilter->filter([$___restruct_auto___], false));
                 return $this;
-            }
-
-            function fetch()
-            {
-                $this->runFetch = true;
-                if (is_null($this->unique))
-                    throw new \Exception("unique не задан", 778);
-
-                return $this->model->___upsert($this->insertProps, $this->unique, $this->update);
             }
         };
     }

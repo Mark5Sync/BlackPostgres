@@ -7,6 +7,7 @@ use blackpostgres\_markers\model as _markersModel;
 use blackpostgres\_markers\request;
 use blackpostgres\config\Config;
 use blackpostgres\model\Connection;
+use blackpostgres\queryTools\Upsert;
 
 class Table extends Connection
 {
@@ -224,7 +225,7 @@ class Table extends Connection
     {
         $row = array_map(fn ($coll) => $this($coll), array_keys($props));
         $this->querySchema->add("groupByRaw", $props);
-    
+
         return $this;
     }
 
@@ -359,6 +360,11 @@ class Table extends Connection
     function ___update(array $props)
     {
         return $this->RMW($this->buildModel()->update($props));
+    }
+
+    function upsert(...$props)
+    {
+        return new Upsert($props, $this);
     }
 
     function ___upsert(array $props, array $unique, ?array $update)
