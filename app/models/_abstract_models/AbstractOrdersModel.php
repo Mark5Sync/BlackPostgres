@@ -10,20 +10,25 @@ use blackpostgres\Table;
 use marksync\provider\Container;
 
 
-abstract class AbstractPromocodeModel extends BuildTable
+abstract class AbstractOrdersModel extends BuildTable
 {
     use model;
 
-    protected string $currentShort = 'PromocodeModel';
+    protected string $currentShort = 'OrdersModel';
     protected ?array $relationship = array (
   'users' => 
   array (
     'coll' => 'user_id',
     'referenced' => 'id',
   ),
+  'order_details' => 
+  array (
+    'coll' => 'id',
+    'referenced' => 'order_id',
+  ),
 );
 
-    public string $tableName = 'promocode';
+    public string $tableName = 'orders';
     protected string $DB = 'testapp\connection\TestDatabaseConfig';
     private ?Table $activeTable = null;
     // private ?Config $activeConfig;
@@ -33,7 +38,7 @@ abstract class AbstractPromocodeModel extends BuildTable
     // {
     //     return new class extends EloquentModel
     //     {
-    //         protected $table = 'promocode';
+    //         protected $table = 'orders';
     //         public $timestamps = false;
     //     };
     // }
@@ -55,14 +60,14 @@ abstract class AbstractPromocodeModel extends BuildTable
     function sel(?string $_ = null, 
 			bool $id = false,
 			bool $user_id = false,
-			bool $url = false,
-			bool $sale = false)
+			bool $created_at = false,
+			bool $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
         // $this->useTable()->sel($_, $props);
         $this->useTable()->sel($_, ...$props);
         return $this;
@@ -71,14 +76,14 @@ abstract class AbstractPromocodeModel extends BuildTable
     function selectAs(
 			false | string $id = false,
 			false | string $user_id = false,
-			false | string $url = false,
-			false | string $sale = false)
+			false | string $created_at = false,
+			false | string $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
         $this->useTable()->selectAs($props);
         return $this;
     }
@@ -96,14 +101,14 @@ abstract class AbstractPromocodeModel extends BuildTable
     function like(
 			false | string $id = false,
 			false | string $user_id = false,
-			false | string $url = false,
-			false | string $sale = false)
+			false | string $created_at = false,
+			false | string $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
         $this->useTable()->like(...$props);
         return $this;
     }
@@ -111,14 +116,14 @@ abstract class AbstractPromocodeModel extends BuildTable
     function regexp(
 			false | string $id = false,
 			false | string $user_id = false,
-			false | string $url = false,
-			false | string $sale = false)
+			false | string $created_at = false,
+			false | string $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
         $this->useTable()->regexp(...$props);
         return $this;
     }
@@ -126,14 +131,14 @@ abstract class AbstractPromocodeModel extends BuildTable
     function in(
 			false | array $id = false,
 			false | array $user_id = false,
-			false | array $url = false,
-			false | array $sale = false)
+			false | array $created_at = false,
+			false | array $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
         $this->useTable()->in(...$props);
         return $this;
     }
@@ -141,14 +146,14 @@ abstract class AbstractPromocodeModel extends BuildTable
     function notIn(
 			false | array $id = false,
 			false | array $user_id = false,
-			false | array $url = false,
-			false | array $sale = false)
+			false | array $created_at = false,
+			false | array $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
         $this->useTable()->notIn(...$props);
 
         return $this;
@@ -159,14 +164,14 @@ abstract class AbstractPromocodeModel extends BuildTable
     function isNull(
 			bool $id = false,
 			bool $user_id = false,
-			bool $url = false,
-			bool $sale = false)
+			bool $created_at = false,
+			bool $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
         $this->useTable()->isNull(...$props);
         return $this;
     }
@@ -174,14 +179,14 @@ abstract class AbstractPromocodeModel extends BuildTable
     function isNotNull(
 			bool $id = false,
 			bool $user_id = false,
-			bool $url = false,
-			bool $sale = false)
+			bool $created_at = false,
+			bool $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
         $this->useTable()->isNotNull(...$props);
 
         return $this;
@@ -196,14 +201,14 @@ abstract class AbstractPromocodeModel extends BuildTable
     function where(?string $_ = null, 
 			 false | int $id = false,
 			 false | int $user_id = false,
-			 false | string $url = false,
-			 false | int $sale = false)
+			 false | null | string $created_at = false,
+			 false | string $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
         $this->useTable()->where($_, ...$props);
         return $this;
     }
@@ -211,14 +216,14 @@ abstract class AbstractPromocodeModel extends BuildTable
     function fwhere(?string $_ = null, 
 			false | string $id = false,
 			false | string $user_id = false,
-			false | string $url = false,
-			false | string $sale = false)
+			false | string $created_at = false,
+			false | string $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
         $this->useTable()->where($_, ...$props);
         return $this;
     }
@@ -229,67 +234,67 @@ abstract class AbstractPromocodeModel extends BuildTable
     function update(
 			 false | int $id = false,
 			 false | int $user_id = false,
-			 false | string $url = false,
-			 false | int $sale = false)
+			 false | null | string $created_at = false,
+			 false | string $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
         return $this->useTable()->update(...$props);
     }
 
     function insert(
 			 false | int $id = false,
 			 false | int $user_id = false,
-			 false | string $url = false,
-			 false | int $sale = false)
+			 false | null | string $created_at = false,
+			 false | string $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
         return $this->useTable()->insert(...$props);
     }
 
     function insertOrIgnore(
 			 false | int $id = false,
 			 false | int $user_id = false,
-			 false | string $url = false,
-			 false | int $sale = false)
+			 false | null | string $created_at = false,
+			 false | string $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
         return $this->useTable()->insertOrIgnore(...$props);
     }
 
     function updateOrInsert(
 			 false | int $id = false,
 			 false | int $user_id = false,
-			 false | string $url = false,
-			 false | int $sale = false)
+			 false | null | string $created_at = false,
+			 false | string $status = false)
     {
         $insertProps = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
 
         return function (
 			 false | int $id = false,
 			 false | int $user_id = false,
-			 false | string $url = false,
-			 false | int $sale = false) use ($insertProps) {
+			 false | null | string $created_at = false,
+			 false | string $status = false) use ($insertProps) {
             $keysProps = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
             return $this->useTable()->updateOrInsert($insertProps, $keysProps);
         };
     }
@@ -298,41 +303,41 @@ abstract class AbstractPromocodeModel extends BuildTable
     function upsert(
 			 false | int $id = false,
 			 false | int $user_id = false,
-			 false | string $url = false,
-			 false | int $sale = false)
+			 false | null | string $created_at = false,
+			 false | string $status = false)
     {
         $upsertProps = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
         return new class($upsertProps, $this->useTable()) extends Upsert
         {
             function unique(
 			bool $id = false,
 			bool $user_id = false,
-			bool $url = false,
-			bool $sale = false)
+			bool $created_at = false,
+			bool $status = false)
             {
                 $this->unique = array_keys($this->table->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false));
+			'created_at' => $created_at,
+			'status' => $status], false));
                 return $this;
             }
 
             function update(
 			 false | int $id = false,
 			 false | int $user_id = false,
-			 false | string $url = false,
-			 false | int $sale = false)
+			 false | null | string $created_at = false,
+			 false | string $status = false)
             {
                 $this->update = array_keys($this->table->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false));
+			'created_at' => $created_at,
+			'status' => $status], false));
                 return $this;
             }
         };
@@ -366,41 +371,41 @@ abstract class AbstractPromocodeModel extends BuildTable
     }
 
 
-    function join(Table | BuildTable $users = null)
+    function join(Table | BuildTable $users = null, Table | BuildTable $order_details = null)
     {
-        $models = $this->requestFilter->filter(['users' => $users], null);
+        $models = $this->requestFilter->filter(['users' => $users, 'order_details' => $order_details], null);
         $this->joins('leftJoin', $models);
 
         return $this;
     }
 
-    function leftJoin(Table | BuildTable $users = null)
+    function leftJoin(Table | BuildTable $users = null, Table | BuildTable $order_details = null)
     {
-        $models = $this->requestFilter->filter(['users' => $users], null);
+        $models = $this->requestFilter->filter(['users' => $users, 'order_details' => $order_details], null);
         $this->joins('leftJoin', $models);
 
         return $this;
     }
 
-    function rightJoin(Table | BuildTable $users = null)
+    function rightJoin(Table | BuildTable $users = null, Table | BuildTable $order_details = null)
     {
-        $models = $this->requestFilter->filter(['users' => $users], null);
+        $models = $this->requestFilter->filter(['users' => $users, 'order_details' => $order_details], null);
         $this->joins('rightJoin', $models);
 
         return $this;
     }
 
-    function innerJoin(Table | BuildTable $users = null)
+    function innerJoin(Table | BuildTable $users = null, Table | BuildTable $order_details = null)
     {
-        $models = $this->requestFilter->filter(['users' => $users], null);
+        $models = $this->requestFilter->filter(['users' => $users, 'order_details' => $order_details], null);
         $this->joins('innerJoin', $models);
 
         return $this;
     }
 
-    function otherJoin(Table | BuildTable $users = null)
+    function otherJoin(Table | BuildTable $users = null, Table | BuildTable $order_details = null)
     {
-        $models = $this->requestFilter->filter(['users' => $users], null);
+        $models = $this->requestFilter->filter(['users' => $users, 'order_details' => $order_details], null);
         $this->joins('otherJoin', $models);
 
         return $this;
@@ -434,14 +439,14 @@ abstract class AbstractPromocodeModel extends BuildTable
     function orderByAsc(
 			bool $id = false,
 			bool $user_id = false,
-			bool $url = false,
-			bool $sale = false)
+			bool $created_at = false,
+			bool $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
         $this->useTable()->orderByAsc(...$props);
         return $this;
     }
@@ -449,14 +454,14 @@ abstract class AbstractPromocodeModel extends BuildTable
     function orderByDesc(
 			bool $id = false,
 			bool $user_id = false,
-			bool $url = false,
-			bool $sale = false)
+			bool $created_at = false,
+			bool $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
         $this->useTable()->orderByDesc(...$props);
         return $this;
     }
@@ -464,14 +469,14 @@ abstract class AbstractPromocodeModel extends BuildTable
     function groupBy(
 			bool $id = false,
 			bool $user_id = false,
-			bool $url = false,
-			bool $sale = false)
+			bool $created_at = false,
+			bool $status = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'created_at' => $created_at,
+			'status' => $status], false);
         $this->useTable()->groupBy(...$props);
 
         return $this;
@@ -484,14 +489,14 @@ abstract class AbstractPromocodeModel extends BuildTable
     function row(
 			&$id = false,
 			&$user_id = false,
-			&$url = false,
-			&$sale = false)
+			&$created_at = false,
+			&$status = false)
     {
         $this->useTable()->row(...[
 			'id' => &$id,
 			'user_id' => &$user_id,
-			'url' => &$url,
-			'sale' => &$sale]);
+			'created_at' => &$created_at,
+			'status' => &$status]);
 
         return $this;
     }
@@ -499,14 +504,14 @@ abstract class AbstractPromocodeModel extends BuildTable
     function fetchRow(
 			&$id = false,
 			&$user_id = false,
-			&$url = false,
-			&$sale = false)
+			&$created_at = false,
+			&$status = false)
     {
         $this->useTable()->row(...[
 			'id' => &$id,
 			'user_id' => &$user_id,
-			'url' => &$url,
-			'sale' => &$sale]);
+			'created_at' => &$created_at,
+			'status' => &$status]);
         return $this->useTable()->fetchRow();
     }
 

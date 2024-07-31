@@ -20,8 +20,8 @@ class TestDatabaseConfig extends Config
     public string $password = '111';
 
 
-    function onGenerateFilter(string $tableName): bool
-    {
-        return !str_starts_with($tableName, 'order');
-    }
+    // function onGenerateFilter(string $tableName): bool
+    // {
+    //     return !str_starts_with($tableName, 'order');
+    // }
 }

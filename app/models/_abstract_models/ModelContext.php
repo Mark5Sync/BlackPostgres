@@ -22,6 +22,32 @@ abstract class ModelContext extends Model
       'referenced' => 'user_id',
     ),
   ),
+  'orders' => 
+  array (
+    'users' => 
+    array (
+      'coll' => 'user_id',
+      'referenced' => 'id',
+    ),
+    'order_details' => 
+    array (
+      'coll' => 'id',
+      'referenced' => 'order_id',
+    ),
+  ),
+  'order_details' => 
+  array (
+    'orders' => 
+    array (
+      'coll' => 'order_id',
+      'referenced' => 'id',
+    ),
+    'products' => 
+    array (
+      'coll' => 'product_id',
+      'referenced' => 'id',
+    ),
+  ),
   'products' => 
   array (
     'order_details' => 

@@ -30,7 +30,7 @@ class GenerateJoins
             return '';
 
         $props = array_keys($rel);
-        $propsStr = implode(', ', array_map(fn ($tableName) => "?Model \${$tableName} = null", $props));
+        $propsStr = implode(', ', array_map(fn ($tableName) => "Table | BuildTable \${$tableName} = null", $props));
         $clearPropsStr = implode(', ', array_map(fn ($tableName) => "'$tableName' => \${$tableName}", $props));
 
 

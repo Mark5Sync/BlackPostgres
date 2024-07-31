@@ -3,11 +3,14 @@
 namespace testapp\models\_abstract_models;
 
 use blackpostgres\_markers\model;
+use blackpostgres\config\BuildTable;
+use blackpostgres\config\Config;
+use blackpostgres\queryTools\Upsert;
 use blackpostgres\Table;
 use marksync\provider\Container;
 
 
-abstract class AbstractProductsModel
+abstract class AbstractProductsModel extends BuildTable
 {
     use model;
 
@@ -22,6 +25,7 @@ abstract class AbstractProductsModel
 
     public string $tableName = 'products';
     protected string $DB = 'testapp\connection\TestDatabaseConfig';
+    private ?Table $activeTable = null;
     // private ?Config $activeConfig;
 
 
@@ -37,7 +41,14 @@ abstract class AbstractProductsModel
 
     private function useTable(): Table
     {
-        return Container::get($this->DB)->table($this->tableName);
+        if ($this->activeTable)
+            return $this->activeTable;
+
+        /** @var Config $connection */
+        $connection = Container::get($this->DB);
+        $this->activeTable = $connection->table($this->tableName);
+
+        return $this->useTable();
     }
 
 
@@ -55,7 +66,7 @@ abstract class AbstractProductsModel
 			'price' => $price,
 			'created_at' => $created_at], false);
         // $this->useTable()->sel($_, $props);
-        $this->useTable()->sel($_, $props);
+        $this->useTable()->sel($_, ...$props);
         return $this;
     }
 
@@ -99,7 +110,7 @@ abstract class AbstractProductsModel
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false);
-        $this->useTable()->where('like', $props);
+        $this->useTable()->like(...$props);
         return $this;
     }
 
@@ -116,7 +127,7 @@ abstract class AbstractProductsModel
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false);
-        $this->useTable()->where('regexp', $props);
+        $this->useTable()->regexp(...$props);
         return $this;
     }
 
@@ -133,7 +144,7 @@ abstract class AbstractProductsModel
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false);
-        $this->useTable()->in($props);
+        $this->useTable()->in(...$props);
         return $this;
     }
 
@@ -150,7 +161,7 @@ abstract class AbstractProductsModel
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false);
-        $this->useTable()->in($props, true);
+        $this->useTable()->notIn(...$props);
 
         return $this;
     }
@@ -170,8 +181,7 @@ abstract class AbstractProductsModel
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false);
-        // $this->useTable()->where('IS', $props);
-        $this->useTable()->where($props, 'IS');
+        $this->useTable()->isNull(...$props);
         return $this;
     }
 
@@ -188,8 +198,7 @@ abstract class AbstractProductsModel
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false);
-        // $this->useTable()->where('IS NOT', $props);
-        $this->useTable()->where($props, 'IS NOT');
+        $this->useTable()->isNotNull(...$props);
 
         return $this;
     }
@@ -213,7 +222,7 @@ abstract class AbstractProductsModel
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false);
-        $this->useTable()->where($props, $_);
+        $this->useTable()->where($_, ...$props);
         return $this;
     }
 
@@ -230,7 +239,7 @@ abstract class AbstractProductsModel
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false);
-        $this->useTable()->where($props, $_);
+        $this->useTable()->where($_, ...$props);
         return $this;
     }
 
@@ -250,7 +259,7 @@ abstract class AbstractProductsModel
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false);
-        return $this->useTable()->update($props);
+        return $this->useTable()->update(...$props);
     }
 
     function insert(
@@ -266,7 +275,7 @@ abstract class AbstractProductsModel
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false);
-        return $this->useTable()->insert($props);
+        return $this->useTable()->insert(...$props);
     }
 
     function insertOrIgnore(
@@ -282,7 +291,7 @@ abstract class AbstractProductsModel
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false);
-        return $this->useTable()->insertOrIgnore($props);
+        return $this->useTable()->insertOrIgnore(...$props);
     }
 
     function updateOrInsert(
@@ -329,22 +338,8 @@ abstract class AbstractProductsModel
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false);
-        return new class($upsertProps, $this)
+        return new class($upsertProps, $this->useTable()) extends Upsert
         {
-            private $unique = null;
-            private $update = null;
-            private $runFetch = false;
-
-            function __construct(private $insertProps, private Model $model)
-            {
-            }
-
-            function __destruct()
-            {
-                if (!$this->runFetch)
-                    throw new \Exception("нужно вызвать fetch", 777);
-            }
-
             function unique(
 			bool $id = false,
 			bool $name = false,
@@ -352,7 +347,7 @@ abstract class AbstractProductsModel
 			bool $price = false,
 			bool $created_at = false)
             {
-                $this->unique = array_keys($this->model->requestFilter->filter([
+                $this->unique = array_keys($this->table->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
@@ -368,22 +363,13 @@ abstract class AbstractProductsModel
 			 false | int $price = false,
 			 false | null | string $created_at = false)
             {
-                $this->update = array_keys($this->model->requestFilter->filter([
+                $this->update = array_keys($this->table->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false));
                 return $this;
-            }
-
-            function fetch()
-            {
-                $this->runFetch = true;
-                if (is_null($this->unique))
-                    throw new \Exception("unique не задан", 778);
-
-                return $this->model->___upsert($this->insertProps, $this->unique, $this->update);
             }
         };
     }
@@ -416,7 +402,7 @@ abstract class AbstractProductsModel
     }
 
 
-    function join(?Model $order_details = null)
+    function join(Table | BuildTable $order_details = null)
     {
         $models = $this->requestFilter->filter(['order_details' => $order_details], null);
         $this->joins('leftJoin', $models);
@@ -424,7 +410,7 @@ abstract class AbstractProductsModel
         return $this;
     }
 
-    function leftJoin(?Model $order_details = null)
+    function leftJoin(Table | BuildTable $order_details = null)
     {
         $models = $this->requestFilter->filter(['order_details' => $order_details], null);
         $this->joins('leftJoin', $models);
@@ -432,7 +418,7 @@ abstract class AbstractProductsModel
         return $this;
     }
 
-    function rightJoin(?Model $order_details = null)
+    function rightJoin(Table | BuildTable $order_details = null)
     {
         $models = $this->requestFilter->filter(['order_details' => $order_details], null);
         $this->joins('rightJoin', $models);
@@ -440,7 +426,7 @@ abstract class AbstractProductsModel
         return $this;
     }
 
-    function innerJoin(?Model $order_details = null)
+    function innerJoin(Table | BuildTable $order_details = null)
     {
         $models = $this->requestFilter->filter(['order_details' => $order_details], null);
         $this->joins('innerJoin', $models);
@@ -448,7 +434,7 @@ abstract class AbstractProductsModel
         return $this;
     }
 
-    function otherJoin(?Model $order_details = null)
+    function otherJoin(Table | BuildTable $order_details = null)
     {
         $models = $this->requestFilter->filter(['order_details' => $order_details], null);
         $this->joins('otherJoin', $models);
@@ -494,7 +480,7 @@ abstract class AbstractProductsModel
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false);
-        $this->useTable()->orderBy('ASC', $props);
+        $this->useTable()->orderByAsc(...$props);
         return $this;
     }
 
@@ -511,7 +497,7 @@ abstract class AbstractProductsModel
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false);
-        $this->useTable()->orderBy('DESC', $props);
+        $this->useTable()->orderByDesc(...$props);
         return $this;
     }
 
@@ -528,7 +514,8 @@ abstract class AbstractProductsModel
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false);
-        $this->useTable()->groupBy($props);
+        $this->useTable()->groupBy(...$props);
+
         return $this;
     }
 
@@ -577,5 +564,11 @@ abstract class AbstractProductsModel
         $this->useTable()->cascade($name);
 
         return $this;
+    }
+
+
+    function toSql()
+    {
+        return $this->useTable()->toSql();
     }
 }

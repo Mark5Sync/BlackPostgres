@@ -3,12 +3,14 @@
 namespace ___namespace___;
 
 use blackpostgres\_markers\model;
+use blackpostgres\config\BuildTable;
+use blackpostgres\config\Config;
 use blackpostgres\queryTools\Upsert;
 use blackpostgres\Table;
 use marksync\provider\Container;
 
 //JOIN_SWITCHES
-abstract class ___abstract_class___
+abstract class ___abstract_class___ extends BuildTable
 {
     use model;
 
@@ -17,6 +19,7 @@ abstract class ___abstract_class___
 
     public string $tableName = '__table__';
     protected string $DB = '__connection_config__';
+    private ?Table $activeTable = null;
     // private ?Config $activeConfig;
 
 
@@ -32,7 +35,14 @@ abstract class ___abstract_class___
 
     private function useTable(): Table
     {
-        return Container::get($this->DB)->table($this->tableName);
+        if ($this->activeTable)
+            return $this->activeTable;
+
+        /** @var Config $connection */
+        $connection = Container::get($this->DB);
+        $this->activeTable = $connection->table($this->tableName);
+
+        return $this->useTable();
     }
 
 
@@ -40,7 +50,7 @@ abstract class ___abstract_class___
     {
         $props = $this->requestFilter->filter([$___restruct_bool___], false);
         // $this->useTable()->sel($_, $props);
-        $this->useTable()->sel($_, $props);
+        $this->useTable()->sel($_, ...$props);
         return $this;
     }
 
@@ -64,28 +74,28 @@ abstract class ___abstract_class___
     function like(&$___string___)
     {
         $props = $this->requestFilter->filter([$___restruct_string___], false);
-        $this->useTable()->where('like', $props);
+        $this->useTable()->like(...$props);
         return $this;
     }
 
     function regexp(&$___string___)
     {
         $props = $this->requestFilter->filter([$___restruct_string___], false);
-        $this->useTable()->where('regexp', $props);
+        $this->useTable()->regexp(...$props);
         return $this;
     }
 
     function in(&$___array___)
     {
         $props = $this->requestFilter->filter([$___restruct_array___], false);
-        $this->useTable()->in($props);
+        $this->useTable()->in(...$props);
         return $this;
     }
 
     function notIn(&$___array___)
     {
         $props = $this->requestFilter->filter([$___restruct_array___], false);
-        $this->useTable()->in($props, true);
+        $this->useTable()->notIn(...$props);
 
         return $this;
     }
@@ -95,16 +105,14 @@ abstract class ___abstract_class___
     function isNull(&$___bool___)
     {
         $props = $this->requestFilter->filter([$___restruct_bool___], false);
-        // $this->useTable()->where('IS', $props);
-        $this->useTable()->where($props, 'IS');
+        $this->useTable()->isNull(...$props);
         return $this;
     }
 
     function isNotNull(&$___bool___)
     {
         $props = $this->requestFilter->filter([$___restruct_bool___], false);
-        // $this->useTable()->where('IS NOT', $props);
-        $this->useTable()->where($props, 'IS NOT');
+        $this->useTable()->isNotNull(...$props);
 
         return $this;
     }
@@ -118,14 +126,14 @@ abstract class ___abstract_class___
     function where(?string $_ = null, &$___auto___)
     {
         $props = $this->requestFilter->filter([$___restruct_auto___], false);
-        $this->useTable()->where($props, $_);
+        $this->useTable()->where($_, ...$props);
         return $this;
     }
 
     function fwhere(?string $_ = null, &$___string___)
     {
         $props = $this->requestFilter->filter([$___restruct_string___], false);
-        $this->useTable()->where($props, $_);
+        $this->useTable()->where($_, ...$props);
         return $this;
     }
 
@@ -135,19 +143,19 @@ abstract class ___abstract_class___
     function update(&$___auto___)
     {
         $props = $this->requestFilter->filter([$___restruct_auto___], false);
-        return $this->useTable()->update($props);
+        return $this->useTable()->update(...$props);
     }
 
     function insert(&$___auto___)
     {
         $props = $this->requestFilter->filter([$___restruct_auto___], false);
-        return $this->useTable()->insert($props);
+        return $this->useTable()->insert(...$props);
     }
 
     function insertOrIgnore(&$___auto___)
     {
         $props = $this->requestFilter->filter([$___restruct_auto___], false);
-        return $this->useTable()->insertOrIgnore($props);
+        return $this->useTable()->insertOrIgnore(...$props);
     }
 
     function updateOrInsert(&$___auto___)
@@ -171,7 +179,7 @@ abstract class ___abstract_class___
                 $this->unique = array_keys($this->table->requestFilter->filter([$___restruct_bool___], false));
                 return $this;
             }
-        
+
             function update(&$___auto___)
             {
                 $this->update = array_keys($this->table->requestFilter->filter([$___restruct_auto___], false));
@@ -252,5 +260,11 @@ abstract class ___abstract_class___
         $this->useTable()->cascade($name);
 
         return $this;
+    }
+
+
+    function toSql()
+    {
+        return $this->useTable()->toSql();
     }
 }

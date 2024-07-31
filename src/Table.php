@@ -5,6 +5,7 @@ namespace blackpostgres;
 
 use blackpostgres\_markers\model as _markersModel;
 use blackpostgres\_markers\request;
+use blackpostgres\config\BuildTable;
 use blackpostgres\config\Config;
 use blackpostgres\model\Connection;
 use blackpostgres\queryTools\Upsert;
@@ -125,6 +126,32 @@ class Table extends Connection
     }
 
 
+
+
+
+
+
+
+
+    function like(string ...$props)
+    {
+        return $this->where('like', ...$props);
+    }
+
+    function regexp(string ...$props)
+    {
+        return $this->where('regexp', ...$props);
+    }
+
+    function isNull(bool ...$props)
+    {
+    }
+
+    function isNotNull(bool ...$props)
+    {
+    }
+
+
     function where(?string $schema = null, string ...$props)
     {
         $comparisonOperator = '=';
@@ -177,12 +204,90 @@ class Table extends Connection
     }
 
 
-    function join(Table ...$props)
+
+
+
+
+
+
+
+
+
+    function ___join($props)
     {
         $this->querySchema->add('join', $props);
 
         return $this;
     }
+
+
+    private function ___joins($joinMethod, $tables)
+    {
+        $table = $this();
+
+        foreach ($tables as $joinTable => $table) {
+            if (!isset($this->relationShema[$table][$joinTable]))
+                throw new \Exception("Нет отношений ($table - $joinTable)", 1);
+
+            ['coll' => $coll, 'referenced' => $referenced] = $this->relationShema[$table][$joinTable];
+
+            $this->___join([
+                'model' => $table,
+                'joinMethod' => $joinMethod,
+                'props' => [
+                    'coll' => $this($coll),
+                    'referenced' => $table($referenced),
+                ]
+            ]);
+
+
+            $this->cascadeController->setParent($table->tableName, $this->tableName);
+        }
+    }
+
+
+    function join(Table | BuildTable ...$tables)
+    {
+        $this->___joins('leftJoin', $tables);
+
+        return $this;
+    }
+
+
+    function leftJoin(Table | BuildTable ...$tables)
+    {
+        $this->___joins('leftJoin', $tables);
+
+        return $this;
+    }
+
+
+    function rightJoin(Table | BuildTable ...$tables)
+    {
+        $this->___joins('rightJoin', $tables);
+
+        return $this;
+    }
+
+
+    function innerJoin(Table | BuildTable ...$tables)
+    {
+        $this->___joins('innerJoin', $tables);
+
+        return $this;
+    }
+
+
+    function otherJoin(Table | BuildTable ...$tables)
+    {
+        $this->___joins('otherJoin', $tables);
+
+        return $this;
+    }
+
+
+
+
 
 
 
@@ -300,12 +405,12 @@ class Table extends Connection
     }
 
 
-    function ___page(int $index, int $size, int | false | null &$pages = false)
+    function page(int $index, int $size, int | false | null &$pages = false)
     {
-        $this->___offset(($index - 1) * $size);
+        $this->offset(($index - 1) * $size);
 
         $this->size = $size;
-        $this->___limit($size);
+        $this->limit($size);
 
         if (is_null($pages)) {
             $this->pages = &$pages;
@@ -313,7 +418,7 @@ class Table extends Connection
     }
 
 
-    protected function ___row(&...$props)
+    function row(&...$props)
     {
 
         foreach ($props as $coll => &$bind) {
@@ -324,7 +429,7 @@ class Table extends Connection
         }
     }
 
-    protected function ___fetchRow()
+    function fetchRow()
     {
         $colls = $this->rowSelect->getRows();
         $this->querySchema->add('select', $colls);
@@ -339,25 +444,25 @@ class Table extends Connection
     }
 
 
-    function ___insert(array $props)
+    function insert(array $props)
     {
         return $this->RMW($this->buildModel()->insertGetId($props));
     }
 
 
-    function ___insertOrIgnore(array $props)
+    function insertOrIgnore(array $props)
     {
         return $this->RMW($this->buildModel()->insertOrIgnore($props));
     }
 
 
-    function ___updateOrInsert(array $updateProps, array $keysProps)
+    function updateOrInsert(array $updateProps, array $keysProps)
     {
         return $this->RMW($this->buildModel()->updateOrInsert($updateProps, $keysProps));
     }
 
 
-    function ___update(array $props)
+    function update(array $props)
     {
         return $this->RMW($this->buildModel()->update($props));
     }

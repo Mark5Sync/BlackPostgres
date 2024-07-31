@@ -10,20 +10,25 @@ use blackpostgres\Table;
 use marksync\provider\Container;
 
 
-abstract class AbstractPromocodeModel extends BuildTable
+abstract class AbstractOrderDetailsModel extends BuildTable
 {
     use model;
 
-    protected string $currentShort = 'PromocodeModel';
+    protected string $currentShort = 'OrderDetailsModel';
     protected ?array $relationship = array (
-  'users' => 
+  'orders' => 
   array (
-    'coll' => 'user_id',
+    'coll' => 'order_id',
+    'referenced' => 'id',
+  ),
+  'products' => 
+  array (
+    'coll' => 'product_id',
     'referenced' => 'id',
   ),
 );
 
-    public string $tableName = 'promocode';
+    public string $tableName = 'order_details';
     protected string $DB = 'testapp\connection\TestDatabaseConfig';
     private ?Table $activeTable = null;
     // private ?Config $activeConfig;
@@ -33,7 +38,7 @@ abstract class AbstractPromocodeModel extends BuildTable
     // {
     //     return new class extends EloquentModel
     //     {
-    //         protected $table = 'promocode';
+    //         protected $table = 'order_details';
     //         public $timestamps = false;
     //     };
     // }
@@ -54,15 +59,17 @@ abstract class AbstractPromocodeModel extends BuildTable
 
     function sel(?string $_ = null, 
 			bool $id = false,
-			bool $user_id = false,
-			bool $url = false,
-			bool $sale = false)
+			bool $order_id = false,
+			bool $product_id = false,
+			bool $quantity = false,
+			bool $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
         // $this->useTable()->sel($_, $props);
         $this->useTable()->sel($_, ...$props);
         return $this;
@@ -70,15 +77,17 @@ abstract class AbstractPromocodeModel extends BuildTable
 
     function selectAs(
 			false | string $id = false,
-			false | string $user_id = false,
-			false | string $url = false,
-			false | string $sale = false)
+			false | string $order_id = false,
+			false | string $product_id = false,
+			false | string $quantity = false,
+			false | string $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
         $this->useTable()->selectAs($props);
         return $this;
     }
@@ -95,60 +104,68 @@ abstract class AbstractPromocodeModel extends BuildTable
 
     function like(
 			false | string $id = false,
-			false | string $user_id = false,
-			false | string $url = false,
-			false | string $sale = false)
+			false | string $order_id = false,
+			false | string $product_id = false,
+			false | string $quantity = false,
+			false | string $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
         $this->useTable()->like(...$props);
         return $this;
     }
 
     function regexp(
 			false | string $id = false,
-			false | string $user_id = false,
-			false | string $url = false,
-			false | string $sale = false)
+			false | string $order_id = false,
+			false | string $product_id = false,
+			false | string $quantity = false,
+			false | string $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
         $this->useTable()->regexp(...$props);
         return $this;
     }
 
     function in(
 			false | array $id = false,
-			false | array $user_id = false,
-			false | array $url = false,
-			false | array $sale = false)
+			false | array $order_id = false,
+			false | array $product_id = false,
+			false | array $quantity = false,
+			false | array $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
         $this->useTable()->in(...$props);
         return $this;
     }
 
     function notIn(
 			false | array $id = false,
-			false | array $user_id = false,
-			false | array $url = false,
-			false | array $sale = false)
+			false | array $order_id = false,
+			false | array $product_id = false,
+			false | array $quantity = false,
+			false | array $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
         $this->useTable()->notIn(...$props);
 
         return $this;
@@ -158,30 +175,34 @@ abstract class AbstractPromocodeModel extends BuildTable
 
     function isNull(
 			bool $id = false,
-			bool $user_id = false,
-			bool $url = false,
-			bool $sale = false)
+			bool $order_id = false,
+			bool $product_id = false,
+			bool $quantity = false,
+			bool $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
         $this->useTable()->isNull(...$props);
         return $this;
     }
 
     function isNotNull(
 			bool $id = false,
-			bool $user_id = false,
-			bool $url = false,
-			bool $sale = false)
+			bool $order_id = false,
+			bool $product_id = false,
+			bool $quantity = false,
+			bool $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
         $this->useTable()->isNotNull(...$props);
 
         return $this;
@@ -195,30 +216,34 @@ abstract class AbstractPromocodeModel extends BuildTable
 
     function where(?string $_ = null, 
 			 false | int $id = false,
-			 false | int $user_id = false,
-			 false | string $url = false,
-			 false | int $sale = false)
+			 false | int $order_id = false,
+			 false | int $product_id = false,
+			 false | int $quantity = false,
+			 false | int $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
         $this->useTable()->where($_, ...$props);
         return $this;
     }
 
     function fwhere(?string $_ = null, 
 			false | string $id = false,
-			false | string $user_id = false,
-			false | string $url = false,
-			false | string $sale = false)
+			false | string $order_id = false,
+			false | string $product_id = false,
+			false | string $quantity = false,
+			false | string $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
         $this->useTable()->where($_, ...$props);
         return $this;
     }
@@ -228,68 +253,78 @@ abstract class AbstractPromocodeModel extends BuildTable
 
     function update(
 			 false | int $id = false,
-			 false | int $user_id = false,
-			 false | string $url = false,
-			 false | int $sale = false)
+			 false | int $order_id = false,
+			 false | int $product_id = false,
+			 false | int $quantity = false,
+			 false | int $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
         return $this->useTable()->update(...$props);
     }
 
     function insert(
 			 false | int $id = false,
-			 false | int $user_id = false,
-			 false | string $url = false,
-			 false | int $sale = false)
+			 false | int $order_id = false,
+			 false | int $product_id = false,
+			 false | int $quantity = false,
+			 false | int $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
         return $this->useTable()->insert(...$props);
     }
 
     function insertOrIgnore(
 			 false | int $id = false,
-			 false | int $user_id = false,
-			 false | string $url = false,
-			 false | int $sale = false)
+			 false | int $order_id = false,
+			 false | int $product_id = false,
+			 false | int $quantity = false,
+			 false | int $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
         return $this->useTable()->insertOrIgnore(...$props);
     }
 
     function updateOrInsert(
 			 false | int $id = false,
-			 false | int $user_id = false,
-			 false | string $url = false,
-			 false | int $sale = false)
+			 false | int $order_id = false,
+			 false | int $product_id = false,
+			 false | int $quantity = false,
+			 false | int $price = false)
     {
         $insertProps = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
 
         return function (
 			 false | int $id = false,
-			 false | int $user_id = false,
-			 false | string $url = false,
-			 false | int $sale = false) use ($insertProps) {
+			 false | int $order_id = false,
+			 false | int $product_id = false,
+			 false | int $quantity = false,
+			 false | int $price = false) use ($insertProps) {
             $keysProps = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
             return $this->useTable()->updateOrInsert($insertProps, $keysProps);
         };
     }
@@ -297,42 +332,48 @@ abstract class AbstractPromocodeModel extends BuildTable
 
     function upsert(
 			 false | int $id = false,
-			 false | int $user_id = false,
-			 false | string $url = false,
-			 false | int $sale = false)
+			 false | int $order_id = false,
+			 false | int $product_id = false,
+			 false | int $quantity = false,
+			 false | int $price = false)
     {
         $upsertProps = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
         return new class($upsertProps, $this->useTable()) extends Upsert
         {
             function unique(
 			bool $id = false,
-			bool $user_id = false,
-			bool $url = false,
-			bool $sale = false)
+			bool $order_id = false,
+			bool $product_id = false,
+			bool $quantity = false,
+			bool $price = false)
             {
                 $this->unique = array_keys($this->table->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false));
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false));
                 return $this;
             }
 
             function update(
 			 false | int $id = false,
-			 false | int $user_id = false,
-			 false | string $url = false,
-			 false | int $sale = false)
+			 false | int $order_id = false,
+			 false | int $product_id = false,
+			 false | int $quantity = false,
+			 false | int $price = false)
             {
                 $this->update = array_keys($this->table->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false));
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false));
                 return $this;
             }
         };
@@ -366,41 +407,41 @@ abstract class AbstractPromocodeModel extends BuildTable
     }
 
 
-    function join(Table | BuildTable $users = null)
+    function join(Table | BuildTable $orders = null, Table | BuildTable $products = null)
     {
-        $models = $this->requestFilter->filter(['users' => $users], null);
+        $models = $this->requestFilter->filter(['orders' => $orders, 'products' => $products], null);
         $this->joins('leftJoin', $models);
 
         return $this;
     }
 
-    function leftJoin(Table | BuildTable $users = null)
+    function leftJoin(Table | BuildTable $orders = null, Table | BuildTable $products = null)
     {
-        $models = $this->requestFilter->filter(['users' => $users], null);
+        $models = $this->requestFilter->filter(['orders' => $orders, 'products' => $products], null);
         $this->joins('leftJoin', $models);
 
         return $this;
     }
 
-    function rightJoin(Table | BuildTable $users = null)
+    function rightJoin(Table | BuildTable $orders = null, Table | BuildTable $products = null)
     {
-        $models = $this->requestFilter->filter(['users' => $users], null);
+        $models = $this->requestFilter->filter(['orders' => $orders, 'products' => $products], null);
         $this->joins('rightJoin', $models);
 
         return $this;
     }
 
-    function innerJoin(Table | BuildTable $users = null)
+    function innerJoin(Table | BuildTable $orders = null, Table | BuildTable $products = null)
     {
-        $models = $this->requestFilter->filter(['users' => $users], null);
+        $models = $this->requestFilter->filter(['orders' => $orders, 'products' => $products], null);
         $this->joins('innerJoin', $models);
 
         return $this;
     }
 
-    function otherJoin(Table | BuildTable $users = null)
+    function otherJoin(Table | BuildTable $orders = null, Table | BuildTable $products = null)
     {
-        $models = $this->requestFilter->filter(['users' => $users], null);
+        $models = $this->requestFilter->filter(['orders' => $orders, 'products' => $products], null);
         $this->joins('otherJoin', $models);
 
         return $this;
@@ -433,45 +474,51 @@ abstract class AbstractPromocodeModel extends BuildTable
 
     function orderByAsc(
 			bool $id = false,
-			bool $user_id = false,
-			bool $url = false,
-			bool $sale = false)
+			bool $order_id = false,
+			bool $product_id = false,
+			bool $quantity = false,
+			bool $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
         $this->useTable()->orderByAsc(...$props);
         return $this;
     }
 
     function orderByDesc(
 			bool $id = false,
-			bool $user_id = false,
-			bool $url = false,
-			bool $sale = false)
+			bool $order_id = false,
+			bool $product_id = false,
+			bool $quantity = false,
+			bool $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
         $this->useTable()->orderByDesc(...$props);
         return $this;
     }
 
     function groupBy(
 			bool $id = false,
-			bool $user_id = false,
-			bool $url = false,
-			bool $sale = false)
+			bool $order_id = false,
+			bool $product_id = false,
+			bool $quantity = false,
+			bool $price = false)
     {
         $props = $this->requestFilter->filter([
 			'id' => $id,
-			'user_id' => $user_id,
-			'url' => $url,
-			'sale' => $sale], false);
+			'order_id' => $order_id,
+			'product_id' => $product_id,
+			'quantity' => $quantity,
+			'price' => $price], false);
         $this->useTable()->groupBy(...$props);
 
         return $this;
@@ -483,30 +530,34 @@ abstract class AbstractPromocodeModel extends BuildTable
 
     function row(
 			&$id = false,
-			&$user_id = false,
-			&$url = false,
-			&$sale = false)
+			&$order_id = false,
+			&$product_id = false,
+			&$quantity = false,
+			&$price = false)
     {
         $this->useTable()->row(...[
 			'id' => &$id,
-			'user_id' => &$user_id,
-			'url' => &$url,
-			'sale' => &$sale]);
+			'order_id' => &$order_id,
+			'product_id' => &$product_id,
+			'quantity' => &$quantity,
+			'price' => &$price]);
 
         return $this;
     }
 
     function fetchRow(
 			&$id = false,
-			&$user_id = false,
-			&$url = false,
-			&$sale = false)
+			&$order_id = false,
+			&$product_id = false,
+			&$quantity = false,
+			&$price = false)
     {
         $this->useTable()->row(...[
 			'id' => &$id,
-			'user_id' => &$user_id,
-			'url' => &$url,
-			'sale' => &$sale]);
+			'order_id' => &$order_id,
+			'product_id' => &$product_id,
+			'quantity' => &$quantity,
+			'price' => &$price]);
         return $this->useTable()->fetchRow();
     }
 

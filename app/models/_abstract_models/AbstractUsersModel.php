@@ -3,11 +3,14 @@
 namespace testapp\models\_abstract_models;
 
 use blackpostgres\_markers\model;
+use blackpostgres\config\BuildTable;
+use blackpostgres\config\Config;
+use blackpostgres\queryTools\Upsert;
 use blackpostgres\Table;
 use marksync\provider\Container;
 
 
-abstract class AbstractUsersModel
+abstract class AbstractUsersModel extends BuildTable
 {
     use model;
 
@@ -27,6 +30,7 @@ abstract class AbstractUsersModel
 
     public string $tableName = 'users';
     protected string $DB = 'testapp\connection\TestDatabaseConfig';
+    private ?Table $activeTable = null;
     // private ?Config $activeConfig;
 
 
@@ -42,7 +46,14 @@ abstract class AbstractUsersModel
 
     private function useTable(): Table
     {
-        return Container::get($this->DB)->table($this->tableName);
+        if ($this->activeTable)
+            return $this->activeTable;
+
+        /** @var Config $connection */
+        $connection = Container::get($this->DB);
+        $this->activeTable = $connection->table($this->tableName);
+
+        return $this->useTable();
     }
 
 
@@ -60,7 +71,7 @@ abstract class AbstractUsersModel
 			'password' => $password,
 			'created_at' => $created_at], false);
         // $this->useTable()->sel($_, $props);
-        $this->useTable()->sel($_, $props);
+        $this->useTable()->sel($_, ...$props);
         return $this;
     }
 
@@ -104,7 +115,7 @@ abstract class AbstractUsersModel
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false);
-        $this->useTable()->where('like', $props);
+        $this->useTable()->like(...$props);
         return $this;
     }
 
@@ -121,7 +132,7 @@ abstract class AbstractUsersModel
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false);
-        $this->useTable()->where('regexp', $props);
+        $this->useTable()->regexp(...$props);
         return $this;
     }
 
@@ -138,7 +149,7 @@ abstract class AbstractUsersModel
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false);
-        $this->useTable()->in($props);
+        $this->useTable()->in(...$props);
         return $this;
     }
 
@@ -155,7 +166,7 @@ abstract class AbstractUsersModel
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false);
-        $this->useTable()->in($props, true);
+        $this->useTable()->notIn(...$props);
 
         return $this;
     }
@@ -175,8 +186,7 @@ abstract class AbstractUsersModel
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false);
-        // $this->useTable()->where('IS', $props);
-        $this->useTable()->where($props, 'IS');
+        $this->useTable()->isNull(...$props);
         return $this;
     }
 
@@ -193,8 +203,7 @@ abstract class AbstractUsersModel
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false);
-        // $this->useTable()->where('IS NOT', $props);
-        $this->useTable()->where($props, 'IS NOT');
+        $this->useTable()->isNotNull(...$props);
 
         return $this;
     }
@@ -218,7 +227,7 @@ abstract class AbstractUsersModel
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false);
-        $this->useTable()->where($props, $_);
+        $this->useTable()->where($_, ...$props);
         return $this;
     }
 
@@ -235,7 +244,7 @@ abstract class AbstractUsersModel
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false);
-        $this->useTable()->where($props, $_);
+        $this->useTable()->where($_, ...$props);
         return $this;
     }
 
@@ -255,7 +264,7 @@ abstract class AbstractUsersModel
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false);
-        return $this->useTable()->update($props);
+        return $this->useTable()->update(...$props);
     }
 
     function insert(
@@ -271,7 +280,7 @@ abstract class AbstractUsersModel
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false);
-        return $this->useTable()->insert($props);
+        return $this->useTable()->insert(...$props);
     }
 
     function insertOrIgnore(
@@ -287,7 +296,7 @@ abstract class AbstractUsersModel
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false);
-        return $this->useTable()->insertOrIgnore($props);
+        return $this->useTable()->insertOrIgnore(...$props);
     }
 
     function updateOrInsert(
@@ -334,22 +343,8 @@ abstract class AbstractUsersModel
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false);
-        return new class($upsertProps, $this)
+        return new class($upsertProps, $this->useTable()) extends Upsert
         {
-            private $unique = null;
-            private $update = null;
-            private $runFetch = false;
-
-            function __construct(private $insertProps, private Model $model)
-            {
-            }
-
-            function __destruct()
-            {
-                if (!$this->runFetch)
-                    throw new \Exception("нужно вызвать fetch", 777);
-            }
-
             function unique(
 			bool $id = false,
 			bool $username = false,
@@ -357,7 +352,7 @@ abstract class AbstractUsersModel
 			bool $password = false,
 			bool $created_at = false)
             {
-                $this->unique = array_keys($this->model->requestFilter->filter([
+                $this->unique = array_keys($this->table->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
@@ -373,22 +368,13 @@ abstract class AbstractUsersModel
 			 false | string $password = false,
 			 false | null | string $created_at = false)
             {
-                $this->update = array_keys($this->model->requestFilter->filter([
+                $this->update = array_keys($this->table->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false));
                 return $this;
-            }
-
-            function fetch()
-            {
-                $this->runFetch = true;
-                if (is_null($this->unique))
-                    throw new \Exception("unique не задан", 778);
-
-                return $this->model->___upsert($this->insertProps, $this->unique, $this->update);
             }
         };
     }
@@ -421,42 +407,42 @@ abstract class AbstractUsersModel
     }
 
 
-    function join(?Model $orders = null, ?Model $promocode = null)
+    function join(Table | BuildTable $orders = null, Table | BuildTable $promocode = null)
     {
-        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
-        $this->joins('leftJoin', $models);
+        $tables = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $this->useTable()->join(...$tables);
 
         return $this;
     }
 
-    function leftJoin(?Model $orders = null, ?Model $promocode = null)
+    function leftJoin(Table | BuildTable $orders = null, Table | BuildTable $promocode = null)
     {
-        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
-        $this->joins('leftJoin', $models);
+        $tables = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $this->useTable()->leftJoin(...$tables);
 
         return $this;
     }
 
-    function rightJoin(?Model $orders = null, ?Model $promocode = null)
+    function rightJoin(Table | BuildTable $orders = null, Table | BuildTable $promocode = null)
     {
-        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
-        $this->joins('rightJoin', $models);
+        $tables = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $this->useTable()->rightJoin(...$tables);
 
         return $this;
     }
 
-    function innerJoin(?Model $orders = null, ?Model $promocode = null)
+    function innerJoin(Table | BuildTable $orders = null, Table | BuildTable $promocode = null)
     {
-        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
-        $this->joins('innerJoin', $models);
+        $tables = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $this->useTable()->innerJoin(...$tables);
 
         return $this;
     }
 
-    function otherJoin(?Model $orders = null, ?Model $promocode = null)
+    function otherJoin(Table | BuildTable $orders = null, Table | BuildTable $promocode = null)
     {
-        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
-        $this->joins('otherJoin', $models);
+        $tables = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $this->useTable()->otherJoin(...$tables);
 
         return $this;
     }
@@ -499,7 +485,7 @@ abstract class AbstractUsersModel
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false);
-        $this->useTable()->orderBy('ASC', $props);
+        $this->useTable()->orderByAsc(...$props);
         return $this;
     }
 
@@ -516,7 +502,7 @@ abstract class AbstractUsersModel
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false);
-        $this->useTable()->orderBy('DESC', $props);
+        $this->useTable()->orderByDesc(...$props);
         return $this;
     }
 
@@ -533,7 +519,8 @@ abstract class AbstractUsersModel
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false);
-        $this->useTable()->groupBy($props);
+        $this->useTable()->groupBy(...$props);
+
         return $this;
     }
 
@@ -582,5 +569,11 @@ abstract class AbstractUsersModel
         $this->useTable()->cascade($name);
 
         return $this;
+    }
+
+
+    function toSql()
+    {
+        return $this->useTable()->toSql();
     }
 }
