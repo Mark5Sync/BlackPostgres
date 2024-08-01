@@ -343,8 +343,15 @@ abstract class AbstractUsersModel extends BuildTable
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false);
-        return new class($upsertProps, $this->useTable()) extends Upsert
+        return new class($upsertProps, $this->useTable())
         {
+            private Upsert $instance;
+
+            function __construct(private $insertProps, protected Table $table)
+            {
+                $this->instance = new Upsert($insertProps, $table);
+            }
+
             function unique(
 			bool $id = false,
 			bool $username = false,
@@ -352,12 +359,14 @@ abstract class AbstractUsersModel extends BuildTable
 			bool $password = false,
 			bool $created_at = false)
             {
-                $this->unique = array_keys($this->table->requestFilter->filter([
+                $unique = array_keys($this->table->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false));
+                $this->instance->unique($unique);
+
                 return $this;
             }
 
@@ -368,13 +377,20 @@ abstract class AbstractUsersModel extends BuildTable
 			 false | string $password = false,
 			 false | null | string $created_at = false)
             {
-                $this->update = array_keys($this->table->requestFilter->filter([
+                $update = array_keys($this->table->requestFilter->filter([
 			'id' => $id,
 			'username' => $username,
 			'email' => $email,
 			'password' => $password,
 			'created_at' => $created_at], false));
+                $this->instance->update($update);
+
                 return $this;
+            }
+
+            function fetch()
+            {
+                return $this->instance->fetch();
             }
         };
     }
@@ -409,40 +425,40 @@ abstract class AbstractUsersModel extends BuildTable
 
     function join(Table | BuildTable $orders = null, Table | BuildTable $promocode = null)
     {
-        $tables = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
-        $this->useTable()->join(...$tables);
+        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $this->joins('leftJoin', $models);
 
         return $this;
     }
 
     function leftJoin(Table | BuildTable $orders = null, Table | BuildTable $promocode = null)
     {
-        $tables = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
-        $this->useTable()->leftJoin(...$tables);
+        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $this->joins('leftJoin', $models);
 
         return $this;
     }
 
     function rightJoin(Table | BuildTable $orders = null, Table | BuildTable $promocode = null)
     {
-        $tables = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
-        $this->useTable()->rightJoin(...$tables);
+        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $this->joins('rightJoin', $models);
 
         return $this;
     }
 
     function innerJoin(Table | BuildTable $orders = null, Table | BuildTable $promocode = null)
     {
-        $tables = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
-        $this->useTable()->innerJoin(...$tables);
+        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $this->joins('innerJoin', $models);
 
         return $this;
     }
 
     function otherJoin(Table | BuildTable $orders = null, Table | BuildTable $promocode = null)
     {
-        $tables = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
-        $this->useTable()->otherJoin(...$tables);
+        $models = $this->requestFilter->filter(['orders' => $orders, 'promocode' => $promocode], null);
+        $this->joins('otherJoin', $models);
 
         return $this;
     }

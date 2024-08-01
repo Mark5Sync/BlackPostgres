@@ -11,7 +11,7 @@ class Upsert
     protected $update = null;
     private $runFetch = false;
 
-    function __construct(private $insertProps, protected Table $table)
+    function __construct(private array $insertProps, protected Table $table)
     {
     }
 
@@ -21,13 +21,13 @@ class Upsert
             throw new \Exception("нужно вызвать fetch", 777);
     }
 
-    function unique(bool ...$props)
+    function unique(array $props)
     {
         $this->unique = $props;
         return $this;
     }
 
-    function update(...$props)
+    function update(array $props)
     {
         $this->update = $props;
         return $this;

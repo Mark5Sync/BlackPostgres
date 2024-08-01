@@ -338,8 +338,15 @@ abstract class AbstractProductsModel extends BuildTable
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false);
-        return new class($upsertProps, $this->useTable()) extends Upsert
+        return new class($upsertProps, $this->useTable())
         {
+            private Upsert $instance;
+
+            function __construct(private $insertProps, protected Table $table)
+            {
+                $this->instance = new Upsert($insertProps, $table);
+            }
+
             function unique(
 			bool $id = false,
 			bool $name = false,
@@ -347,12 +354,14 @@ abstract class AbstractProductsModel extends BuildTable
 			bool $price = false,
 			bool $created_at = false)
             {
-                $this->unique = array_keys($this->table->requestFilter->filter([
+                $unique = array_keys($this->table->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false));
+                $this->instance->unique($unique);
+
                 return $this;
             }
 
@@ -363,13 +372,20 @@ abstract class AbstractProductsModel extends BuildTable
 			 false | int $price = false,
 			 false | null | string $created_at = false)
             {
-                $this->update = array_keys($this->table->requestFilter->filter([
+                $update = array_keys($this->table->requestFilter->filter([
 			'id' => $id,
 			'name' => $name,
 			'description' => $description,
 			'price' => $price,
 			'created_at' => $created_at], false));
+                $this->instance->update($update);
+
                 return $this;
+            }
+
+            function fetch()
+            {
+                return $this->instance->fetch();
             }
         };
     }

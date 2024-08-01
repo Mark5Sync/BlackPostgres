@@ -23,7 +23,9 @@ new class
 
 
         $result = $this->usersModel
-            ->upsert(email: 'hee@mail.ru', username: 'User', password: '123')->unique(id: 1)->fetch();
+            ->upsert(email: 'hee@mail.ru', username: 'User', password: '123')
+            ->unique(email: 1)
+            ->fetch();
 
         echo "\n\n";
     }

@@ -306,19 +306,28 @@ abstract class AbstractPromocodeModel extends BuildTable
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false);
-        return new class($upsertProps, $this->useTable()) extends Upsert
+        return new class($upsertProps, $this->useTable())
         {
+            private Upsert $instance;
+
+            function __construct(private $insertProps, protected Table $table)
+            {
+                $this->instance = new Upsert($insertProps, $table);
+            }
+
             function unique(
 			bool $id = false,
 			bool $user_id = false,
 			bool $url = false,
 			bool $sale = false)
             {
-                $this->unique = array_keys($this->table->requestFilter->filter([
+                $unique = array_keys($this->table->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false));
+                $this->instance->unique($unique);
+
                 return $this;
             }
 
@@ -328,12 +337,19 @@ abstract class AbstractPromocodeModel extends BuildTable
 			 false | string $url = false,
 			 false | int $sale = false)
             {
-                $this->update = array_keys($this->table->requestFilter->filter([
+                $update = array_keys($this->table->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'url' => $url,
 			'sale' => $sale], false));
+                $this->instance->update($update);
+
                 return $this;
+            }
+
+            function fetch()
+            {
+                return $this->instance->fetch();
             }
         };
     }

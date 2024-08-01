@@ -172,18 +172,34 @@ abstract class ___abstract_class___ extends BuildTable
     function upsert(&$___auto___)
     {
         $upsertProps = $this->requestFilter->filter([$___restruct_auto___], false);
-        return new class($upsertProps, $this->useTable()) extends Upsert
+        return new class($upsertProps, $this->useTable())
         {
+            private Upsert $instance;
+
+            function __construct(private $insertProps, protected Table $table)
+            {
+                $this->instance = new Upsert($insertProps, $table);
+            }
+
             function unique(&$___bool___)
             {
-                $this->unique = array_keys($this->table->requestFilter->filter([$___restruct_bool___], false));
+                $unique = array_keys($this->table->requestFilter->filter([$___restruct_bool___], false));
+                $this->instance->unique($unique);
+
                 return $this;
             }
 
             function update(&$___auto___)
             {
-                $this->update = array_keys($this->table->requestFilter->filter([$___restruct_auto___], false));
+                $update = array_keys($this->table->requestFilter->filter([$___restruct_auto___], false));
+                $this->instance->update($update);
+
                 return $this;
+            }
+
+            function fetch()
+            {
+                return $this->instance->fetch();
             }
         };
     }

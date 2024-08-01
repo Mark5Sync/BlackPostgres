@@ -311,19 +311,28 @@ abstract class AbstractOrdersModel extends BuildTable
 			'user_id' => $user_id,
 			'created_at' => $created_at,
 			'status' => $status], false);
-        return new class($upsertProps, $this->useTable()) extends Upsert
+        return new class($upsertProps, $this->useTable())
         {
+            private Upsert $instance;
+
+            function __construct(private $insertProps, protected Table $table)
+            {
+                $this->instance = new Upsert($insertProps, $table);
+            }
+
             function unique(
 			bool $id = false,
 			bool $user_id = false,
 			bool $created_at = false,
 			bool $status = false)
             {
-                $this->unique = array_keys($this->table->requestFilter->filter([
+                $unique = array_keys($this->table->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
 			'status' => $status], false));
+                $this->instance->unique($unique);
+
                 return $this;
             }
 
@@ -333,12 +342,19 @@ abstract class AbstractOrdersModel extends BuildTable
 			 false | null | string $created_at = false,
 			 false | string $status = false)
             {
-                $this->update = array_keys($this->table->requestFilter->filter([
+                $update = array_keys($this->table->requestFilter->filter([
 			'id' => $id,
 			'user_id' => $user_id,
 			'created_at' => $created_at,
 			'status' => $status], false));
+                $this->instance->update($update);
+
                 return $this;
+            }
+
+            function fetch()
+            {
+                return $this->instance->fetch();
             }
         };
     }
