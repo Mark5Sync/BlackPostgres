@@ -3,6 +3,7 @@
 namespace blackpostgres\request;
 
 use blackpostgres\Model;
+use blackpostgres\Table;
 use marksync\provider\Mark;
 
 #[Mark(mode: Mark::LOCAL)]
@@ -73,16 +74,17 @@ class QuerySchema
 
 
                 case 'join':
-                    /** @var Model $joinModel */
+                    /** @var Table $joinModel */
                     ['model' => $joinModel, 'joinMethod' => $joinMethod, 'props' => $props] = $data;
-                    $this->join($model, $joinMethod, $joinModel->tableName, $props);
-                    $joinModel->querySchema->build($model);
+                    $joinTableName = $joinModel->tableName;
+                    $this->join($model, $joinMethod, $joinTableName, $props);
+                    $joinModel->getQuerySchema()->build($model);
                     break;
-
 
 
                 default:
                     throw new \Exception("Нет реализации для $method", 1);
+
 
                     break;
             }

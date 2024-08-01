@@ -2,12 +2,14 @@
 
 namespace blackpostgres\config;
 
+use blackpostgres\_markers\relation;
 use blackpostgres\pgsystem\ShemeBuilController;
 use blackpostgres\Table;
-use blackpostgres\tools\ShemeBuilder;
 
 abstract class SystemConfig
 {
+    use relation;
+
     public string $modelsPath; // полный путь
 
     function table(string $name)
@@ -18,7 +20,8 @@ abstract class SystemConfig
 
     function generate()
     {
-        $builder = new ShemeBuilController($this->modelsPath, $this);
+        $builder = new ShemeBuilController($this);
+        $builder->setRoot($this->modelsPath);
         $builder->generate();
     }
 }

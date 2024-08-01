@@ -2,13 +2,10 @@
 
 namespace testapp\models\_abstract_models;
 
-use blackpostgres\Model;
-
-
-abstract class ModelContext extends Model
+class ModelContext
 {
 
-    protected ?array $relationShema = array (
+    public ?array $schema = array (
   'users' => 
   array (
     'orders' => 

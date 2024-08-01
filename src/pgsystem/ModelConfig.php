@@ -18,6 +18,7 @@ class ModelConfig
     public string $connectionConfigClass = 'no_config';
 
 
+
     function __construct(
         public Config $config,
         public string $modelFolder,
@@ -28,6 +29,7 @@ class ModelConfig
 
         $this->connectionConfigClass = get_class($config);
     }
+
 
 
     function activeTable(string $table, array $tableProps, array $relations = [])
@@ -59,6 +61,7 @@ class ModelConfig
     {
         return "Abstract{$this->getClassName($table)}";
     }
+
 
 
     function getContext()

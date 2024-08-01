@@ -9,6 +9,7 @@ use blackpostgres\config\BuildTable;
 use blackpostgres\config\Config;
 use blackpostgres\model\Connection;
 use blackpostgres\queryTools\Upsert;
+use blackpostgres\request\QuerySchema;
 
 class Table extends Connection
 {
@@ -29,9 +30,16 @@ class Table extends Connection
     private int $size = 10;
 
 
+    private ?array $relationShema = null;
 
-    function __construct(protected string $tableName, protected Config $connectionConfig)
+
+    function __construct(public string $tableName, protected Config $connectionConfig)
     {
+    }
+
+    function setRelations(array $relationShema)
+    {
+        $this->relationShema = $relationShema;
     }
 
 
@@ -213,37 +221,37 @@ class Table extends Connection
 
 
 
-    function ___join($props)
-    {
-        $this->querySchema->add('join', $props);
+    // private function ___join($props)
+    // {
+    //     $this->querySchema->add('join', $props);
 
-        return $this;
-    }
+    //     return $this;
+    // }
 
 
     private function ___joins($joinMethod, $tables)
     {
         $table = $this();
 
-        foreach ($tables as $joinTable => $table) {
-            if (!isset($this->relationShema[$table][$joinTable]))
-                throw new \Exception("Нет отношений ($table - $joinTable)", 1);
+        foreach ($tables as $joinTableKey => $joinTable) {
+            ['coll' => $coll, 'referenced' => $referenced] = $this->connectionConfig->relations->getColls($table, $joinTable->tableName);
 
-            ['coll' => $coll, 'referenced' => $referenced] = $this->relationShema[$table][$joinTable];
-
-            $this->___join([
-                'model' => $table,
+            $joinProps = [
+                'model' => $joinTable,
                 'joinMethod' => $joinMethod,
                 'props' => [
                     'coll' => $this($coll),
-                    'referenced' => $table($referenced),
+                    'referenced' => $joinTable($referenced),
                 ]
-            ]);
+            ];
 
+            $this->querySchema->add('join', $joinProps);
 
-            $this->cascadeController->setParent($table->tableName, $this->tableName);
+            $this->cascadeController->setParent($joinTable->tableName, $this->tableName);
         }
     }
+
+
 
 
     function join(Table | BuildTable ...$tables)
@@ -393,6 +401,7 @@ class Table extends Connection
         return $this->RMW($this->cascadeController->handleResult($this->tableName, $result->toArray(), true));
     }
 
+
     function toSql()
     {
         return $this->RMW($this->buildModel()->toSql());
@@ -428,6 +437,7 @@ class Table extends Connection
             $this->rowSelect->add($this($coll), $bind);
         }
     }
+
 
     function fetchRow()
     {
@@ -467,6 +477,7 @@ class Table extends Connection
         return $this->RMW($this->buildModel()->update($props));
     }
 
+
     function upsert(...$props)
     {
         return new Upsert($props, $this);
@@ -480,5 +491,18 @@ class Table extends Connection
     function delete()
     {
         return $this->RMW($this->buildModel()->delete());
+    }
+
+
+
+
+
+
+
+
+
+    function getQuerySchema(): QuerySchema
+    {
+        return $this->querySchema;
     }
 }

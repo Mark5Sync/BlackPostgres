@@ -16,10 +16,17 @@ class ShemeBuilController
 
 
     private ?\PDO $pdo;
+    private string $root;
 
 
-    function __construct(private string $root, private Config $config)
+    function __construct(private Config $config)
     {
+    }
+
+
+    function setRoot(string $root)
+    {
+        $this->root = $root;
     }
 
 
@@ -27,9 +34,7 @@ class ShemeBuilController
     {
         ini_set('display_errors', 0);
 
-
         $modelConfig = $this->getModelConfig($this->config);
-
 
 
 

@@ -6,6 +6,7 @@ use blackpostgres\_markers\model;
 use blackpostgres\config\BuildTable;
 use blackpostgres\config\Config;
 use blackpostgres\queryTools\Upsert;
+use blackpostgres\request\QuerySchema;
 use blackpostgres\Table;
 use marksync\provider\Container;
 
@@ -205,7 +206,11 @@ abstract class ___abstract_class___ extends BuildTable
     }
 
 
+
+
     //JOIN
+
+
 
 
 
@@ -282,5 +287,34 @@ abstract class ___abstract_class___ extends BuildTable
     function toSql()
     {
         return $this->useTable()->toSql();
+    }
+
+
+    function fetch()
+    {
+        return $this->useTable()->fetch();
+    }
+
+    function fetchAll()
+    {
+        return $this->useTable()->fetchAll();
+    }
+
+    function query(?string &$query)
+    {
+        $this->useTable()->query($query);
+
+        return $this;
+    }
+
+    function __invoke(?string $collName = null, string | false | null $as = null, bool $useCascade = false)
+    {
+        return $this->useTable()($collName, $as, $useCascade);
+    }
+
+
+    function getQuerySchema(): QuerySchema
+    {
+        return $this->useTable()->getQuerySchema();
     }
 }

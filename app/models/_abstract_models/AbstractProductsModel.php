@@ -6,6 +6,7 @@ use blackpostgres\_markers\model;
 use blackpostgres\config\BuildTable;
 use blackpostgres\config\Config;
 use blackpostgres\queryTools\Upsert;
+use blackpostgres\request\QuerySchema;
 use blackpostgres\Table;
 use marksync\provider\Container;
 
@@ -391,75 +392,57 @@ abstract class AbstractProductsModel extends BuildTable
     }
 
 
+
+
     
 
-    private function joins($joinMethod, $models)
-    {
-        $table = $this();
 
-        foreach ($models as $joinTable => $model) {
-            if (!isset($this->relationShema[$table][$joinTable]))
-                throw new \Exception("Нет отношений ($table - $joinTable)", 1);
-
-            ['coll' => $coll, 'referenced' => $referenced] = $this->relationShema[$table][$joinTable];
-
-            $this->___join([
-                'model' => $model,
-                'joinMethod' => $joinMethod,
-                'props' => [
-                    'coll' => $this($coll),
-                    'referenced' => $model($referenced),
-                ]
-            ]);
-
-
-            $this->cascadeController->setParent($model->tableName, $this->tableName);
-        }
-    }
 
 
     function join(Table | BuildTable $order_details = null)
     {
-        $models = $this->requestFilter->filter(['order_details' => $order_details], null);
-        $this->joins('leftJoin', $models);
+        $tables = $this->requestFilter->filter(['order_details' => $order_details], null);
+        $this->useTable()->join(...$tables);
 
         return $this;
     }
 
     function leftJoin(Table | BuildTable $order_details = null)
     {
-        $models = $this->requestFilter->filter(['order_details' => $order_details], null);
-        $this->joins('leftJoin', $models);
+        $tables = $this->requestFilter->filter(['order_details' => $order_details], null);
+        $this->useTable()->leftJoin(...$tables);
 
         return $this;
     }
 
     function rightJoin(Table | BuildTable $order_details = null)
     {
-        $models = $this->requestFilter->filter(['order_details' => $order_details], null);
-        $this->joins('rightJoin', $models);
+        $tables = $this->requestFilter->filter(['order_details' => $order_details], null);
+        $this->useTable()->rightJoin(...$tables);
 
         return $this;
     }
 
     function innerJoin(Table | BuildTable $order_details = null)
     {
-        $models = $this->requestFilter->filter(['order_details' => $order_details], null);
-        $this->joins('innerJoin', $models);
+        $tables = $this->requestFilter->filter(['order_details' => $order_details], null);
+        $this->useTable()->innerJoin(...$tables);
 
         return $this;
     }
 
     function otherJoin(Table | BuildTable $order_details = null)
     {
-        $models = $this->requestFilter->filter(['order_details' => $order_details], null);
-        $this->joins('otherJoin', $models);
+        $tables = $this->requestFilter->filter(['order_details' => $order_details], null);
+        $this->useTable()->otherJoin(...$tables);
 
         return $this;
     }
 
 
     
+
+
 
 
 
@@ -586,5 +569,34 @@ abstract class AbstractProductsModel extends BuildTable
     function toSql()
     {
         return $this->useTable()->toSql();
+    }
+
+
+    function fetch()
+    {
+        return $this->useTable()->fetch();
+    }
+
+    function fetchAll()
+    {
+        return $this->useTable()->fetchAll();
+    }
+
+    function query(?string &$query)
+    {
+        $this->useTable()->query($query);
+
+        return $this;
+    }
+
+    function __invoke(?string $collName = null, string | false | null $as = null, bool $useCascade = false)
+    {
+        return $this->useTable()($collName, $as, $useCascade);
+    }
+
+
+    function getQuerySchema(): QuerySchema
+    {
+        return $this->useTable()->getQuerySchema();
     }
 }

@@ -4,7 +4,7 @@ namespace blackpostgres\_templates;
 
 use blackpostgres\Model;
 use blackpostgres\model\Request;
-
+use blackpostgres\Table;
 
 $____clearPropsStr_____ = "   'orders' => $orders    ";
 $_____propsStr_____     = "   ?Model $orders = null  ";
@@ -20,72 +20,52 @@ abstract class JOIN extends Model
     // CODE
     // CODE
     // CODE
-    // CODE 
+    // CODE
+
+
 
     ###########################################################################
     //TEMPLATE-START
 
-    private function joins($joinMethod, $models)
-    {
-        $table = $this();
 
-        foreach ($models as $joinTable => $model) {
-            if (!isset($this->relationShema[$table][$joinTable]))
-                throw new \Exception("Нет отношений ($table - $joinTable)", 1);
-
-            ['coll' => $coll, 'referenced' => $referenced] = $this->relationShema[$table][$joinTable];
-
-            $this->___join([
-                'model' => $model,
-                'joinMethod' => $joinMethod,
-                'props' => [
-                    'coll' => $this($coll),
-                    'referenced' => $model($referenced),
-                ]
-            ]);
-
-
-            $this->cascadeController->setParent($model->tableName, $this->tableName);
-        }
-    }
 
 
     function join($_____propsStr_____)
     {
-        $models = $this->requestFilter->filter([$____clearPropsStr_____], null);
-        $this->joins('leftJoin', $models);
+        $tables = $this->requestFilter->filter([$____clearPropsStr_____], null);
+        $this->useTable()->join(...$tables);
 
         return $this;
     }
 
     function leftJoin($_____propsStr_____)
     {
-        $models = $this->requestFilter->filter([$____clearPropsStr_____], null);
-        $this->joins('leftJoin', $models);
+        $tables = $this->requestFilter->filter([$____clearPropsStr_____], null);
+        $this->useTable()->leftJoin(...$tables);
 
         return $this;
     }
 
     function rightJoin($_____propsStr_____)
     {
-        $models = $this->requestFilter->filter([$____clearPropsStr_____], null);
-        $this->joins('rightJoin', $models);
+        $tables = $this->requestFilter->filter([$____clearPropsStr_____], null);
+        $this->useTable()->rightJoin(...$tables);
 
         return $this;
     }
 
     function innerJoin($_____propsStr_____)
     {
-        $models = $this->requestFilter->filter([$____clearPropsStr_____], null);
-        $this->joins('innerJoin', $models);
+        $tables = $this->requestFilter->filter([$____clearPropsStr_____], null);
+        $this->useTable()->innerJoin(...$tables);
 
         return $this;
     }
 
     function otherJoin($_____propsStr_____)
     {
-        $models = $this->requestFilter->filter([$____clearPropsStr_____], null);
-        $this->joins('otherJoin', $models);
+        $tables = $this->requestFilter->filter([$____clearPropsStr_____], null);
+        $this->useTable()->otherJoin(...$tables);
 
         return $this;
     }
@@ -93,6 +73,11 @@ abstract class JOIN extends Model
 
     //TEMPLATE-END
     ###########################################################################
+
+
+    function useTable(): Table
+    {
+    }
 
     // CODE
     // CODE

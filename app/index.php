@@ -21,11 +21,34 @@ new class
     function __construct()
     {
 
+        $this->join();
+
+        echo "\n\n";
+    }
+
+
+    function join()
+    {
+
+        $result = $this->ordersModel
+            ->sel(status: 1)
+            ->join(
+                users: $this->usersModel->sel(username: 1, email: 1)
+            )
+            ->fetch();
+
+
+        print_r($result);
+    }
+
+
+    function upsert()
+    {
         $result = $this->usersModel
             ->upsert(email: 'hee@mail.ru', username: 'User', password: '123')
             ->unique(email: 1)
             ->fetch();
 
-        echo "\n\n";
+        print_r($result);
     }
 };

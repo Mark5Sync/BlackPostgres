@@ -30,14 +30,11 @@ class GenerateContext
         <?php
 
         namespace {$this->namespace};
-
-        use blackpostgres\Model;
-
         
-        abstract class ModelContext extends Model
+        class ModelContext
         {
 
-            protected ?array \$relationShema = $contextStr;
+            public ?array \$schema = $contextStr;
 
         }
         PHP);
