@@ -21,7 +21,6 @@ new class
     function __construct()
     {
 
-
         $result = $this->usersModel
             ->upsert(email: 'hee@mail.ru', username: 'User', password: '123')
             ->unique(email: 1)
