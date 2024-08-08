@@ -49,17 +49,23 @@ abstract class Table extends BlackpostgresTable
         $this->colls = $this->db->manager->builder->getColumnListing($this->table);
     }
 
-    protected function appendUndefinedColls(array $colls)
+
+    protected function checkFenixColls(array $colls): array 
     {
         $undefinedColls = array_diff($colls, $this->colls);
+        if (empty($undefinedColls))
+            return $colls;
 
         $this->db->manager->builder->table($this->table, function ($table) use ($undefinedColls) {
             foreach ($undefinedColls as $coll) {
-                if ($this->addColl($coll, $table))
-                    $this->colls[] = $coll;
+                $this->addColl($coll, $table);
+                $this->colls[] = $coll;
             }
         });
-    }
+
+        return $colls;
+    } 
+
 
     function addColl(string $coll, Blueprint $table): void
     {
