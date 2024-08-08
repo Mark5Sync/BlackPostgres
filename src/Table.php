@@ -20,6 +20,7 @@ class Table extends Connection
     protected string $currentShort = 'no_class';
     private ?string $joinTableName = null;
     private ?string $cascade = null;
+    protected bool $isFenixTable = false;
 
     private array $applyJoin = [];
 
