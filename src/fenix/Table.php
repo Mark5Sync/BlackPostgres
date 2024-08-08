@@ -7,15 +7,20 @@ use blackpostgres\Table as BlackpostgresTable;
 use Illuminate\Database\Schema\Blueprint;
 use marksync\provider\Container;
 
-abstract class Table extends BlackpostgresTable implements Fenix
+abstract class Table extends BlackpostgresTable
 {
+    public string $table;
+    protected string $dbConfigClass;
+
     private Config $db;
     private array $colls;
     protected bool $isFenixTable = true;
 
+
+
     final function __construct()
     {
-        $this->db = Container::get($this->DbConfigClass);
+        $this->db = Container::get($this->dbConfigClass);
         parent::__construct($this->table, $this->db);
 
         $this->checkTableExists();
@@ -56,8 +61,8 @@ abstract class Table extends BlackpostgresTable implements Fenix
         });
     }
 
-    function addColl(string $coll, Blueprint $table): bool
+    function addColl(string $coll, Blueprint $table): void
     {
-        return false;
+        
     }
 }
