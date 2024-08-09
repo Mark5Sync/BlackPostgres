@@ -34,9 +34,7 @@ class Table extends Connection
     private ?array $relationShema = null;
 
 
-    function __construct(public string $tableName, protected Config $connectionConfig)
-    {
-    }
+    function __construct(public string $tableName, protected Config $connectionConfig) {}
 
     function setRelations(array $relationShema)
     {
@@ -105,7 +103,7 @@ class Table extends Connection
     // }
 
 
-    protected function checkFenixColls(array $colls): array 
+    protected function checkFenixColls(array $colls): array
     {
         return $colls;
     }
@@ -117,7 +115,7 @@ class Table extends Connection
             $schema = str_replace('@', $this(useCascade: true) . '.', $schema);
             $this->querySchema->add('selectRaw', [$schema, array_values($props)]); // FIXME нужно провести тест, стоит ли тут проводить проверку на существование столбца в fenix table
         } else {
-            $colls = array_map(fn ($coll) => $this($coll, useCascade: true), $this->checkFenixColls(array_keys($props)));
+            $colls = array_map(fn($coll) => $this($coll, useCascade: true), $this->checkFenixColls(array_keys($props)));
             $this->querySchema->add('select', empty($colls) ? ['*'] : $colls);
         }
 
@@ -159,13 +157,9 @@ class Table extends Connection
         return $this->where('regexp', ...$props);
     }
 
-    function isNull(bool ...$props)
-    {
-    }
+    function isNull(bool ...$props) {}
 
-    function isNotNull(bool ...$props)
-    {
-    }
+    function isNotNull(bool ...$props) {}
 
 
     function where(?string $schema = null, string ...$props)
@@ -332,8 +326,8 @@ class Table extends Connection
 
     function orderByAsc(bool ...$colls)
     {
-        
-        $props = array_map(fn ($coll) => $this($coll), $this->checkFenixColls(array_keys($colls)));
+
+        $props = array_map(fn($coll) => $this($coll), $this->checkFenixColls(array_keys($colls)));
         $this->querySchema->add("orderByASC", $props);
 
         return $this;
@@ -341,7 +335,7 @@ class Table extends Connection
 
     function orderByDesc(bool ...$colls)
     {
-        $props = array_map(fn ($coll) => $this($coll), $this->checkFenixColls(array_keys($colls)));
+        $props = array_map(fn($coll) => $this($coll), $this->checkFenixColls(array_keys($colls)));
         $this->querySchema->add("orderByDESC", $props);
 
         return $this;
@@ -349,7 +343,7 @@ class Table extends Connection
 
     function groupBy(array $props)
     {
-        $row = array_map(fn ($coll) => $this($coll), $this->checkFenixColls(array_keys($props)));
+        $row = array_map(fn($coll) => $this($coll), $this->checkFenixColls(array_keys($props)));
         $this->querySchema->add("groupByRaw", $props);
 
         return $this;
@@ -467,8 +461,18 @@ class Table extends Connection
     }
 
 
+    /** debricated */
+    private function getColls(array $props)
+    {
+        if (!is_array(array_values(array_slice($props, 0, 1))[0]))
+            return array_keys($props);
+
+        return array_keys($props[0]);
+    }
+
     function insert(array $props)
     {
+        $this->checkFenixColls(array_keys($props));
         return $this->RMW($this->buildModel()->insertGetId($props));
     }
 

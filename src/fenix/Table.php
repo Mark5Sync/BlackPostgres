@@ -15,14 +15,21 @@ abstract class Table extends BlackpostgresTable
     private Config $db;
     private array $colls;
     protected bool $isFenixTable = true;
+    private bool $tableIsDrop = false;
 
 
 
-    final function __construct()
+    function __construct()
     {
         $this->db = Container::get($this->dbConfigClass);
         parent::__construct($this->table, $this->db);
 
+        $this->checkTable();
+    }
+
+
+    private function checkTable()
+    {
         $this->checkTableExists();
         $this->updateColumnList();
     }
@@ -35,7 +42,10 @@ abstract class Table extends BlackpostgresTable
         $this->db->manager->builder->create($this->table, function ($table) {
             $this->onCreate($table);
         });
+
+        $this->tableIsDrop = false;
     }
+
 
     protected function onCreate(Blueprint $table): void
     {
@@ -50,8 +60,11 @@ abstract class Table extends BlackpostgresTable
     }
 
 
-    protected function checkFenixColls(array $colls): array 
+    protected function checkFenixColls(array $colls): array
     {
+        if ($this->tableIsDrop)
+            $this->checkTable();
+
         $undefinedColls = array_diff($colls, $this->colls);
         if (empty($undefinedColls))
             return $colls;
@@ -64,11 +77,15 @@ abstract class Table extends BlackpostgresTable
         });
 
         return $colls;
-    } 
+    }
 
 
-    function addColl(string $coll, Blueprint $table): void
+    function addColl(string $coll, Blueprint $table): void {}
+
+
+    function drop()
     {
-        
+        $this->db->manager->builder->dropIfExists($this->table);
+        $this->tableIsDrop = true;
     }
 }
