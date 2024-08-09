@@ -198,8 +198,11 @@ class ShemeBuilder
             case 'character varying':
                 return 'string';
 
+            case 'boolean':
+                return 'bool';
+
             default:
-                throw new \Exception("UNDEFINED Type [$sqlType]", 1);
+                throw new \Exception("UNDEFINED Type [$sqlType]", 444);
         }
     }
 }
