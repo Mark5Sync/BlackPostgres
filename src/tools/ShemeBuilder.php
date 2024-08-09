@@ -20,8 +20,7 @@ class ShemeBuilder
 
     function __construct(
         public ModelConfig $modelConfig
-    ) {
-    }
+    ) {}
 
 
 
@@ -88,7 +87,7 @@ class ShemeBuilder
             '__rel__' => $this->getRelationship(),
             '__table__' => $this->modelConfig->table,
             '__connection_config__' => $this->modelConfig->connectionConfigClass,
-            '//JOIN_SWITCHES' => '',//$this->generateJoins->getSwitches(),
+            '//JOIN_SWITCHES' => '', //$this->generateJoins->getSwitches(),
             '//JOIN' => $this->generateJoins->getMethods($this->modelConfig->relations), //$this->generateJoins->getCode(),
             'Model //class' => 'ModelContext',
         ];
@@ -102,7 +101,7 @@ class ShemeBuilder
         foreach (['auto', 'bool', 'array', 'string', 'bind'] as $propsType) {
             $bindChar = $propsType == 'bind' ? '&' : '';
             $input = $this->getMethodProps($propsType, $colls, ' = false', in_array($propsType, ['bool', 'bind']) ? '' : 'false | ');
-            $restruct = $split . implode(",$split", array_map(fn ($coll) => "'$coll' => $bindChar\$$coll", $colls));
+            $restruct = $split . implode(",$split", array_map(fn($coll) => "'$coll' => $bindChar\$$coll", $colls));
 
             $abstactCode = str_replace("&\$___{$propsType}___", $input, $abstactCode);
             $abstactCode = str_replace("\$___restruct_{$propsType}___", $restruct, $abstactCode);
@@ -127,7 +126,7 @@ class ShemeBuilder
 
 
         $split = "\n\t\t\t";
-        $select = $split . implode(",$split", array_map(fn ($coll) => "'$coll' => \$$coll", $colls));
+        $select = $split . implode(",$split", array_map(fn($coll) => "'$coll' => \$$coll", $colls));
 
 
         $body = "\$this->___{$methodName}([$select--\n
@@ -181,6 +180,7 @@ class ShemeBuilder
             case 'int':
             case 'bigint':
             case 'numeric':
+            case 'boolean':
                 return 'int';
 
             case 'date':
@@ -198,8 +198,6 @@ class ShemeBuilder
             case 'character varying':
                 return 'string';
 
-            case 'boolean':
-                return 'bool';
 
             default:
                 throw new \Exception("UNDEFINED Type [$sqlType]", 444);
