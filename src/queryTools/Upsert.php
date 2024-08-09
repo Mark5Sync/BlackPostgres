@@ -21,13 +21,13 @@ class Upsert
             throw new \Exception("нужно вызвать fetch", 777);
     }
 
-    function unique(array $props)
+    function unique(bool ...$props) // [ ] исправить upsert update
     {
-        $this->unique = $props;
+        $this->unique = array_keys($props);
         return $this;
     }
 
-    function update(array $props)
+    function update(string | int ...$props)
     {
         $this->update = $props;
         return $this;
