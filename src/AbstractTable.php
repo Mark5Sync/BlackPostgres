@@ -256,7 +256,7 @@ abstract class ___abstract_class___ extends BuildTable
 
     function groupBy(&$___bool___)
     {
-        $props = $this->requestFilter->filter([$___restruct_bool___], false);
+        $props = array_keys($this->requestFilter->filter([$___restruct_bool___], false));
         $this->useTable()->groupBy(...$props);
 
         return $this;
@@ -322,5 +322,10 @@ abstract class ___abstract_class___ extends BuildTable
     function getQuerySchema(): QuerySchema
     {
         return $this->useTable()->getQuerySchema();
+    }
+
+    function delete()
+    {
+        return $this->useTable()->delete();
     }
 }

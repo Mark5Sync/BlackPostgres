@@ -77,6 +77,11 @@ class QuerySchema
                     break;
 
 
+                case 'groupBy':
+                    $model->groupBy(...$data);
+
+                    break;
+
                 case 'join':
                     /** @var Table $joinModel */
                     ['model' => $joinModel, 'joinMethod' => $joinMethod, 'props' => $props] = $data;

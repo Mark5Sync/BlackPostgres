@@ -343,10 +343,10 @@ class Table extends Connection
         return $this;
     }
 
-    function groupBy(array $props)
+    function groupBy(string ...$props)
     {
-        $row = array_map(fn($coll) => $this($coll), $this->checkFenixColls(array_keys($props)));
-        $this->querySchema->add("groupByRaw", $props);
+        $row = array_map(fn($coll) => $this($coll), $this->checkFenixColls($props)); // [ ] вернуть обертку -> array_map(fn($coll) => $this($coll), 
+        $this->querySchema->add("groupBy", $row);
 
         return $this;
     }
@@ -463,7 +463,7 @@ class Table extends Connection
     }
 
 
-    /** debricated */ 
+    /** debricated */
     private function getColls(array $props)
     {
         if (!is_array(array_values(array_slice($props, 0, 1))[0]))
@@ -482,7 +482,7 @@ class Table extends Connection
 
     function insertArray(array $props)
     {
-        $this->checkFenixColls(array_keys( array_slice($props, 0, 1)[0] ));
+        $this->checkFenixColls(array_keys(array_slice($props, 0, 1)[0]));
         return $this->RMW($this->buildModel()->insert($props));
     }
 
@@ -500,14 +500,16 @@ class Table extends Connection
     }
 
 
-    function update(array $props)
+    function update(...$props)
     {
+        $this->checkFenixColls(array_keys($props));
         return $this->RMW($this->buildModel()->update($props));
     }
 
 
     function upsert(...$props)
     {
+        $this->checkFenixColls(array_keys($props));
         return new Upsert($props, $this);
     }
 

@@ -15,7 +15,7 @@ abstract class Table extends BlackpostgresTable
     protected Config $db;
     private ?array $colls = null;
     protected bool $isFenixTable = true;
-    private bool $tableIsDrop = false;
+    public bool $isExists = false;
 
 
 
@@ -24,7 +24,7 @@ abstract class Table extends BlackpostgresTable
         $this->db = Container::get($this->dbConfigClass);
         parent::__construct($this->table, $this->db);
 
-        $this->tableIsDrop = !$this->db->manager->builder->hasTable($this->table);
+        $this->isExists = !!$this->db->manager->builder->hasTable($this->table);
     }
 
 
@@ -36,14 +36,14 @@ abstract class Table extends BlackpostgresTable
 
     private function createTableIfNotExists()
     {
-        if (!$this->tableIsDrop)
+        if ($this->isExists)
             return;
 
         $this->db->manager->builder->create($this->table, function ($table) {
             $this->onCreate($table);
         });
 
-        $this->tableIsDrop = false;
+        $this->isExists = true;
     }
 
 
@@ -57,7 +57,7 @@ abstract class Table extends BlackpostgresTable
     private function updateColumnList()
     {
         if (is_null($this->colls))
-            $this->colls = $this->db->manager->builder->getColumnListing($this->table);
+            $this->colls = $this->getColumnListing();
     }
 
 
@@ -80,21 +80,29 @@ abstract class Table extends BlackpostgresTable
     }
 
 
+
     function addColl(string $coll, Blueprint $table): void {}
 
 
     function drop()
     {
         $this->db->manager->builder->dropIfExists($this->table);
-        $this->tableIsDrop = true;
+        $this->isExists = false;
     }
 
 
-    protected function dropTable(string $table){
+    protected function dropTable(string $table)
+    {
         $this->db->manager->builder->dropIfExists($table);
     }
 
-    protected function renameTable(string $to){
+    protected function renameTable(string $to)
+    {
         $this->db->manager->builder->rename($this->table, $to);
+    }
+
+    function getColumnListing()
+    {
+        return $this->db->manager->builder->getColumnListing($this->table);
     }
 }
