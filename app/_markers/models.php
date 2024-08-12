@@ -1,30 +1,30 @@
 <?php
 namespace testapp\_markers;
 use marksync\provider\provider;
-use testapp\models\PromocodeModel;
-use testapp\models\UsersModel;
-use testapp\models\OrderDetailsModel;
-use testapp\models\_abstract_models\ModelContext;
 use testapp\models\OrdersModel;
+use testapp\models\PromocodeModel;
+use testapp\models\_abstract_models\ModelContext;
+use testapp\models\OrderDetailsModel;
+use testapp\models\UsersModel;
 use testapp\models\ProductsModel;
 
 /**
- * @property-read PromocodeModel $promocodeModel
- * @property-read UsersModel $usersModel
- * @property-read OrderDetailsModel $orderDetailsModel
- * @property-read ModelContext $modelContext
  * @property-read OrdersModel $ordersModel
+ * @property-read PromocodeModel $promocodeModel
+ * @property-read ModelContext $modelContext
+ * @property-read OrderDetailsModel $orderDetailsModel
+ * @property-read UsersModel $usersModel
  * @property-read ProductsModel $productsModel
 
 */
 trait models {
     use provider;
 
-   function createPromocodeModel(): PromocodeModel { return new PromocodeModel; }
-   function createUsersModel(): UsersModel { return new UsersModel; }
-   function createOrderDetailsModel(): OrderDetailsModel { return new OrderDetailsModel; }
-   function createModelContext(): ModelContext { return new ModelContext; }
    function createOrdersModel(): OrdersModel { return new OrdersModel; }
+   function createPromocodeModel(): PromocodeModel { return new PromocodeModel; }
+   function createModelContext(): ModelContext { return new ModelContext; }
+   function createOrderDetailsModel(): OrderDetailsModel { return new OrderDetailsModel; }
+   function createUsersModel(): UsersModel { return new UsersModel; }
    function createProductsModel(): ProductsModel { return new ProductsModel; }
 
 }

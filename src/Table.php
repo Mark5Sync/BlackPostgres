@@ -4,6 +4,7 @@
 namespace blackpostgres;
 
 use blackpostgres\_markers\model as _markersModel;
+use blackpostgres\_markers\queryTools;
 use blackpostgres\_markers\request;
 use blackpostgres\config\BuildTable;
 use blackpostgres\config\Config;
@@ -15,6 +16,7 @@ class Table extends Connection
 {
     use _markersModel;
     use request;
+    use queryTools;
 
 
     protected string $currentShort = 'no_class';
@@ -199,7 +201,7 @@ class Table extends Connection
         $this->checkFenixColls(array_keys($props));
 
         foreach ($props as $coll => $value) {
-            $this->querySchema->add('wheteIn', [$coll, $value]);
+            $this->querySchema->add('whereIn', [$coll, $value]);
         }
 
         return $this;
@@ -461,7 +463,7 @@ class Table extends Connection
     }
 
 
-    /** debricated */
+    /** debricated */ 
     private function getColls(array $props)
     {
         if (!is_array(array_values(array_slice($props, 0, 1))[0]))
@@ -470,10 +472,18 @@ class Table extends Connection
         return array_keys($props[0]);
     }
 
+
     function insert(array $props)
     {
         $this->checkFenixColls(array_keys($props));
         return $this->RMW($this->buildModel()->insertGetId($props));
+    }
+
+
+    function insertArray(array $props)
+    {
+        $this->checkFenixColls(array_keys($props[0]));
+        return $this->RMW($this->buildModel()->insert($props));
     }
 
 

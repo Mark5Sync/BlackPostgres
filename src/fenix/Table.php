@@ -12,8 +12,8 @@ abstract class Table extends BlackpostgresTable
     public string $table;
     protected string $dbConfigClass;
 
-    private Config $db;
-    private array $colls;
+    protected Config $db;
+    private ?array $colls = null;
     protected bool $isFenixTable = true;
     private bool $tableIsDrop = false;
 
@@ -24,19 +24,19 @@ abstract class Table extends BlackpostgresTable
         $this->db = Container::get($this->dbConfigClass);
         parent::__construct($this->table, $this->db);
 
-        $this->checkTable();
+        $this->tableIsDrop = !$this->db->manager->builder->hasTable($this->table);
     }
 
 
     private function checkTable()
     {
-        $this->checkTableExists();
+        $this->createTableIfNotExists();
         $this->updateColumnList();
     }
 
-    private function checkTableExists()
+    private function createTableIfNotExists()
     {
-        if ($this->db->manager->builder->hasTable($this->table))
+        if (!$this->tableIsDrop)
             return;
 
         $this->db->manager->builder->create($this->table, function ($table) {
@@ -56,14 +56,14 @@ abstract class Table extends BlackpostgresTable
 
     private function updateColumnList()
     {
-        $this->colls = $this->db->manager->builder->getColumnListing($this->table);
+        if (is_null($this->colls))
+            $this->colls = $this->db->manager->builder->getColumnListing($this->table);
     }
 
 
     protected function checkFenixColls(array $colls): array
     {
-        if ($this->tableIsDrop)
-            $this->checkTable();
+        $this->checkTable();
 
         $undefinedColls = array_diff($colls, $this->colls);
         if (empty($undefinedColls))
@@ -87,5 +87,14 @@ abstract class Table extends BlackpostgresTable
     {
         $this->db->manager->builder->dropIfExists($this->table);
         $this->tableIsDrop = true;
+    }
+
+
+    protected function dropTable(string $table){
+        $this->db->manager->builder->dropIfExists($table);
+    }
+
+    protected function renameTable(string $to){
+        $this->db->manager->builder->rename($this->table, $to);
     }
 }

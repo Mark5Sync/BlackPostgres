@@ -51,6 +51,10 @@ class QuerySchema
                     $model->where(...$data);
                     break;
 
+                case 'whereIn':
+                    $model->whereIn(...$data);
+                    break;
+
                 case 'whereRaw';
                     $model->whereRaw(...$data);
                     break;
