@@ -482,13 +482,14 @@ class Table extends Connection
 
     function insertArray(array $props)
     {
-        $this->checkFenixColls(array_keys($props[0]));
+        $this->checkFenixColls(array_keys( array_slice($props, 0, 1)[0] ));
         return $this->RMW($this->buildModel()->insert($props));
     }
 
 
     function insertOrIgnore(array $props)
     {
+        $this->checkFenixColls(array_keys($props));
         return $this->RMW($this->buildModel()->insertOrIgnore($props));
     }
 

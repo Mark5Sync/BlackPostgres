@@ -156,7 +156,7 @@ abstract class ___abstract_class___ extends BuildTable
     function insertOrIgnore(&$___auto___)
     {
         $props = $this->requestFilter->filter([$___restruct_auto___], false);
-        return $this->useTable()->insertOrIgnore(...$props);
+        return $this->useTable()->insertOrIgnore($props);
     }
 
     function updateOrInsert(&$___auto___)
@@ -167,6 +167,12 @@ abstract class ___abstract_class___ extends BuildTable
             $keysProps = $this->requestFilter->filter([$___restruct_auto___], false);
             return $this->useTable()->updateOrInsert($insertProps, $keysProps);
         };
+    }
+
+
+    function insertArray(array $data)
+    {
+        return $this->useTable()->insertArray($data);
     }
 
 
