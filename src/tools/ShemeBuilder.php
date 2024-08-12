@@ -186,10 +186,12 @@ class ShemeBuilder
             case 'date':
             case 'datetime':
             case 'timestamp without time zone':
+            case 'json':
                 return 'string';
 
             case 'float':
             case 'decimal':
+            case 'double precision':
                 return 'float';
 
             case 'text':
