@@ -105,4 +105,10 @@ abstract class Table extends BlackpostgresTable
     {
         return $this->db->manager->builder->getColumnListing($this->table);
     }
+
+
+    function __clone()
+    {
+        
+    }
 }

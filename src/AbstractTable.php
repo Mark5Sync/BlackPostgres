@@ -328,4 +328,8 @@ abstract class ___abstract_class___ extends BuildTable
     {
         return $this->useTable()->delete();
     }
+
+    function getColumnListing() {
+        return $this->useTable()->getColumnListing();
+    }
 }

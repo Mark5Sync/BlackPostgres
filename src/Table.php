@@ -32,11 +32,9 @@ class Table extends Connection
     private   null | int | false $pages = false;
     private int $size = 10;
 
-
     private ?array $relationShema = null;
 
-
-    function __construct(public string $tableName, protected Config $connectionConfig) {}
+    function __construct(public string $tableName, protected Config $db) {}
 
     function setRelations(array $relationShema)
     {
@@ -48,9 +46,8 @@ class Table extends Connection
     {
         $this->applyJoin = [];
         $this->size = 10;
-        $this->query = null;
+        $this->query = '';
         $this->cascade = null;
-        // $this->cascadeController->
     }
 
 
@@ -114,7 +111,10 @@ class Table extends Connection
     function sel(?string $schema = null, bool ...$props)
     {
         if ($schema) {
-            $schema = str_replace('@', $this(useCascade: true) . '.', $schema);
+            $re = '/(@(.\w*))/im';
+            $schema = preg_replace_callback($re, function ($match) {
+                return '"' . $this(useCascade: true) . '"."' . $match[2] . '"';
+            }, $schema);
             $this->querySchema->add('selectRaw', [$schema, array_values($props)]); // FIXME нужно провести тест, стоит ли тут проводить проверку на существование столбца в fenix table
         } else {
             $colls = array_map(fn($coll) => $this($coll, useCascade: true), $this->checkFenixColls(array_keys($props)));
@@ -242,7 +242,7 @@ class Table extends Connection
         $table = $this();
 
         foreach ($tables as $joinTableKey => $joinTable) {
-            ['coll' => $coll, 'referenced' => $referenced] = $this->connectionConfig->relations->getColls($table, $joinTable->tableName);
+            ['coll' => $coll, 'referenced' => $referenced] = $this->db->relations->getColls($table, $joinTable->tableName);
 
             $joinProps = [
                 'model' => $joinTable,
@@ -330,7 +330,7 @@ class Table extends Connection
     {
 
         $props = array_map(fn($coll) => $this($coll), $this->checkFenixColls(array_keys($colls)));
-        $this->querySchema->add("orderByASC", $props);
+        $this->querySchema->add("orderByAsc", $props);
 
         return $this;
     }
@@ -338,14 +338,14 @@ class Table extends Connection
     function orderByDesc(bool ...$colls)
     {
         $props = array_map(fn($coll) => $this($coll), $this->checkFenixColls(array_keys($colls)));
-        $this->querySchema->add("orderByDESC", $props);
+        $this->querySchema->add("orderByDesc", $props);
 
         return $this;
     }
 
     function groupBy(string ...$props)
     {
-        $row = array_map(fn($coll) => $this($coll), $this->checkFenixColls($props)); // [ ] вернуть обертку -> array_map(fn($coll) => $this($coll), 
+        $row = array_map(fn($coll) => $this($coll), $this->checkFenixColls($props));
         $this->querySchema->add("groupBy", $row);
 
         return $this;
@@ -535,5 +535,10 @@ class Table extends Connection
     function getQuerySchema(): QuerySchema
     {
         return $this->querySchema;
+    }
+
+    function getColumnListing()
+    {
+        return $this->db->manager->builder->getColumnListing($this->tableName);
     }
 }

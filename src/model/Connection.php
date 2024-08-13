@@ -11,13 +11,13 @@ use Illuminate\Database\Eloquent\Builder;
 use marksync\provider\NotMark;
 
 #[NotMark]
-abstract class Connection
+abstract class Connection 
 {
     use pgsystem;
 
 
     private ?Builder $activeModel = null;
-    protected Config $connectionConfig;
+    protected Config $db;
 
 
     function getModel(): Builder
@@ -25,7 +25,7 @@ abstract class Connection
         // if ($this->activeModel)
         //     return $this->activeModel;
 
-        $this->capsule->addConnection($this->connectionConfig);
+        $this->capsule->addConnection($this->db);
 
 
         return $this->activeModel = (new class($this->tableName) extends Model

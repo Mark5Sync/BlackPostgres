@@ -2,7 +2,6 @@
 
 namespace blackpostgres\request;
 
-use blackpostgres\Model;
 use blackpostgres\Table;
 use marksync\provider\Mark;
 
@@ -60,12 +59,12 @@ class QuerySchema
                     break;
 
 
-                case 'orderByDESC':
-                    $model->orderByDesc(...$data);
+                case 'orderByDesc':
+                    $this->orderBy($model, $data, 'desc');
                     break;
 
                 case 'orderByAsc':
-                    $model->orderByAsc(...$data);
+                    $this->orderBy($model, $data, 'asc');
                     break;
 
                 case 'limit':
@@ -97,6 +96,14 @@ class QuerySchema
 
                     break;
             }
+        }
+    }
+
+
+    private function orderBy($model, array $colls, $orderType)
+    {
+        foreach ($colls as $coll) {
+            $model->orderBy($coll, $orderType);
         }
     }
 
