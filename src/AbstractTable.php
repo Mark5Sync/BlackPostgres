@@ -55,6 +55,12 @@ abstract class ___abstract_class___ extends BuildTable
         return $this;
     }
 
+    function select(string ...$props)
+    {
+        $this->useTable()->select(...$props);
+        return $this;
+    }
+
     function selectAs(&$___string___)
     {
         $props = $this->requestFilter->filter([$___restruct_string___], false);
@@ -329,7 +335,8 @@ abstract class ___abstract_class___ extends BuildTable
         return $this->useTable()->delete();
     }
 
-    function getColumnListing() {
+    function getColumnListing()
+    {
         return $this->useTable()->getColumnListing();
     }
 }

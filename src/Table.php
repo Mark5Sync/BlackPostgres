@@ -124,7 +124,11 @@ class Table extends Connection
         return $this;
     }
 
-
+    function select(string ...$props)
+    {
+        $this->querySchema->add('select', $props);
+        return $this;
+    }
 
     function selectAs(...$props)
     {
