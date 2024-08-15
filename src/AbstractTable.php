@@ -314,7 +314,7 @@ abstract class ___abstract_class___ extends BuildTable
 
     function query(?string &$query)
     {
-        $this->useTable()->query($query);
+        $this->useTable()->query = &$query;
 
         return $this;
     }

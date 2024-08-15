@@ -81,6 +81,14 @@ class QuerySchema
 
                     break;
 
+                case 'isNull':
+                    $model->whereNull(...$data);
+                    break;
+
+                case 'isNotNull':
+                    $model->whereNotNull(...$data);
+                    break;
+
                 case 'join':
                     /** @var Table $joinModel */
                     ['model' => $joinModel, 'joinMethod' => $joinMethod, 'props' => $props] = $data;

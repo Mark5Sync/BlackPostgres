@@ -28,7 +28,7 @@ class Table extends Connection
 
 
     protected ?array $relationship;
-    private   ?string $query = '';
+    public   ?string $query = '';
     private   null | int | false $pages = false;
     private int $size = 10;
 
@@ -163,9 +163,14 @@ class Table extends Connection
         return $this->where('regexp', ...$props);
     }
 
-    function isNull(bool ...$props) {}
+    function isNull(bool ...$props) {
+        $this->querySchema->add('isNull', array_keys($props));
+    }
 
-    function isNotNull(bool ...$props) {}
+    function isNotNull(bool ...$props) {
+        $this->querySchema->add('isNotNull', array_keys($props));
+
+    }
 
 
     function where(?string $schema = null, string ...$props)
