@@ -518,13 +518,12 @@ class Table extends Connection
 
     function upsert(...$props)
     {
-        $this->checkFenixColls(array_keys($props));
+        $this->checkFenixColls($this->getColls($props));
         return new Upsert($props, $this);
     }
 
     function ___upsert(array $props, array $unique, ?array $update)
     {
-        $this->checkFenixColls(array_keys($props));
         return $this->RMW($this->buildModel()->upsert($props, $unique, $update));
     }
 

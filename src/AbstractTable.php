@@ -64,7 +64,7 @@ abstract class ___abstract_class___ extends BuildTable
     function selectAs(&$___string___)
     {
         $props = $this->requestFilter->filter([$___restruct_string___], false);
-        $this->useTable()->selectAs($props);
+        $this->useTable()->selectAs(...$props);
         return $this;
     }
 

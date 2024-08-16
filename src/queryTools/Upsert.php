@@ -11,9 +11,7 @@ class Upsert
     protected $update = null;
     private $runFetch = false;
 
-    function __construct(private array $insertProps, protected Table $table)
-    {
-    }
+    function __construct(private array $insertProps, protected Table $table) {}
 
     function __destruct()
     {
@@ -29,7 +27,9 @@ class Upsert
 
     function update(string | int ...$props)
     {
-        $this->update = $props;
+        if (!empty($props))
+            $this->update = $props;
+
         return $this;
     }
 
