@@ -64,16 +64,19 @@ class Stack
     function fetch($force = true)
     {
         foreach ($this->rows as $method => $rows) {
+            if (empty($rows))
+                continue;
+
             if (!$force)
                 if (count($this->rows[$method]) < $this->limit)
                     return;
 
             switch ($method) {
                 case 'insert':
-                    $this->table->insertArray($this->rows[$method]);
+                    $this->table->insertArray($rows);
                     break;
                 case 'upsert':
-                    $this->table->upsert(...$this->rows[$method])->unique(...$this->upsertUnique)->update(...$this->upsertUpdate)->fetch();
+                    $this->table->upsert(...$rows)->unique(...$this->upsertUnique)->update(...$this->upsertUpdate)->fetch();
                     break;
             }
 
