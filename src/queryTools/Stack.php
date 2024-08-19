@@ -71,16 +71,20 @@ class Stack
                 if (count($this->rows[$method]) < $this->limit)
                     return;
 
-            switch ($method) {
-                case 'insert':
-                    $this->table->insertArray($rows);
-                    break;
-                case 'upsert':
-                    $this->table->upsert(...$rows)->unique(...$this->upsertUnique)->update(...$this->upsertUpdate)->fetch();
-                    break;
+            try {
+                switch ($method) {
+                    case 'insert':
+                        $this->table->insertArray($rows);
+                        break;
+                    case 'upsert':
+                        $this->table->upsert(...$rows)->unique(...$this->upsertUnique)->update(...$this->upsertUpdate)->fetch();
+                        break;
+                }
+            } catch (\Throwable $th) {
+                throw $th;
+            } finally {
+                $this->rows[$method] = [];
             }
-
-            $this->rows[$method] = [];
         }
     }
 }
