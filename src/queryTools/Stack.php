@@ -14,6 +14,8 @@ class Stack
     private $upsertUnique = [];
     private $upsertUpdate = [];
 
+    private $updateOrInsertKeys = [];
+
     function __construct(private Table $table) {}
 
     function __destruct()
@@ -49,6 +51,19 @@ class Stack
         return $this;
     }
 
+    function updateOrInsert(...$props)
+    {
+        $this->rows['updateOrInsert'][] = $props;
+        $this->fetch(false);
+
+        return $this;
+    }
+
+    function updateOrInsertKeys(bool ...$keys)
+    {
+        $this->updateOrInsertKeys = array_keys($keys);
+    }
+
     function upsertUnique(bool ...$unique)
     {
         $this->upsertUnique = $unique;
@@ -78,6 +93,23 @@ class Stack
                         break;
                     case 'upsert':
                         $this->table->upsert(...$rows)->unique(...$this->upsertUnique)->update(...$this->upsertUpdate)->fetch();
+                        break;
+
+                    case 'updateOrInsert':
+                        $exceptions = null;
+                        foreach ($rows as $row) {
+
+                            try {
+                                $this->table->updateOrInsert($row, $this->updateOrInsertKeys);
+                            } catch (\Throwable $th) {
+                                $exceptions = $th;
+                            }
+                        }
+
+                        if ($exceptions)
+                            throw $exceptions;
+
+
                         break;
                 }
             } catch (\Throwable $th) {

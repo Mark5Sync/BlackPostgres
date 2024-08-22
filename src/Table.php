@@ -163,13 +163,14 @@ class Table extends Connection
         return $this->where('regexp', ...$props);
     }
 
-    function isNull(bool ...$props) {
+    function isNull(bool ...$props)
+    {
         $this->querySchema->add('isNull', array_keys($props));
     }
 
-    function isNotNull(bool ...$props) {
+    function isNotNull(bool ...$props)
+    {
         $this->querySchema->add('isNotNull', array_keys($props));
-
     }
 
 
@@ -503,9 +504,20 @@ class Table extends Connection
     }
 
 
-    function updateOrInsert(array $updateProps, array $keysProps)
+    function updateOrInsert(array $props, array $strUniqueKeys)
     {
-        return $this->RMW($this->buildModel()->updateOrInsert($updateProps, $keysProps));
+        $this->checkFenixColls(array_keys($props));
+
+        $keys = [];
+        $values = [];
+        foreach ($props as $key => $value) {
+            if (in_array($key, $strUniqueKeys))
+                $keys[$key] = $value;
+            else
+                $values[$key] = $value;
+        }
+
+        return $this->RMW($this->buildModel()->updateOrInsert($keys, $values));
     }
 
 
