@@ -443,6 +443,8 @@ class Table extends Connection
         if (is_null($pages)) {
             $this->pages = &$pages;
         }
+
+        return $this;
     }
 
 
