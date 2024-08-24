@@ -65,7 +65,7 @@ abstract class Table extends BlackpostgresTable
     {
         $this->checkTable();
 
-        $undefinedColls = array_diff($colls, $this->colls);
+        $undefinedColls = array_diff($colls, $this->colls ?? []);
         if (empty($undefinedColls))
             return $colls;
 

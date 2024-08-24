@@ -491,6 +491,10 @@ class Table extends Connection
         return $this->RMW($this->buildModel()->insertGetId($props));
     }
 
+    function insertRow(...$props) {
+        return $this->insert($props);
+    }
+
 
     function insertArray(array $props)
     {
