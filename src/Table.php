@@ -30,6 +30,7 @@ class Table extends Connection
     protected ?array $relationship;
     public   ?string $query = '';
     private   null | int | false $pages = false;
+    private   null | int | false $count = false;
     private int $size = 10;
 
     private ?array $relationShema = null;
@@ -393,6 +394,10 @@ class Table extends Connection
             $this->pages = ceil($pagex);
         }
 
+        if (is_null($this->count)) {
+            $this->count = $model->count();
+        }
+
         $this->querySchema->build($model);
 
         if (is_null($this->query))
@@ -442,6 +447,21 @@ class Table extends Connection
 
         if (is_null($pages)) {
             $this->pages = &$pages;
+        }
+
+        return $this;
+    }
+
+
+    function slice(int $offset, int $limit, int | false | null &$count = false)
+    {
+        $this->offset($offset);
+
+        $this->size = $limit;
+        $this->limit($limit);
+
+        if (is_null($count)) {
+            $this->count = &$count;
         }
 
         return $this;
