@@ -80,6 +80,15 @@ abstract class Table extends BlackpostgresTable
     }
 
 
+    function collExists(string $coll): bool
+    {
+        if (is_null($this->colls))
+            $this->updateColumnList();
+
+        return in_array($coll, $this->colls);
+    }
+
+
 
     function addColl(string $coll, Blueprint $table): void {}
 
@@ -107,8 +116,5 @@ abstract class Table extends BlackpostgresTable
     }
 
 
-    function __clone()
-    {
-        
-    }
+    function __clone() {}
 }
