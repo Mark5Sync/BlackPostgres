@@ -28,10 +28,12 @@ abstract class Table extends BlackpostgresTable
     }
 
 
-    private function checkTable()
+    function checkTable()
     {
         $this->createTableIfNotExists();
         $this->updateColumnList();
+
+        return $this;
     }
 
     private function createTableIfNotExists()

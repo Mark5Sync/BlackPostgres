@@ -196,16 +196,16 @@ abstract class ___abstract_class___ extends BuildTable
 
             function unique(&$___bool___)
             {
-                $unique = array_keys($this->table->requestFilter->filter([$___restruct_bool___], false));
-                $this->instance->unique($unique);
+                $unique = $this->table->requestFilter->filter([$___restruct_bool___], false);
+                $this->instance->unique(...$unique);
 
                 return $this;
             }
 
             function update(&$___auto___)
             {
-                $update = array_keys($this->table->requestFilter->filter([$___restruct_auto___], false));
-                $this->instance->update($update);
+                $update = $this->table->requestFilter->filter([$___restruct_auto___], false);
+                $this->instance->update(...$update);
 
                 return $this;
             }
