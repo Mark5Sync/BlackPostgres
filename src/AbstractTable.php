@@ -46,6 +46,10 @@ abstract class ___abstract_class___ extends BuildTable
         return $this->useTable();
     }
 
+    function transaction(){
+        return $this->useTable()->transaction();
+    }
+
 
     function sel(?string $_ = null, &$___bool___)
     {
@@ -156,7 +160,7 @@ abstract class ___abstract_class___ extends BuildTable
     function insert(&$___auto___)
     {
         $props = $this->requestFilter->filter([$___restruct_auto___], false);
-        return $this->useTable()->insert(...$props);
+        return $this->useTable()->insert($props);
     }
 
     function insertOrIgnore(&$___auto___)

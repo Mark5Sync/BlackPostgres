@@ -6,13 +6,13 @@ namespace blackpostgres\relation;
 use blackpostgres\config\Config;
 use marksync\provider\Container;
 use marksync\provider\Mark;
-use testapp\models\_abstract_models\ModelContext;
+
 
 #[Mark(args: ['parent'])]
 class Relations
 {
 
-    private ModelContext $relations;
+    private Context $relations;
 
 
     function __construct(private Config $config)

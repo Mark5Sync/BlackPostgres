@@ -11,6 +11,7 @@ use blackpostgres\config\Config;
 use blackpostgres\model\Connection;
 use blackpostgres\queryTools\Upsert;
 use blackpostgres\request\QuerySchema;
+use blackpostgres\tools\Transaction;
 
 class Table extends Connection
 {
@@ -101,6 +102,12 @@ class Table extends Connection
 
     //     throw new \Exception("fall apply operator [$name]", 1);
     // }
+
+
+    function transaction()
+    {
+        return new Transaction;
+    }
 
 
     protected function checkFenixColls(array $colls): array
@@ -505,7 +512,7 @@ class Table extends Connection
     }
 
 
-    function insert(array $props)
+    function insert($props)
     {
         $this->checkFenixColls(array_keys($props));
         return $this->RMW($this->buildModel()->insertGetId($props));

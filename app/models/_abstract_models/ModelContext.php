@@ -2,7 +2,9 @@
 
 namespace testapp\models\_abstract_models;
 
-class ModelContext
+use blackpostgres\relation\Context;
+
+class ModelContext extends Context
 {
 
     public ?array $schema = array (

@@ -6,7 +6,7 @@
     "autoload": {
         "psr-4": {
             "blackpostgres\\": "src\/",
-            "testapp\\": "app\/"
+            "routes\\": "routes\/"
         }
     },
     "require": {
