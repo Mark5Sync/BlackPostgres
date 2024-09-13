@@ -46,7 +46,8 @@ abstract class ___abstract_class___ extends BuildTable
         return $this->useTable();
     }
 
-    function transaction(){
+    function transaction()
+    {
         return $this->useTable()->transaction();
     }
 
@@ -300,6 +301,14 @@ abstract class ___abstract_class___ extends BuildTable
     }
 
 
+    function cascadeArray(string $name)
+    {
+        $this->useTable()->cascadeArray($name);
+
+        return $this;
+    }
+
+
     function toSql()
     {
         return $this->useTable()->toSql();
@@ -342,5 +351,10 @@ abstract class ___abstract_class___ extends BuildTable
     function getColumnListing()
     {
         return $this->useTable()->getColumnListing();
+    }
+
+    function getCount()
+    {
+        return $this->useTable()->getCount();
     }
 }

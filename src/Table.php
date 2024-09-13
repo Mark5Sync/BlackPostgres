@@ -76,6 +76,14 @@ class Table extends Connection
         return $this;
     }
 
+    function cascadeArray(string $name)
+    {
+        $alias = $this->cascadeController->add($this, $name, true);
+        $this->cascade = $alias;
+
+        return $this;
+    }
+
     // function ___get($name)
     // {
     //     $this->___applyOperator($name);

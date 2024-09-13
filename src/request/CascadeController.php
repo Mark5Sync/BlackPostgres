@@ -21,7 +21,7 @@ class CascadeController
     }
 
 
-    function add(Table $table, string $name)
+    function add(Table $table, string $name, bool $asArray = false)
     {
         $alias = '__cascade__' . count($this->config);
 
@@ -30,6 +30,7 @@ class CascadeController
             'name' => $name,
             'parent' => null,
             'breadcrumbs' => null,
+            'asArray' => $asArray,
         ];
 
         return $alias;
