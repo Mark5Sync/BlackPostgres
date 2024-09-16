@@ -14,7 +14,8 @@
         "composer\/class-map-generator": "^1.1",
         "illuminate\/database": "^11.7",
         "twcli\/twcli": "^1.0",
-        "marksync/useconfig": "^0.0.3"
+        "marksync/useconfig": "^0.0.3",
+        "laravel/serializable-closure": "^1.3"
     },
     "scripts": {
         "mark": "php vendor\/bin\/mark",
