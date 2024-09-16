@@ -48,7 +48,7 @@ class Table extends Connection
     {
         $this->applyJoin = [];
         $this->size = 10;
-        $this->query = '';
+        // $this->query = '';
         $this->cascade = null;
     }
 
