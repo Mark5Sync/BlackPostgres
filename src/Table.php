@@ -190,7 +190,7 @@ class Table extends Connection
     }
 
 
-    function where(?string $schema = null, string ...$props)
+    function where(?string $schema = null, string | null ...$props)
     {
         $comparisonOperator = '=';
 
