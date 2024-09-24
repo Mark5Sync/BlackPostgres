@@ -194,7 +194,7 @@ class Table extends Connection
     {
         $comparisonOperator = '=';
 
-        if ($schema && in_array(trim($schema), ['>', '>=', '=', '<>', '<', '<=', 'like', 'regexp'])) {
+        if ($schema && in_array(trim($schema), ['>', '>=', '=', '<>', '<', '<=', 'like', 'ilike', 'regexp'])) {
             $comparisonOperator = $schema;
             $schema = null;
         }
