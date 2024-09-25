@@ -192,6 +192,12 @@ class Table extends Connection
     function where(?string $schema = null, string | null ...$props)
     {
         $comparisonOperator = '=';
+        $whereMethod = 'where';
+
+        if ($schema && in_array(trim($schema), ['whereNot'])) {
+            $whereMethod = $schema;
+            $schema = null;
+        }
 
         if ($schema && in_array(trim($schema), ['>', '>=', '=', '<>', '<', '<=', 'like', 'ilike', 'regexp'])) {
             $comparisonOperator = $schema;
@@ -202,7 +208,7 @@ class Table extends Connection
         $raw = [];
         foreach ($this->checkFenixColls(array_keys($props)) as $index => $coll) {
             if (!$schema)
-                $this->querySchema->add('where', [
+                $this->querySchema->add($whereMethod, [
                     $this($coll),
                     $comparisonOperator,
                     $props[$coll]
@@ -215,6 +221,18 @@ class Table extends Connection
         if ($schema) {
             $schema = str_replace('@', "\"{$this->tableName}\"" . '.', $schema);
             $this->querySchema->add('whereRaw', [$schema, $raw]);
+        }
+
+        return $this;
+    }
+
+
+    function whereNot(array ...$props) 
+    {
+        $this->checkFenixColls(array_keys($props));
+
+        foreach ($props as $coll => $value) {
+            $this->querySchema->add('whereNot', [$coll, $value]);
         }
 
         return $this;
