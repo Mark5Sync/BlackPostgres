@@ -31,7 +31,7 @@ class Stack
     }
 
 
-    function insert(array $props)
+    function insert(...$props)
     {
         $this->rows['insert'][] = $props;
         $this->fetch(false);
