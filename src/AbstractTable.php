@@ -309,6 +309,21 @@ abstract class ___abstract_class___ extends BuildTable
     }
 
 
+    function whereRaw(string $schema, array $props)
+    {
+        $this->useTable()->whereRaw($schema, $props);
+        return $this;
+    }
+
+
+    function inJsonbArray(&$___auto___)
+    {
+        $props = $this->requestFilter->filter([$___restruct_auto___], false);
+        $this->useTable()->inJsonbArray($props);
+        return $this;
+    }
+
+
     function toSql()
     {
         return $this->useTable()->toSql();

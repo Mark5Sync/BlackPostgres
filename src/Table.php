@@ -189,7 +189,24 @@ class Table extends Connection
     }
 
 
-    function where(?string $schema = null, string | null ...$props)
+    function whereRaw(string $schema, array $props)
+    {
+        $this->querySchema->add('whereRaw', [$this->replaceTableName($schema), $props]);
+        return $this;
+    }
+
+    function inJsonbArray(...$props)
+    {
+        $this->checkFenixColls(array_keys($props));
+
+        foreach ($props as $coll => $values) {
+            $valuesStr = implode(',', array_map(fn() => '?', $values));
+            $this->whereRaw("@$coll ??| array[$valuesStr]::text[]", $values);
+        }
+        return $this;
+    }
+
+    function where(?string $schema = null, float | int | string | null ...$props)
     {
         $comparisonOperator = '=';
         $whereMethod = 'where';
@@ -218,16 +235,21 @@ class Table extends Connection
             $raw[] = $props[$coll];
         }
 
-        if ($schema) {
-            $schema = str_replace('@', "\"{$this->tableName}\"" . '.', $schema);
-            $this->querySchema->add('whereRaw', [$schema, $raw]);
-        }
+        if ($schema)
+            $this->whereRaw($schema, $raw);
+
 
         return $this;
     }
 
 
-    function whereNot(array ...$props) 
+    private function replaceTableName(string $schema)
+    {
+        return str_replace('@', "\"{$this->tableName}\"" . '.', $schema);
+    }
+
+
+    function whereNot(array ...$props)
     {
         $this->checkFenixColls(array_keys($props));
 
@@ -239,7 +261,7 @@ class Table extends Connection
     }
 
 
-    function in(array ...$props)
+    function in(?string $schema = null, array ...$props)
     {
         $this->checkFenixColls(array_keys($props));
 
@@ -543,7 +565,8 @@ class Table extends Connection
         return $this->RMW($this->buildModel()->insertGetId($props));
     }
 
-    function insertRow(...$props) {
+    function insertRow(...$props)
+    {
         return $this->insert($props);
     }
 
