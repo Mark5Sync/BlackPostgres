@@ -348,6 +348,12 @@ abstract class ___abstract_class___ extends BuildTable
         return $this->useTable()->delete();
     }
 
+    function lara(callable $callback)
+    {
+        $this->useTable()->lara($callback);
+        return $this;
+    }
+
     function getColumnListing()
     {
         return $this->useTable()->getColumnListing();

@@ -602,7 +602,11 @@ class Table extends Connection
         return $this->RMW($this->buildModel()->delete());
     }
 
-
+    function lara(callable $callback)
+    {
+        $this->querySchema->add('lara', $callback);
+        return $this;
+    }
 
 
 

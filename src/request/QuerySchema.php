@@ -101,6 +101,9 @@ class QuerySchema
                     $joinModel->getQuerySchema()->build($model);
                     break;
 
+                case 'lara':
+                        $data($model);
+                    break;
 
                 default:
                     throw new \Exception("Нет реализации для $method", 1);
