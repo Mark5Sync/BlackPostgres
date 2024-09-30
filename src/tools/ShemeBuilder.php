@@ -187,6 +187,7 @@ class ShemeBuilder
             case 'datetime':
             case 'timestamp without time zone':
             case 'json':
+            case 'jsonb':
                 return 'string';
 
             case 'float':

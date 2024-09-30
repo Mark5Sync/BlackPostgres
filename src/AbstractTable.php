@@ -316,10 +316,10 @@ abstract class ___abstract_class___ extends BuildTable
     }
 
 
-    function inJsonbArray(&$___auto___)
+    function inJsonbArray(&$___array___)
     {
-        $props = $this->requestFilter->filter([$___restruct_auto___], false);
-        $this->useTable()->inJsonbArray($props);
+        $props = $this->requestFilter->filter([$___restruct_array___], false);
+        $this->useTable()->inJsonbArray(...$props);
         return $this;
     }
 
