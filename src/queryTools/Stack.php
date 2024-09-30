@@ -13,6 +13,7 @@ class Stack
     private $rows = [];
     private $upsertUnique = [];
     private $upsertUpdate = [];
+    private $handler = null;
 
     private $updateOrInsertKeys = [];
 
@@ -74,13 +75,22 @@ class Stack
         $this->upsertUpdate = $update;
     }
 
-
+    function addHandler(callable $callback)
+    {
+        $this->handler = $callback;
+    }
 
     function fetch($force = true)
     {
+        $handler = $this->handler;
+
+
         foreach ($this->rows as $method => $rows) {
             if (empty($rows))
                 continue;
+
+            $rows = $handler ? $handler($rows) : $rows;
+
 
             if (!$force)
                 if (count($this->rows[$method]) < $this->limit)
