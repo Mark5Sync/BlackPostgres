@@ -44,7 +44,7 @@ class QuerySchema
                     $model->selectRaw(...$data);
                     break;
 
-
+                
 
                 case 'where':
                     $model->where(...$data);

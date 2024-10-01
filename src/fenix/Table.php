@@ -63,13 +63,16 @@ abstract class Table extends BlackpostgresTable
     }
 
 
-    protected function checkFenixColls(array $colls): array
+    protected function checkFenixColls(array $colls, bool $passUndefinedColls = false): array
     {
         $this->checkTable();
 
         $undefinedColls = array_diff($colls, $this->colls ?? []);
         if (empty($undefinedColls))
             return $colls;
+
+        if ($passUndefinedColls)
+            return array_diff($colls, $undefinedColls);
 
         $this->db->manager->builder->table($this->table, function ($table) use ($undefinedColls) {
             foreach ($undefinedColls as $coll) {

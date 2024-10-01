@@ -8,6 +8,7 @@ use blackpostgres\_markers\queryTools;
 use blackpostgres\_markers\request;
 use blackpostgres\config\BuildTable;
 use blackpostgres\config\Config;
+use blackpostgres\exceptions\EmptySelectException;
 use blackpostgres\model\Connection;
 use blackpostgres\queryTools\Upsert;
 use blackpostgres\request\QuerySchema;
@@ -130,7 +131,7 @@ class Table extends Connection
             $schema = preg_replace_callback($re, function ($match) {
                 return '"' . $this(useCascade: true) . '"."' . $match[2] . '"';
             }, $schema);
-            $this->querySchema->add('selectRaw', [$schema, array_values($props)]); // FIXME нужно провести тест, стоит ли тут проводить проверку на существование столбца в fenix table
+            $this->selectRaw($schema, array_values($props)); // FIXME нужно провести тест, стоит ли тут проводить проверку на существование столбца в fenix table
         } else {
             $colls = array_map(fn($coll) => $this($coll, useCascade: true), $this->checkFenixColls(array_keys($props)));
             $this->querySchema->add('select', empty($colls) ? ['*'] : $colls);
@@ -141,6 +142,11 @@ class Table extends Connection
 
     function select(string ...$props)
     {
+        $props = $this->checkFenixColls($props, true);
+
+        if (empty($props))
+            throw new EmptySelectException();
+
         $this->querySchema->add('select', $props);
         return $this;
     }
@@ -160,7 +166,11 @@ class Table extends Connection
         return $this;
     }
 
-
+    function selectRaw(string $schema, array $props = [])
+    {
+        $this->querySchema->add('selectRaw', [$schema, $props]); 
+        return $this;
+    }
 
 
 
