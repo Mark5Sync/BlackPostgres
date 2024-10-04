@@ -168,7 +168,7 @@ class Table extends Connection
 
     function selectRaw(string $schema, array $props = [])
     {
-        $this->querySchema->add('selectRaw', [$schema, $props]); 
+        $this->querySchema->add('selectRaw', [$this->replaceTableName($schema), $props]);
         return $this;
     }
 
@@ -293,7 +293,6 @@ class Table extends Connection
 
         return $this;
     }
-
 
 
 
