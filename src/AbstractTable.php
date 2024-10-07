@@ -118,6 +118,23 @@ abstract class ___abstract_class___ extends BuildTable
     }
 
 
+    function between(&$___array___)
+    {
+        $props = $this->requestFilter->filter([$___restruct_array___], false);
+        $this->useTable()->between(...$props);
+
+        return $this;
+    }
+
+    function notBetween(&$___array___)
+    {
+        $props = $this->requestFilter->filter([$___restruct_array___], false);
+        $this->useTable()->notBetween(...$props);
+
+        return $this;
+    }
+
+
 
     function isNull(&$___bool___)
     {

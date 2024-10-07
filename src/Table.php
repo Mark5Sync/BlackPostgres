@@ -307,7 +307,16 @@ class Table extends Connection
 
 
 
+    function notBetween(array ...$props)
+    {
+        $this->checkFenixColls(array_keys($props));
 
+        foreach ($props as $coll => $values) {
+            $this->querySchema->add('notBetween', [$coll, $values]);
+        }
+
+        return $this;
+    }
 
 
 
