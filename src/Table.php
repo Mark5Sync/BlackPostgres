@@ -294,7 +294,16 @@ class Table extends Connection
         return $this;
     }
 
+    function between(array ...$props)
+    {
+        $this->checkFenixColls(array_keys($props));
 
+        foreach ($props as $coll => $values) {
+            $this->querySchema->add('between', [$coll, $values]);
+        }
+
+        return $this;
+    }
 
 
 

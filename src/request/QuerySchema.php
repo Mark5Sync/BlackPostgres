@@ -44,7 +44,7 @@ class QuerySchema
                     $model->selectRaw(...$data);
                     break;
 
-                
+
 
                 case 'where':
                     $model->where(...$data);
@@ -101,8 +101,13 @@ class QuerySchema
                     $joinModel->getQuerySchema()->build($model);
                     break;
 
+                case 'between':
+                    $model->whereBetween(...$data);
+
+                    break;
+
                 case 'lara':
-                        $data($model);
+                    $data($model);
                     break;
 
                 default:
