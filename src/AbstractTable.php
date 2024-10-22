@@ -346,6 +346,13 @@ abstract class ___abstract_class___ extends BuildTable
     }
 
 
+    function inJsonbArray2(&$___array___)
+    {
+        $props = $this->requestFilter->filter([$___restruct_array___], false);
+        $this->useTable()->inJsonbArray2(...$props);
+        return $this;
+    }
+
     function toSql()
     {
         return $this->useTable()->toSql();
