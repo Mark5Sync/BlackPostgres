@@ -216,19 +216,6 @@ class Table extends Connection
         return $this;
     }
 
-
-    function inJsonbArray2(...$props)
-    {
-        $this->checkFenixColls(array_keys($props));
-
-        foreach ($props as $coll => $values) {
-            $valuesStr = implode(' || ', array_map(fn() => '\@ == ?', $values));
-            $this->whereRaw("jsonb_path_exists(@$coll, '$[*] ?? ($valuesStr)')", $values);
-        }
-        return $this;
-    }
-
-
     function where(?string $schema = null, float | int | string | null ...$props)
     {
         $comparisonOperator = '=';
@@ -268,10 +255,7 @@ class Table extends Connection
 
     private function replaceTableName(string $schema)
     {
-        $schema = str_replace('\@', '*S.N.A.I.L*', $schema);
-        $schema = str_replace('@', " \"{$this->tableName}\"" . '.', $schema);
-        $schema = str_replace('*S.N.A.I.L*', "@", $schema);
-        return $schema;
+        return str_replace('@', "\"{$this->tableName}\"" . '.', $schema);
     }
 
 
@@ -323,16 +307,7 @@ class Table extends Connection
 
 
 
-    function notBetween(array ...$props)
-    {
-        $this->checkFenixColls(array_keys($props));
 
-        foreach ($props as $coll => $values) {
-            $this->querySchema->add('notBetween', [$coll, $values]);
-        }
-
-        return $this;
-    }
 
 
 

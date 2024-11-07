@@ -110,7 +110,7 @@ abstract class Table extends BlackpostgresTable
         $this->db->manager->builder->dropIfExists($table);
     }
 
-    function renameTable(string $to)
+    protected function renameTable(string $to)
     {
         $this->db->manager->builder->rename($this->table, $to);
     }
