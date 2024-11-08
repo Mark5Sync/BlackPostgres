@@ -13,6 +13,7 @@ use blackpostgres\model\Connection;
 use blackpostgres\queryTools\Upsert;
 use blackpostgres\request\QuerySchema;
 use blackpostgres\tools\Transaction;
+use Illuminate\Database\Eloquent\Builder;
 
 class Table extends Connection
 {
@@ -31,6 +32,7 @@ class Table extends Connection
 
     protected ?array $relationship;
     public   ?string $query = '';
+
     private   null | int | false $pages = false;
     private   null | int | false $count = false;
     private int $size = 10;
@@ -185,7 +187,7 @@ class Table extends Connection
 
     function regexp(string ...$props)
     {
-        return $this->where('regexp', ...$props);
+        return $this->where('~', ...$props);
     }
 
     function isNull(bool ...$props)
@@ -216,19 +218,6 @@ class Table extends Connection
         return $this;
     }
 
-
-    function inJsonbArray2(...$props)
-    {
-        $this->checkFenixColls(array_keys($props));
-
-        foreach ($props as $coll => $values) {
-            $valuesStr = implode(' || ', array_map(fn() => '\@ == ?', $values));
-            $this->whereRaw("jsonb_path_exists(@$coll, '$[*] ?? ($valuesStr)')", $values);
-        }
-        return $this;
-    }
-
-
     function where(?string $schema = null, float | int | string | null ...$props)
     {
         $comparisonOperator = '=';
@@ -239,7 +228,7 @@ class Table extends Connection
             $schema = null;
         }
 
-        if ($schema && in_array(trim($schema), ['>', '>=', '=', '<>', '<', '<=', 'like', 'ilike', 'regexp'])) {
+        if ($schema && in_array(trim($schema), ['>', '>=', '=', '<>', '<', '<=', 'like', 'ilike', '~'])) {
             $comparisonOperator = $schema;
             $schema = null;
         }
@@ -268,10 +257,7 @@ class Table extends Connection
 
     private function replaceTableName(string $schema)
     {
-        $schema = str_replace('\@', '*S.N.A.I.L*', $schema);
-        $schema = str_replace('@', " \"{$this->tableName}\"" . '.', $schema);
-        $schema = str_replace('*S.N.A.I.L*', "@", $schema);
-        return $schema;
+        return str_replace('@', "\"{$this->tableName}\"" . '.', $schema);
     }
 
 
@@ -323,16 +309,7 @@ class Table extends Connection
 
 
 
-    function notBetween(array ...$props)
-    {
-        $this->checkFenixColls(array_keys($props));
 
-        foreach ($props as $coll => $values) {
-            $this->querySchema->add('notBetween', [$coll, $values]);
-        }
-
-        return $this;
-    }
 
 
 
@@ -463,6 +440,7 @@ class Table extends Connection
     function query(?string &$query)
     {
         $this->query = &$query;
+        
         return $this;
     }
 
@@ -498,11 +476,25 @@ class Table extends Connection
         $this->querySchema->build($model);
 
         if (is_null($this->query))
-            $this->query = $model->toSql();
+            $this->bindBindings($model);
 
         $this->clear();
 
         return $model;
+    }
+
+
+    private function bindBindings(Builder $model)
+    {
+        $sql = $model->toSql();
+        $binds = $model->getBindings();
+
+        foreach ($binds as $binding) {
+            $binding = is_numeric($binding) ? $binding : "'" . addslashes($binding) . "'";
+            $sql = preg_replace('/(?<!\?)\?(?!\?)/', $binding, $sql, 1);
+        }
+
+        $this->query = str_replace('??', '?', $sql);
     }
 
 
@@ -673,10 +665,7 @@ class Table extends Connection
         $this->querySchema->add('lara', $callback);
         return $this;
     }
-
-
-
-
+    
 
 
 

@@ -103,10 +103,7 @@ class QuerySchema
 
                 case 'between':
                     $model->whereBetween(...$data);
-                    break;
 
-                case 'notBetween':
-                    $model->whereNotBetween(...$data);
                     break;
 
                 case 'lara':
