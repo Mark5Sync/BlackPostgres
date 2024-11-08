@@ -13,6 +13,7 @@ use blackpostgres\model\Connection;
 use blackpostgres\queryTools\Upsert;
 use blackpostgres\request\QuerySchema;
 use blackpostgres\tools\Transaction;
+use Illuminate\Database\Eloquent\Builder;
 
 class Table extends Connection
 {
@@ -31,6 +32,7 @@ class Table extends Connection
 
     protected ?array $relationship;
     public   ?string $query = '';
+
     private   null | int | false $pages = false;
     private   null | int | false $count = false;
     private int $size = 10;
@@ -438,6 +440,7 @@ class Table extends Connection
     function query(?string &$query)
     {
         $this->query = &$query;
+        
         return $this;
     }
 
@@ -473,11 +476,25 @@ class Table extends Connection
         $this->querySchema->build($model);
 
         if (is_null($this->query))
-            $this->query = $model->toSql();
+            $this->bindBindings($model);
 
         $this->clear();
 
         return $model;
+    }
+
+
+    private function bindBindings(Builder $model)
+    {
+        $sql = $model->toSql();
+        $binds = $model->getBindings();
+
+        foreach ($binds as $binding) {
+            $binding = is_numeric($binding) ? $binding : "'" . addslashes($binding) . "'";
+            $sql = preg_replace('/(?<!\?)\?(?!\?)/', $binding, $sql, 1);
+        }
+
+        $this->query = str_replace('??', '?', $sql);
     }
 
 
@@ -648,10 +665,7 @@ class Table extends Connection
         $this->querySchema->add('lara', $callback);
         return $this;
     }
-
-
-
-
+    
 
 
 
