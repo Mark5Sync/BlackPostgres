@@ -178,8 +178,6 @@ class Table extends Connection
 
 
 
-
-
     function like(string ...$props)
     {
         return $this->where('like', ...$props);
@@ -427,6 +425,14 @@ class Table extends Connection
 
         return $this;
     }
+
+    function orderByRaw(string $schema, array $props = [])
+    {
+        $this->querySchema->add('orderByRaw', [$this->replaceTableName($schema), $props]);
+        return $this;
+    }
+
+
 
     function groupBy(string ...$props)
     {

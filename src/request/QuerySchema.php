@@ -71,6 +71,10 @@ class QuerySchema
                     $this->orderBy($model, $data, 'asc');
                     break;
 
+                case 'orderByRaw':
+                    $model->orderByRaw(...$data);
+                    break;
+
                 case 'limit':
                     $model->limit($data);
                     break;
@@ -82,7 +86,6 @@ class QuerySchema
 
                 case 'groupBy':
                     $model->groupBy(...$data);
-
                     break;
 
                 case 'isNull':

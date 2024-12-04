@@ -270,6 +270,14 @@ abstract class ___abstract_class___ extends BuildTable
         return $this;
     }
 
+
+    function orderByRaw(string $schema, array $props)
+    {
+        $this->useTable()->orderByRaw($schema, $props);
+        return $this;
+    }
+
+
     function groupBy(&$___bool___)
     {
         $props = array_keys($this->requestFilter->filter([$___restruct_bool___], false));
