@@ -69,6 +69,9 @@ class Table extends Connection
         return "{$table}.{$collName}" . ($as ? " as $as" : '');
     }
 
+    private function keys(array $props) {
+        return array_map(fn($coll) => $this($coll), array_keys($props));
+    }
 
     function cascade(string $name)
     {
@@ -190,12 +193,12 @@ class Table extends Connection
 
     function isNull(bool ...$props)
     {
-        $this->querySchema->add('isNull', array_keys($props));
+        $this->querySchema->add('isNull', $this->keys($props));
     }
 
     function isNotNull(bool ...$props)
     {
-        $this->querySchema->add('isNotNull', array_keys($props));
+        $this->querySchema->add('isNotNull', $this->keys($props));
     }
 
 
