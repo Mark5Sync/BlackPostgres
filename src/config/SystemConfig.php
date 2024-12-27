@@ -20,10 +20,10 @@ abstract class SystemConfig
     }
 
 
-    function generate()
+    function generate(bool $printLog = true)
     {
         $builder = new ShemeBuilController($this);
         $builder->setRoot($this->modelsPath);
-        $builder->generate();
+        $builder->generate($printLog);
     }
 }

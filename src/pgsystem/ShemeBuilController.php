@@ -19,9 +19,7 @@ class ShemeBuilController
     private string $root;
 
 
-    function __construct(private Config $config)
-    {
-    }
+    function __construct(private Config $config) {}
 
 
     function setRoot(string $root)
@@ -30,7 +28,7 @@ class ShemeBuilController
     }
 
 
-    function generate()
+    function generate(bool $printLog = true)
     {
         ini_set('display_errors', 0);
 
@@ -57,13 +55,16 @@ class ShemeBuilController
 
                 $context[$table] = $modelConfig->getContext();
 
-                cli::print(<<<HTML
-                <yellow>{$table}</yellow> - <green>OK</green>\n
-                HTML);
+                if ($printLog)
+                    cli::print(<<<HTML
+                    <yellow>{$table}</yellow> - <green>OK</green>\n
+                    HTML);
             } catch (\Throwable $th) {
-                cli::print(<<<HTML
-                $table: <red>{$th->getMessage()}</red>\n
-                HTML);
+                if ($printLog)
+                    cli::print(<<<HTML
+                    $table: <red>{$th->getMessage()}</red>\n
+                    HTML);
+                else throw $th;
             }
         }
 
@@ -94,8 +95,8 @@ class ShemeBuilController
 
     function realPath($splitter, ...$array)
     {
-        $result = array_reduce($array, fn ($acc, $itm) => [...$acc, ...explode($splitter, $itm)], []);
-        $result = implode($splitter, [$result[0], ...array_filter(array_slice($result, 1), fn ($itm) => $itm)]);
+        $result = array_reduce($array, fn($acc, $itm) => [...$acc, ...explode($splitter, $itm)], []);
+        $result = implode($splitter, [$result[0], ...array_filter(array_slice($result, 1), fn($itm) => $itm)]);
         return $result;
     }
 
