@@ -6,7 +6,6 @@ use blackpostgres\_markers\pgsystem;
 use blackpostgres\config\Config;
 use blackpostgres\pgsystem\ShemeBuilController;
 use blackpostgres\tools\Transaction;
-use Illuminate\Database\Capsule\Manager;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use marksync\provider\NotMark;

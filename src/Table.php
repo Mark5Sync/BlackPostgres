@@ -14,6 +14,7 @@ use blackpostgres\queryTools\Upsert;
 use blackpostgres\request\QuerySchema;
 use blackpostgres\tools\Transaction;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Facades\DB;
 
 class Table extends Connection
 {
@@ -69,7 +70,8 @@ class Table extends Connection
         return "{$table}.{$collName}" . ($as ? " as $as" : '');
     }
 
-    private function keys(array $props) {
+    private function keys(array $props)
+    {
         return array_map(fn($coll) => $this($coll), array_keys($props));
     }
 
@@ -449,7 +451,7 @@ class Table extends Connection
     function query(?string &$query)
     {
         $this->query = &$query;
-        
+
         return $this;
     }
 
@@ -652,6 +654,34 @@ class Table extends Connection
         return $this->RMW($this->buildModel()->update($props));
     }
 
+    /** 
+     * DANGER
+     */
+    function updateCase(string $updateColl, ...$props)
+    {
+        $this->checkFenixColls([$updateColl, ...array_keys($props)]);
+
+        $updates = [];
+        $in = [];
+
+        foreach ($props as $column => $cases) {
+            $sql = "CASE ";
+            $bindings = [];
+
+            foreach ($cases as $key => $value) {
+                $sql .= "WHEN $column = ? THEN ? ";
+                $in[$column][] = $key;
+                $bindings[] = $key;
+                $bindings[] = $value;
+            }
+
+            $sql .= " END";
+
+            $updates[$updateColl] = $this->raw($sql, $bindings);
+        }
+
+        return $this->in(...$in)->update(...$updates);
+    }
 
     function upsert(...$props)
     {
@@ -674,8 +704,14 @@ class Table extends Connection
         $this->querySchema->add('lara', $callback);
         return $this;
     }
-    
 
+    /** 
+     * DANGER
+     */
+    function raw(string $query, array $bindings = [])
+    {
+        return $this->capsule->raw($query, $bindings);
+    }
 
 
     function getQuerySchema(): QuerySchema
