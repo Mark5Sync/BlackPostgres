@@ -180,6 +180,11 @@ class Table extends Connection
     }
 
 
+    function havingRaw(string $schema, array $props = [])
+    {
+        $this->querySchema->add('havingRaw', [$this->replaceTableName($schema), $props]);
+        return $this;
+    }
 
 
 

@@ -79,6 +79,12 @@ abstract class ___abstract_class___ extends BuildTable
         return $this;
     }
 
+    function havingRaw(string $schema, array $props = [])
+    {
+        $this->useTable()->havingRaw($schema, $props);
+        return $this;
+    }
+
     // function selectDate(?string $_ = null, &$___string_date___)
     // {
     //     $props = [$___restruct_string_date___];

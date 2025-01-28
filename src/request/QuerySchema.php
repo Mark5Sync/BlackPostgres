@@ -44,6 +44,9 @@ class QuerySchema
                     $model->selectRaw(...$data);
                     break;
 
+                case 'havingRaw':
+                    $model->havingRaw(...$data);
+                    break;
 
 
                 case 'where':
