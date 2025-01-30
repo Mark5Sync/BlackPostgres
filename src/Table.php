@@ -14,7 +14,7 @@ use blackpostgres\queryTools\Upsert;
 use blackpostgres\request\QuerySchema;
 use blackpostgres\tools\Transaction;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Database\Eloquent\Collection;
 
 class Table extends Connection
 {
@@ -34,7 +34,10 @@ class Table extends Connection
     protected ?array $relationship;
     public   ?string $query = '';
 
-    private   null | int | false $pages = false;
+    private null | int | false $pages = false;
+    private null | bool $canLoadMore = false;
+    private ?int $loadMoreSize = null;
+
     private   null | int | false $count = false;
     private int $size = 10;
 
@@ -468,6 +471,7 @@ class Table extends Connection
     private function RMW($result)
     {
         $this->querySchema->reset();
+
         return $result;
     }
 
@@ -516,19 +520,35 @@ class Table extends Connection
 
     function fetch()
     {
-        $result = $this->buildModel()->first();
-        if (!$result)
+        $request = $this->buildModel()->first();
+        if (!$request)
             return null;
 
-        return $this->RMW($this->cascadeController->handleResult($this->tableName, $result->toArray()));
+        return $this->RMW($this->cascadeController->handleResult($this->tableName, $request->toArray()));
     }
 
 
     function fetchAll()
     {
-        $result = $this->buildModel()->get();
-        return $this->RMW($this->cascadeController->handleResult($this->tableName, $result->toArray(), true));
+        $request = $this->buildModel()->get();
+        return $this->RMW($this->cascadeController->handleResult($this->tableName, $this->toArray($request), true));
     }
+
+
+    private function toArray(Collection $request): array
+    {
+        $result = $request->toArray();
+
+        if (!is_null($this->loadMoreSize)) {
+            if (count($result) > $this->loadMoreSize) {
+                $result = array_slice($result, 0, -1);
+                $this->loadMoreSize = null;
+                $this->canLoadMore = true;
+            }
+        }
+
+        return $result;
+    } 
 
 
     function toSql()
@@ -554,6 +574,20 @@ class Table extends Connection
             $this->pages = &$pages;
         }
 
+        return $this;
+    }
+
+
+    function loadMore(int $page, int $size, int | false | null &$loadMore = false)
+    {
+        $this->loadMoreSize = $size;
+        $this->canLoadMore = &$loadMore;
+
+        $this->offset(($page - 1) * $size);
+
+        $this->size = $size;
+        $this->limit($size +1);
+        
         return $this;
     }
 

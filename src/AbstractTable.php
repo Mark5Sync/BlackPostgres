@@ -248,6 +248,12 @@ abstract class ___abstract_class___ extends BuildTable
         return $this;
     }
 
+    function loadMore(int $index, int $size, bool | null &$pages = false)
+    {
+        $this->useTable()->loadMore($index, $size, $pages);
+        return $this;
+    }
+
     function limit($limit)
     {
 
