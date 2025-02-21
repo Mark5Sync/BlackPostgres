@@ -708,9 +708,9 @@ class Table extends Connection
             $bindings = [];
 
             foreach ($cases as $key => $value) {
-                $sql .= "WHEN \"$column\" = ? THEN ? ";
+                $sql .= "WHEN \"$column\" = '$key' THEN ? ";
                 $in[$column][] = $key;
-                $bindings[] = $key;
+                // $bindings[] = $key;
                 $bindings[] = $value;
             }
 
