@@ -57,6 +57,10 @@ class QuerySchema
                     $model->whereIn(...$data);
                     break;
 
+                case 'whereNotIn':
+                    $model->whereNotIn(...$data);
+                    break;
+
                 case 'whereNot':
                     $model->whereNot(...$data);
                     break;

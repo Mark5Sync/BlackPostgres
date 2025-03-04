@@ -301,7 +301,7 @@ class Table extends Connection
         $this->checkFenixColls(array_keys($props));
 
         foreach ($props as $coll => $value) {
-            $this->querySchema->add('wheteNotIn', [$coll, $value]);
+            $this->querySchema->add('whereNotIn', [$coll, $value]);
         }
 
         return $this;
