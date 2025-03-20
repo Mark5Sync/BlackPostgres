@@ -196,6 +196,11 @@ class Table extends Connection
         return $this->where('like', ...$props);
     }
 
+    function notLike(string ...$props)
+    {
+        return $this->where('not like', ...$props);
+    }
+
     function regexp(string ...$props)
     {
         return $this->where('~', ...$props);
@@ -239,7 +244,7 @@ class Table extends Connection
             $schema = null;
         }
 
-        if ($schema && in_array(trim($schema), ['>', '>=', '=', '<>', '<', '<=', 'like', 'ilike', '~'])) {
+        if ($schema && in_array(trim($schema), ['>', '>=', '=', '<>', '<', '<=', 'like', 'ilike', '~', 'not like'])) {
             $comparisonOperator = $schema;
             $schema = null;
         }

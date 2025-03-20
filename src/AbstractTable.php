@@ -101,6 +101,13 @@ abstract class ___abstract_class___ extends BuildTable
         return $this;
     }
 
+    function notLike(&$___string___)
+    {
+        $props = $this->requestFilter->filter([$___restruct_string___], false);
+        $this->useTable()->notLike(...$props);
+        return $this;
+    }
+
     function regexp(&$___string___)
     {
         $props = $this->requestFilter->filter([$___restruct_string___], false);
