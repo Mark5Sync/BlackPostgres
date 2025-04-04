@@ -89,12 +89,12 @@ class Stack
             if (empty($rows))
                 continue;
 
-            $rows = $handler ? $handler($rows) : $rows;
-
-
             if (!$force)
                 if (count($this->rows[$method]) < $this->limit)
                     return;
+
+            $rows = $handler ? $handler($rows) : $rows;
+
 
             try {
                 switch ($method) {
